@@ -7,14 +7,7 @@ import org.junit.jupiter.api.Test;
 
 class VerificationTokenTest {
 
-  VerificationToken verificationToken =new VerificationToken();
 
-  @Test
-  public void testExpireDate()
-  {
-    LocalDateTime localDateTime = verificationToken.calculateExpiryDate(1440);
-    assertTrue(localDateTime instanceof LocalDateTime);
 
-  }
 
 }

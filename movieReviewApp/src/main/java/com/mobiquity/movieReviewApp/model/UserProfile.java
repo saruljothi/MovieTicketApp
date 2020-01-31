@@ -1,5 +1,6 @@
 package com.mobiquity.movieReviewApp.model;
 
+import java.time.LocalDateTime;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -12,6 +13,7 @@ import lombok.Setter;
 
 @Entity
 @Getter
+@Setter
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -23,6 +25,9 @@ public class UserProfile {
   @Column(unique = true)
   private String emailId;
   private String password;
-//  private boolean status;
+  private String token;
+  private boolean status;
+  private LocalDateTime createdOn;
+  private LocalDateTime updatedOn;
 
 }
