@@ -14,7 +14,6 @@ import lombok.Setter;
 @Entity
 @Getter
 @Setter
-
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserProfile {
@@ -25,7 +24,6 @@ public class UserProfile {
   @Column(unique = true)
   private String emailId;
   private String password;
-  private String token;
   private boolean status;
   private LocalDateTime createdOn;
   private LocalDateTime updatedOn;

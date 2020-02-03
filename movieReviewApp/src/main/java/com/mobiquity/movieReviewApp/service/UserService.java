@@ -6,6 +6,7 @@ public interface UserService {
 
   String saveUser(UserProfile userProfile);
 
+  String registerAccount(String token);
 
-  String signUpUser(String token);
+//  String signUpUser(String token);
 }
