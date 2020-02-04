@@ -17,10 +17,10 @@ public interface UserRepository extends JpaRepository<UserProfile, Long> {
   Optional<UserProfile> deleteByUserIdAndStatus(long Id,Boolean status);
 
   @Modifying
-  @Query(value= "update user_profile set status=true where user_id= :userId" , nativeQuery = true)
-  void updateStatus(@Param("userId") long userId);
+ // @Query(value= "update user_profile set status=true where user_id= :userId" , nativeQuery = true)
+  void updateStatus(long userId);
 
   @Modifying
-  @Query(value="delete from user_profile where status=false and created_on < :localDateTime" , nativeQuery = true)
-  void deleteByCreatedOnAndStatus(@Param("localDateTime") LocalDateTime localDateTime);
+//  @Query(value="delete from user_profile where status=false and created_on < :localDateTime" , nativeQuery = true)
+  void deleteByCreatedOnAndStatus(LocalDateTime localDateTime);
 }

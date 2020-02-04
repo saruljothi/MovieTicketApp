@@ -11,9 +11,12 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import javax.transaction.Transactional;
+import org.hibernate.engine.jdbc.spi.SqlExceptionHelper;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -34,10 +37,13 @@ public class SignUpServiceImpl implements UserService {
   @Override
   public String saveUser(UserProfile userProfile) {
     try {
+
+      userProfile.setPassword(BCrypt.hashpw(userProfile.getPassword(),BCrypt.gensalt()));
+
       UserProfile user = userRepository.save(userProfile);
       sendActivationLink(user.getEmailId(), user.getUserId());
       return "Activate your link";
-    } catch (Exception e) {
+    } catch (DataIntegrityViolationException e) {
       return "Your email is already registered.";
     }
 
