@@ -8,5 +8,5 @@ public interface UserService {
 
   String registerAccount(String token);
 
-//  String signUpUser(String token);
+
 }

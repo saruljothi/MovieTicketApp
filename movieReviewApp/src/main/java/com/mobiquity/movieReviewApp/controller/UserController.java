@@ -19,13 +19,15 @@ public class UserController {
   }
 
   @PostMapping("/signUp")
-  public void signUp(@RequestBody UserProfile userProfile) {
+  public String signUp(@RequestBody UserProfile userProfile) {
+   return userService.saveUser(userProfile);
 
   }
+
   @PostMapping("/activatelink")
-  public void activateLink(@RequestParam String token){
+  public String activateLink(@RequestParam String token){
 
-
+    return userService.registerAccount(token);
   }
 
 }
