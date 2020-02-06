@@ -23,4 +23,9 @@ public interface UserRepository extends JpaRepository<UserProfile, Long> {
   @Modifying
 //  @Query(value="delete from user_profile where status=false and created_on < :localDateTime" , nativeQuery = true)
   void deleteByCreatedOnAndStatus(LocalDateTime localDateTime);
+
+  String findPasswordByEmailId(String emailId);
+
+  @Modifying
+  void updatePassword(String emailId,String newPassword);
 }

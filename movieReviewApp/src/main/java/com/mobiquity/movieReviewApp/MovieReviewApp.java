@@ -10,11 +10,11 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 
 @SpringBootApplication
 @EnableScheduling
-public class MovieReviewAppApplication {
+public class MovieReviewApp {
 
 
 	public static void main(String[] args) {
-		SpringApplication.run(MovieReviewAppApplication.class, args);
+		SpringApplication.run(MovieReviewApp.class, args);
 	}
 
 @Bean

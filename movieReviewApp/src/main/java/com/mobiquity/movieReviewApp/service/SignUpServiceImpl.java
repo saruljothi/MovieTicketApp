@@ -1,5 +1,6 @@
 package com.mobiquity.movieReviewApp.service;
 
+import com.mobiquity.movieReviewApp.model.ResetPassword;
 import com.mobiquity.movieReviewApp.model.UserProfile;
 import com.mobiquity.movieReviewApp.repository.UserRepository;
 import io.jsonwebtoken.Claims;
@@ -11,7 +12,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import javax.transaction.Transactional;
-import org.hibernate.engine.jdbc.spi.SqlExceptionHelper;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -20,7 +20,7 @@ import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 
 @Service
-public class SignUpServiceImpl implements UserService {
+public class SignUpServiceImpl implements SignUpService {
 
   private static final int EXPIRATION = 60 * 24 * 60 * 1000;
   private static final int FIXEDRATE = 60 * 60 * 24 * 7 * 1000;
@@ -37,9 +37,7 @@ public class SignUpServiceImpl implements UserService {
   @Override
   public String saveUser(UserProfile userProfile) {
     try {
-
-      userProfile.setPassword(BCrypt.hashpw(userProfile.getPassword(),BCrypt.gensalt()));
-
+      userProfile.setPassword(BCrypt.hashpw(userProfile.getPassword(), BCrypt.gensalt()));
       UserProfile user = userRepository.save(userProfile);
       sendActivationLink(user.getEmailId(), user.getUserId());
       return "Activate your link";
@@ -51,6 +49,39 @@ public class SignUpServiceImpl implements UserService {
 
   @Transactional
   @Override
+  public String resetPassword(ResetPassword resetPassword) {
+    String password = userRepository.findPasswordByEmailId(resetPassword.getEmailId());
+
+    if (BCrypt.checkpw(resetPassword.getOldPassword(), password)) {
+      updateHashedPassword(resetPassword);
+      return "Password Updated";
+    } else {
+      return "OldPassword is Not Matching";
+    }
+  }
+
+  private void updateHashedPassword(ResetPassword resetPassword) {
+    String hashedPassword = BCrypt.hashpw(resetPassword.getNewPassword(), BCrypt.gensalt());
+    System.out.println(hashedPassword);
+    userRepository
+        .updatePassword(resetPassword.getEmailId(), hashedPassword);
+  }
+
+  @Override
+  public String passwordActivationLink(String emailId) {
+    sendActivationLink(emailId, 0);
+    return "Password Reset link sent to your email";
+  }
+
+  @Override
+  @Transactional
+  public String UpdatePassword(ResetPassword resetPassword) {
+    updateHashedPassword(resetPassword);
+    return "New Password is Updated";
+  }
+
+  @Transactional
+  @Override
   public String registerAccount(String token) {
     try {
       claim = retrieveDataFromClaim(token);
@@ -58,10 +89,11 @@ public class SignUpServiceImpl implements UserService {
       userRepository.updateStatus(id);
       return "You are Registered Successfully";
     } catch (ExpiredJwtException e) {
-      userRepository
-          .deleteByUserIdAndStatus(Long.parseLong(claim.getSubject().split(" ")[1]), false);
+      /*userRepository
+          .deleteByUserIdAndStatus(Long.parseLong(claim.getSubject().split(" ")[1]), false);*/
       return "Your activation link got expired";
     }
+
   }
 
   private Claims retrieveDataFromClaim(String token) {
