@@ -36,15 +36,12 @@ public class SignUpServiceImpl implements SignUpService {
 
   @Override
   public String saveUser(UserProfile userProfile) {
-    try {
-      userProfile.setPassword(BCrypt.hashpw(userProfile.getPassword(), BCrypt.gensalt()));
-      UserProfile user = userRepository.save(userProfile);
-      sendActivationLink(user.getEmailId(), user.getUserId());
-      return "Activate your link";
-    } catch (DataIntegrityViolationException e) {
-      return "Your email is already registered.";
-    }
 
+    userProfile.setPassword(BCrypt.hashpw(userProfile.getPassword(), BCrypt.gensalt()));
+    UserProfile user = userRepository.save(userProfile);
+    sendActivationLink(user.getEmailId(), user.getUserId());
+
+    return "Activate your link";
   }
 
   @Transactional

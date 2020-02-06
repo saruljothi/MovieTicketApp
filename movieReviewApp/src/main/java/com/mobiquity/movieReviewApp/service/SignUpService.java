@@ -8,6 +8,7 @@ public interface SignUpService {
   String saveUser(UserProfile userProfile);
 
   String registerAccount(String token);
+
   String resetPassword(ResetPassword resetPassword);
 
   String passwordActivationLink(String emailId);

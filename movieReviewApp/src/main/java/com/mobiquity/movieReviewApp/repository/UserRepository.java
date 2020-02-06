@@ -13,7 +13,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface UserRepository extends JpaRepository<UserProfile, Long> {
 
-
   Optional<UserProfile> deleteByUserIdAndStatus(long Id,Boolean status);
 
   @Modifying
@@ -28,4 +27,6 @@ public interface UserRepository extends JpaRepository<UserProfile, Long> {
 
   @Modifying
   void updatePassword(String emailId,String newPassword);
+
+  UserProfile findUserProfileByEmailId(String emailId);
 }
