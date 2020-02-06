@@ -1,5 +1,6 @@
 package com.mobiquity.movieReviewApp.controller;
 
+import com.mobiquity.movieReviewApp.model.Success;
 import com.mobiquity.movieReviewApp.model.UserProfile;
 import com.mobiquity.movieReviewApp.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,13 +24,13 @@ public class UserController {
 
 
   /**
-   *
-   * @param userProfile
-   * @return Check whether login is Successful or Failed
+   * @param userProfile Enter Registered Email and Password
+   * @return whether login is Successful or Failed
    */
   @PostMapping("/login")
   public ResponseEntity<Object> login(@RequestBody UserProfile userProfile) {
-    return new ResponseEntity<>(userService.checkLogin(userProfile), HttpStatus.OK);
+    return new ResponseEntity<>(
+        new Success(userService.checkLogin(userProfile)), HttpStatus.OK);
   }
 
 }
