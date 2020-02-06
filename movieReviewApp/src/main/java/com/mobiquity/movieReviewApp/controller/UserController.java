@@ -1,10 +1,15 @@
 package com.mobiquity.movieReviewApp.controller;
 
 import com.mobiquity.movieReviewApp.model.ResetPassword;
+import com.mobiquity.movieReviewApp.model.Success;
 import com.mobiquity.movieReviewApp.model.UserProfile;
 import com.mobiquity.movieReviewApp.service.PasswordRecoverService;
 import com.mobiquity.movieReviewApp.service.SignUpService;
 import org.springframework.web.bind.annotation.GetMapping;
+import com.mobiquity.movieReviewApp.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,10 +22,12 @@ public class UserController {
 
   private SignUpService signUpService;
   private PasswordRecoverService passwordRecoverService;
+  private UserService userService;
 
-  public UserController(SignUpService signUpService,PasswordRecoverService passwordRecoverService) {
+  public UserController(SignUpService signUpService,PasswordRecoverService passwordRecoverService,UserService userService) {
     this.signUpService = signUpService;
     this.passwordRecoverService = passwordRecoverService;
+    this.userService = userService;
   }
 
   @PostMapping("/signUp")
@@ -52,6 +59,15 @@ public class UserController {
   public String getEmailIdForActivationLink(@RequestParam String token)
   {
     return passwordRecoverService.getEmailIdForNewPassword(token);
+  }
+  /**
+   * @param userProfile Enter Registered Email and Password
+   * @return whether login is Successful or Failed
+   */
+  @PostMapping("/login")
+  public ResponseEntity<Object> login(@RequestBody UserProfile userProfile) {
+    return new ResponseEntity<>(
+        new Success(userService.checkLogin(userProfile)), HttpStatus.OK);
   }
 
 }
