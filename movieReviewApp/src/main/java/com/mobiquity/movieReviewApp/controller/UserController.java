@@ -2,6 +2,9 @@ package com.mobiquity.movieReviewApp.controller;
 
 import com.mobiquity.movieReviewApp.model.UserProfile;
 import com.mobiquity.movieReviewApp.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,13 +16,20 @@ public class UserController {
 
   private UserService userService;
 
+  @Autowired
   public UserController(UserService userService) {
     this.userService = userService;
   }
-  @PostMapping("/signUp")
-  public void signUp(@RequestBody UserProfile userProfile){
 
+
+  /**
+   *
+   * @param userProfile
+   * @return Check whether login is Successful or Failed
+   */
+  @PostMapping("/login")
+  public ResponseEntity<Object> login(@RequestBody UserProfile userProfile) {
+    return new ResponseEntity<>(userService.checkLogin(userProfile), HttpStatus.OK);
   }
-
 
 }
