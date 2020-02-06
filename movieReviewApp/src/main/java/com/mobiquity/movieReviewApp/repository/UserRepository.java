@@ -28,7 +28,6 @@ public interface UserRepository extends JpaRepository<UserProfile, Long> {
 
   @Modifying
   void updatePassword(String emailId,String newPassword);
-public interface UserRepository extends JpaRepository<UserProfile, Long> {
 
   Optional<UserProfile> findByEmailId(String email);
 
