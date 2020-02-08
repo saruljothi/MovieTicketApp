@@ -7,8 +7,10 @@ import lombok.Setter;
 @AllArgsConstructor
 @Getter
 @Setter
-public class Success {
+public class LoginSuccess {
 
+  private Integer code;
   private String message;
+
 
 }

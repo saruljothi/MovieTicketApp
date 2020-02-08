@@ -1,4 +1,4 @@
-package com.mobiquity.movieReviewApp.config;
+package com.mobiquity.movieReviewApp.configuration;
 
 import static springfox.documentation.builders.PathSelectors.regex;
 

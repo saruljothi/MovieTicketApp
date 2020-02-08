@@ -1,5 +1,6 @@
 package com.mobiquity.movieReviewApp.model;
 
+import java.time.LocalDateTime;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -11,6 +12,8 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 @Entity
 @Getter
@@ -28,5 +31,9 @@ public class UserProfile {
   private String emailId;
   private String password;
   private boolean status;
+  @CreationTimestamp
+  private LocalDateTime createdOn;
+  @UpdateTimestamp
+  private LocalDateTime updatedOn;
 
 }
