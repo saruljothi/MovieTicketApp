@@ -1,7 +1,5 @@
 package com.mobiquity.movieReviewApp.controller;
 
-import com.mobiquity.movieReviewApp.exception.LoginException;
-import com.mobiquity.movieReviewApp.model.LoginFail;
 import com.mobiquity.movieReviewApp.model.LoginSuccess;
 import com.mobiquity.movieReviewApp.model.UserProfile;
 import com.mobiquity.movieReviewApp.service.UserService;
