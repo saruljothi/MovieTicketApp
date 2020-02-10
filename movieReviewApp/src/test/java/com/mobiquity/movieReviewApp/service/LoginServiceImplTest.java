@@ -7,6 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
 
 import com.mobiquity.movieReviewApp.exception.LoginException;
+import com.mobiquity.movieReviewApp.model.Login;
 import com.mobiquity.movieReviewApp.model.UserProfile;
 import com.mobiquity.movieReviewApp.repository.UserRepository;
 import java.time.LocalDateTime;
@@ -30,9 +31,10 @@ class LoginServiceImplTest {
   void checkLoginSuccess() {
     when(userRepository.findByEmailId(Mockito.anyString())).thenReturn(
         java.util.Optional.of(new UserProfile(2L, "xyz", "xyz@gmail.com",
-            "$2a$10$JAs.w36Ij6Wp1mrfPXgq8uLB2yVFZHXXNR6cKygNvchzc1JcArTJq", true, LocalDateTime.now(),LocalDateTime.now())));
+            "$2a$10$JAs.w36Ij6Wp1mrfPXgq8uLB2yVFZHXXNR6cKygNvchzc1JcArTJq", true,
+            LocalDateTime.now(), LocalDateTime.now())));
     String result = userServiceImpl
-        .checkLogin(new UserProfile(2L, "xyz", "xyz@gmail.com", "pass", true,LocalDateTime.now(),LocalDateTime.now()));
+        .checkLogin(new Login("xyz@gmail.com", "pass"));
     assertEquals("Login Successful", result);
   }
 
@@ -40,9 +42,10 @@ class LoginServiceImplTest {
   void checkLoginFail() {
     when(userRepository.findByEmailId(Mockito.anyString())).thenReturn(
         java.util.Optional.of(new UserProfile(1L, "abc", "abc@gmail.com",
-            "$2a$10$HtlIiJ6SnJarZk1igROz3ezvhWfmDYcrTy/NMP1qKNe8hCPoR7yRa", false,LocalDateTime.now(),LocalDateTime.now())));
+            "$2a$10$HtlIiJ6SnJarZk1igROz3ezvhWfmDYcrTy/NMP1qKNe8hCPoR7yRa", false,
+            LocalDateTime.now(), LocalDateTime.now())));
     assertThrows(LoginException.class, () -> userServiceImpl
-        .checkLogin(new UserProfile(1L, "abc", "abc@gmail.com", "pwd", false,LocalDateTime.now(),LocalDateTime.now())));
+        .checkLogin(new Login("abc@gmail.com", "pwd")));
 
   }
 }

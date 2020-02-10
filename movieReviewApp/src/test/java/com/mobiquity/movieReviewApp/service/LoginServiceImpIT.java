@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import com.github.database.rider.core.api.dataset.DataSet;
 import com.github.database.rider.junit5.api.DBRider;
 import com.mobiquity.movieReviewApp.exception.LoginException;
+import com.mobiquity.movieReviewApp.model.Login;
 import com.mobiquity.movieReviewApp.model.UserProfile;
 import java.time.LocalDateTime;
 import org.junit.jupiter.api.Test;
@@ -27,8 +28,7 @@ class LoginServiceImpIT {
   @DataSet(value = "login.xml")
   void checkLoginSuccessEnteredValidCredential() {
     String result = loginService
-        .checkLogin(new UserProfile(2L, "xyz", "xyz@gmail.com", "pass", true, LocalDateTime.now(),
-            LocalDateTime.now()));
+        .checkLogin(new Login("xyz@gmail.com", "pass"));
     assertEquals("Login Successful", result);
   }
 
@@ -36,40 +36,35 @@ class LoginServiceImpIT {
   @Test
   void checkLoginFailsIfUserStatusFalseEnteredValidCredentials() {
     assertThrows(LoginException.class, () -> loginService
-        .checkLogin(new UserProfile(1L, "abc", "abc@gmail.com", "pwd", false, LocalDateTime.now(),
-            LocalDateTime.now())));
+        .checkLogin(new Login("abc@gmail.com", "pwd")));
   }
 
   @Test
   void checkLoginFailsIfUserStatusTrueEnteredWrong_Email() {
     assertThrows(LoginException.class, () -> loginService
         .checkLogin(
-            new UserProfile(1L, "abc", "wrongEmail@gmail.com", "pwd", true, LocalDateTime.now(),
-                LocalDateTime.now())));
+            new Login("wrongEmail@gmail.com", "pwd")));
   }
 
   @Test
   void checkLoginFailsIfUserStatusTrueEnteredWrongPassword() {
     assertThrows(LoginException.class, () -> loginService
         .checkLogin(
-            new UserProfile(2L, "xyz", "xyz@gmail.com", "wrongPassword", true, LocalDateTime.now(),
-                LocalDateTime.now())));
+            new Login("xyz", "xyz@gmail.com")));
   }
 
   @Test
   void checkLoginFailsIfUserStatusFalseEnteredWrongEmail() {
     assertThrows(LoginException.class, () -> loginService
         .checkLogin(
-            new UserProfile(1L, "abc", "wrongEmail@gmail.com", "pwd", false, LocalDateTime.now(),
-                LocalDateTime.now())));
+            new Login("wrongEmail@gmail.com", "pwd")));
   }
 
   @Test
   void checkLoginFailsIfUserStatusFalseEnteredWrongPassword() {
     assertThrows(LoginException.class, () -> loginService
         .checkLogin(
-            new UserProfile(1L, "abc", "abc@gmail.com", "wrongPassword", false, LocalDateTime.now(),
-                LocalDateTime.now())));
+            new Login("abc", "abc@gmail.com")));
   }
 
 

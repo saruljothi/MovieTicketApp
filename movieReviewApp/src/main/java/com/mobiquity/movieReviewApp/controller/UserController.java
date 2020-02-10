@@ -1,7 +1,8 @@
 package com.mobiquity.movieReviewApp.controller;
 
 import com.mobiquity.movieReviewApp.exception.LoginException;
-import com.mobiquity.movieReviewApp.model.LoginResponse;
+import com.mobiquity.movieReviewApp.model.Login;
+import com.mobiquity.movieReviewApp.model.ResponseMovieApp;
 import com.mobiquity.movieReviewApp.model.UserProfile;
 import com.mobiquity.movieReviewApp.service.LoginService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,30 +26,19 @@ public class UserController {
 
 
   /**
-   * @param userProfile Enter Registered Email and Password
+   * @param login Enter Registered Email and Password
    * @return whether login is Successful or Failed
    */
- @PostMapping("/login")
-  public ResponseEntity<Object> login(@RequestBody UserProfile userProfile) {
+  @PostMapping("/login")
+  public ResponseEntity<Object> login(@RequestBody Login login) {
     try {
       return new ResponseEntity<>(
-          new LoginResponse(loginService.checkLogin(userProfile)),
+          new ResponseMovieApp(loginService.checkLogin(login)),
           HttpStatus.OK);
     } catch (LoginException ex) {
-      return new ResponseEntity<>(new LoginResponse("Login Failed"),
+      return new ResponseEntity<>(new ResponseMovieApp("Login Failed"),
           HttpStatus.UNAUTHORIZED);
     }
   }
-
-/*  @PostMapping("/login")
-  public ResponseEntity<String> login(@RequestBody UserProfile userProfile) {
-    try {
-      return new ResponseEntity<String>(userService.checkLogin(userProfile),
-          HttpStatus.OK);
-    } catch (LoginException ex) {
-      return new ResponseEntity<String>(userService.checkLogin(userProfile),
-          HttpStatus.UNAUTHORIZED);
-    }
-  }*/
 
 }

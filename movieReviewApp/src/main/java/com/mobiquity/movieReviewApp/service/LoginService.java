@@ -1,14 +1,13 @@
 package com.mobiquity.movieReviewApp.service;
 
-import com.mobiquity.movieReviewApp.model.UserProfile;
+import com.mobiquity.movieReviewApp.model.Login;
 
 public interface LoginService {
 
   /**
-   * @param userProfile Enter Registered Email and Password
-   * @return  whether login is Successful or Failed
+   * @param login Enter Registered Email and Password
+   * @return whether login is Successful or Failed
    */
-  String checkLogin(UserProfile userProfile);
-
+  String checkLogin(Login login);
 
 }
