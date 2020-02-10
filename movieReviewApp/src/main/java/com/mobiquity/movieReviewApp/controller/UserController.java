@@ -1,8 +1,9 @@
 package com.mobiquity.movieReviewApp.controller;
 
-import com.mobiquity.movieReviewApp.model.LoginSuccess;
+import com.mobiquity.movieReviewApp.exception.LoginException;
+import com.mobiquity.movieReviewApp.model.LoginResponse;
 import com.mobiquity.movieReviewApp.model.UserProfile;
-import com.mobiquity.movieReviewApp.service.UserService;
+import com.mobiquity.movieReviewApp.service.LoginService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,11 +16,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/v1")
 public class UserController {
 
-  private UserService userService;
+  private LoginService loginService;
 
   @Autowired
-  public UserController(UserService userService) {
-    this.userService = userService;
+  public UserController(LoginService loginService) {
+    this.loginService = loginService;
   }
 
 
@@ -27,11 +28,27 @@ public class UserController {
    * @param userProfile Enter Registered Email and Password
    * @return whether login is Successful or Failed
    */
-  @PostMapping("/login")
+ @PostMapping("/login")
   public ResponseEntity<Object> login(@RequestBody UserProfile userProfile) {
-    return new ResponseEntity<>(
-        new LoginSuccess(HttpStatus.OK.value(), userService.checkLogin(userProfile)),
-        HttpStatus.OK);
+    try {
+      return new ResponseEntity<>(
+          new LoginResponse(loginService.checkLogin(userProfile)),
+          HttpStatus.OK);
+    } catch (LoginException ex) {
+      return new ResponseEntity<>(new LoginResponse("Login Failed"),
+          HttpStatus.UNAUTHORIZED);
+    }
   }
+
+/*  @PostMapping("/login")
+  public ResponseEntity<String> login(@RequestBody UserProfile userProfile) {
+    try {
+      return new ResponseEntity<String>(userService.checkLogin(userProfile),
+          HttpStatus.OK);
+    } catch (LoginException ex) {
+      return new ResponseEntity<String>(userService.checkLogin(userProfile),
+          HttpStatus.UNAUTHORIZED);
+    }
+  }*/
 
 }

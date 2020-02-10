@@ -18,10 +18,10 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
-class UserServiceImplTest {
+class LoginServiceImplTest {
 
   @InjectMocks
-  UserServiceImpl userServiceImpl;
+  LoginServiceImpl userServiceImpl;
 
   @Mock
   UserRepository userRepository;

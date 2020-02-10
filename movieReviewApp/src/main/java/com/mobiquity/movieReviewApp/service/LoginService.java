@@ -2,7 +2,7 @@ package com.mobiquity.movieReviewApp.service;
 
 import com.mobiquity.movieReviewApp.model.UserProfile;
 
-public interface UserService {
+public interface LoginService {
 
   /**
    * @param userProfile Enter Registered Email and Password

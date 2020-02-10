@@ -7,10 +7,6 @@ import lombok.Setter;
 @AllArgsConstructor
 @Getter
 @Setter
-public class LoginSuccess {
-
-  private Integer code;
+public class LoginResponse {
   private String message;
-
-
 }
