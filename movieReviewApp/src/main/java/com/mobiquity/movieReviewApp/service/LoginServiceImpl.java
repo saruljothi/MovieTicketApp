@@ -1,6 +1,6 @@
 package com.mobiquity.movieReviewApp.service;
 
-import com.mobiquity.movieReviewApp.exception.LoginException;
+import com.mobiquity.movieReviewApp.exception.UserException;
 import com.mobiquity.movieReviewApp.model.Login;
 import com.mobiquity.movieReviewApp.model.UserProfile;
 import com.mobiquity.movieReviewApp.repository.UserRepository;
@@ -19,15 +19,15 @@ public class LoginServiceImpl implements LoginService {
   }
 
   @Override
-  public String checkLogin(Login login) throws LoginException {
+  public String checkLogin(Login login) throws UserException {
     Optional<UserProfile> user = userRepository.findByEmailId(login.getEmailId());
     if (!user.isPresent()) {
-      throw new LoginException();
+      throw new UserException();
     }
     boolean status = user.get().isStatus();
     String password = user.get().getPassword();
     if (!BCrypt.checkpw(login.getPassword(), password) || !status) {
-      throw new LoginException();
+      throw new UserException();
     }
     return "Login Successful";
   }

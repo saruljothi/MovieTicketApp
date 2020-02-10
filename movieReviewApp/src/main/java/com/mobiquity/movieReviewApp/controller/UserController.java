@@ -1,9 +1,8 @@
 package com.mobiquity.movieReviewApp.controller;
 
-import com.mobiquity.movieReviewApp.exception.LoginException;
+import com.mobiquity.movieReviewApp.exception.UserException;
 import com.mobiquity.movieReviewApp.model.Login;
 import com.mobiquity.movieReviewApp.model.ResponseMovieApp;
-import com.mobiquity.movieReviewApp.model.UserProfile;
 import com.mobiquity.movieReviewApp.service.LoginService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -35,7 +34,7 @@ public class UserController {
       return new ResponseEntity<>(
           new ResponseMovieApp(loginService.checkLogin(login)),
           HttpStatus.OK);
-    } catch (LoginException ex) {
+    } catch (UserException ex) {
       return new ResponseEntity<>(new ResponseMovieApp("Login Failed"),
           HttpStatus.UNAUTHORIZED);
     }

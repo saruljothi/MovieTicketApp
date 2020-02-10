@@ -5,10 +5,8 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import com.github.database.rider.core.api.dataset.DataSet;
 import com.github.database.rider.junit5.api.DBRider;
-import com.mobiquity.movieReviewApp.exception.LoginException;
+import com.mobiquity.movieReviewApp.exception.UserException;
 import com.mobiquity.movieReviewApp.model.Login;
-import com.mobiquity.movieReviewApp.model.UserProfile;
-import java.time.LocalDateTime;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -35,34 +33,34 @@ class LoginServiceImpIT {
 
   @Test
   void checkLoginFailsIfUserStatusFalseEnteredValidCredentials() {
-    assertThrows(LoginException.class, () -> loginService
+    assertThrows(UserException.class, () -> loginService
         .checkLogin(new Login("abc@gmail.com", "pwd")));
   }
 
   @Test
   void checkLoginFailsIfUserStatusTrueEnteredWrong_Email() {
-    assertThrows(LoginException.class, () -> loginService
+    assertThrows(UserException.class, () -> loginService
         .checkLogin(
             new Login("wrongEmail@gmail.com", "pwd")));
   }
 
   @Test
   void checkLoginFailsIfUserStatusTrueEnteredWrongPassword() {
-    assertThrows(LoginException.class, () -> loginService
+    assertThrows(UserException.class, () -> loginService
         .checkLogin(
             new Login("xyz", "xyz@gmail.com")));
   }
 
   @Test
   void checkLoginFailsIfUserStatusFalseEnteredWrongEmail() {
-    assertThrows(LoginException.class, () -> loginService
+    assertThrows(UserException.class, () -> loginService
         .checkLogin(
             new Login("wrongEmail@gmail.com", "pwd")));
   }
 
   @Test
   void checkLoginFailsIfUserStatusFalseEnteredWrongPassword() {
-    assertThrows(LoginException.class, () -> loginService
+    assertThrows(UserException.class, () -> loginService
         .checkLogin(
             new Login("abc", "abc@gmail.com")));
   }

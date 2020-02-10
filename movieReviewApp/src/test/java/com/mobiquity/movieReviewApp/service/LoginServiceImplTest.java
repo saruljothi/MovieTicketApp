@@ -6,7 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
 
-import com.mobiquity.movieReviewApp.exception.LoginException;
+import com.mobiquity.movieReviewApp.exception.UserException;
 import com.mobiquity.movieReviewApp.model.Login;
 import com.mobiquity.movieReviewApp.model.UserProfile;
 import com.mobiquity.movieReviewApp.repository.UserRepository;
@@ -44,7 +44,7 @@ class LoginServiceImplTest {
         java.util.Optional.of(new UserProfile(1L, "abc", "abc@gmail.com",
             "$2a$10$HtlIiJ6SnJarZk1igROz3ezvhWfmDYcrTy/NMP1qKNe8hCPoR7yRa", false,
             LocalDateTime.now(), LocalDateTime.now())));
-    assertThrows(LoginException.class, () -> userServiceImpl
+    assertThrows(UserException.class, () -> userServiceImpl
         .checkLogin(new Login("abc@gmail.com", "pwd")));
 
   }
