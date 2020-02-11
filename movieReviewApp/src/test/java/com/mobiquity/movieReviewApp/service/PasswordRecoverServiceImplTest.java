@@ -1,7 +1,9 @@
 package com.mobiquity.movieReviewApp.service;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import com.mobiquity.movieReviewApp.exception.UserException;
 import com.mobiquity.movieReviewApp.model.ResetPassword;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,9 +15,14 @@ class PasswordRecoverServiceImplTest {
 
   @Autowired
   PasswordRecoverService passwordRecoverService;
+  @Autowired
+  SignUpService signUpService;
 
   @Test
   public void checkIfOldPasswordIsPresent() {
+   /* signUpService.saveUser(
+        new UserProfile(1l, "movie", "ds@gmail.com", "payal", false, LocalDateTime.now(),
+            LocalDateTime.now()));*/
     ResetPassword resetPassword = new ResetPassword();
     resetPassword.setEmailId("ds@gmail.com");
     resetPassword.setOldPassword("payal");
@@ -26,12 +33,14 @@ class PasswordRecoverServiceImplTest {
 
   @Test
   public void checkIfOldPasswordIsNotCorrect() {
+   /* signUpService.saveUser(
+        new UserProfile(1l, "movie", "ds@gmail.com", "payal", false, LocalDateTime.now(),
+            LocalDateTime.now()));*/
     ResetPassword resetPassword = new ResetPassword();
     resetPassword.setEmailId("ds@gmail.com");
     resetPassword.setOldPassword("dfgh");
     resetPassword.setNewPassword("qwerty");
-    String result = passwordRecoverService.resetPassword(resetPassword);
-    assertEquals("OldPassword is Not Matching", result);
+    assertThrows(UserException.class, ()->passwordRecoverService.resetPassword(resetPassword));
   }
 
   @Test
@@ -54,8 +63,8 @@ class PasswordRecoverServiceImplTest {
   @Test
   public void checkIfEmailIdRetrievedCorrectlyForForgotPasswordLink() {
     String token = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJkc0BnbWFpbC5jb20gMCIsImV4cCI6MTU4MTA2OTAyMCwiaWF0IjoxNTgwOTgyNjIwfQ.t-HoaiqaPz__OVqccUsl2PaA2NrdxCm2yVyvGU1jVjljbFKFi5s78_06t1xc2xu2sbDwmIsNPyqm_mVouSYhyQ";
-    String result = passwordRecoverService.getEmailIdForNewPassword(token);
-    assertEquals("ds@gmail.com", result);
+    assertThrows(UserException.class,()->passwordRecoverService.getEmailIdForNewPassword(token));
+
   }
 
 
