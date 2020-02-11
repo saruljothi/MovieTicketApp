@@ -22,12 +22,12 @@ public class LoginServiceImpl implements LoginService {
   public String checkLogin(Login login) throws UserException {
     Optional<UserProfile> user = userRepository.findByEmailId(login.getEmailId());
     if (!user.isPresent()) {
-      throw new UserException();
+      throw new UserException("Login Failed");
     }
     boolean status = user.get().isStatus();
     String password = user.get().getPassword();
     if (!BCrypt.checkpw(login.getPassword(), password) || !status) {
-      throw new UserException();
+      throw new UserException("Login Failed");
     }
     return "Login Successful";
   }
