@@ -4,6 +4,8 @@ package com.mobiquity.movieReviewApp.service;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import com.github.database.rider.core.api.dataset.DataSet;
+import com.github.database.rider.junit5.api.DBRider;
 import com.mobiquity.movieReviewApp.exception.UserException;
 import com.mobiquity.movieReviewApp.model.UserProfile;
 import java.time.LocalDateTime;
@@ -14,6 +16,7 @@ import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 
 
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
+@DBRider
 class SignUpServiceImplTest {
 
   @Autowired
@@ -28,11 +31,8 @@ class SignUpServiceImplTest {
   }
 
   @Test
-  // @DataSet(value = "data.xml")
+  @DataSet(value = "data.xml")
   public void checkIfEmailIdIsAlreadyRegistered() {
-   /* String result = signUpService.saveUser(
-        new UserProfile(1l, "movie", "asdfgh@gmail.com", "asdfg", false, LocalDateTime.now(),
-            LocalDateTime.now()));*/
     assertThrows(UserException.class, () -> signUpService.saveUser(
         new UserProfile(2l, "movie", "www@gmail.com", "asdertc", false, LocalDateTime.now(),
             LocalDateTime.now())));

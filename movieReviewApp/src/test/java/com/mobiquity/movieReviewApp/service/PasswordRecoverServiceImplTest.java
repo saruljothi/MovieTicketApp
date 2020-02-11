@@ -3,6 +3,9 @@ package com.mobiquity.movieReviewApp.service;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import com.github.database.rider.core.api.configuration.DBUnit;
+import com.github.database.rider.core.api.dataset.DataSet;
+import com.github.database.rider.junit5.api.DBRider;
 import com.mobiquity.movieReviewApp.exception.UserException;
 import com.mobiquity.movieReviewApp.model.ResetPassword;
 import org.junit.jupiter.api.Test;
@@ -11,6 +14,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
+@DBRider
 class PasswordRecoverServiceImplTest {
 
   @Autowired
@@ -19,23 +23,20 @@ class PasswordRecoverServiceImplTest {
   SignUpService signUpService;
 
   @Test
+  @DataSet(value ="password.xml")//password hashed value of qwerty
   public void checkIfOldPasswordIsPresent() {
-   /* signUpService.saveUser(
-        new UserProfile(1l, "movie", "ds@gmail.com", "payal", false, LocalDateTime.now(),
-            LocalDateTime.now()));*/
+
     ResetPassword resetPassword = new ResetPassword();
     resetPassword.setEmailId("ds@gmail.com");
-    resetPassword.setOldPassword("payal");
-    resetPassword.setNewPassword("qwerty");
+    resetPassword.setOldPassword("qwerty");
+    resetPassword.setNewPassword("payal");
     String result = passwordRecoverService.resetPassword(resetPassword);
     assertEquals("Password Updated", result);
   }
 
   @Test
+  @DataSet(value="password.xml")
   public void checkIfOldPasswordIsNotCorrect() {
-   /* signUpService.saveUser(
-        new UserProfile(1l, "movie", "ds@gmail.com", "payal", false, LocalDateTime.now(),
-            LocalDateTime.now()));*/
     ResetPassword resetPassword = new ResetPassword();
     resetPassword.setEmailId("ds@gmail.com");
     resetPassword.setOldPassword("dfgh");
@@ -50,11 +51,12 @@ class PasswordRecoverServiceImplTest {
   }
 
   @Test
+  @DataSet(value ="password.xml")
   public void checkIfNewPasswordIsUpdated() {
     ResetPassword resetPassword = new ResetPassword();
     resetPassword.setEmailId("ds@gmail.com");
     //resetPassword.setOldPassword("asdfg");
-    resetPassword.setNewPassword("qwerty");
+    resetPassword.setNewPassword("zxcvb");
     String result = passwordRecoverService.UpdatePassword(resetPassword);
     assertEquals("New Password is Updated", result);
 
