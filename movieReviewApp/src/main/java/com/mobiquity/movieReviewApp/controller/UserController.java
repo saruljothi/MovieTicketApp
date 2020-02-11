@@ -19,18 +19,14 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/v1")
 public class UserController {
 
-  @Autowired
   private SignUpService signUpService;
 
-  @Autowired
   private UserValidator userValidator;
 
-  /*
-  public UserController(SignUpService signUpService) {
+  public UserController(SignUpService signUpService, UserValidator userValidator) {
     this.signUpService = signUpService;
+    this.userValidator = userValidator;
   }
-
-   */
 
   @PostMapping("/signUp")
   public String signUp(@RequestBody UserProfile userProfile, BindingResult bindingResult) {
