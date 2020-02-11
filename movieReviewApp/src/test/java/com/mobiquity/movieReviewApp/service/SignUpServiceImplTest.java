@@ -17,9 +17,9 @@ import org.springframework.test.context.ActiveProfiles;
 
 //@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
-@DBRider
+//@DBRider
 //@DBUnit(leakHunter = true)
-@ActiveProfiles("unit-test")
+@ActiveProfiles(profiles="unit-test")
 class SignUpServiceImplTest {
 
   @Autowired
@@ -29,10 +29,9 @@ class SignUpServiceImplTest {
   private String token = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJzQGdtYWlsLmNvbSAyIiwiZXhwIjoxNTgwOTA2NDg2LCJpYXQiOjE1ODA4MjAwODZ9.1EAgHyfosb4f7N9zIlPDlxiZBIekEgq5ZWHu0eCQft-B5Nd2C9gyAuiVO-dJ98f5JcLkHtG2W8cVDm2R_mf7KQ";
 
   @Test
-  @Rollback(false)
   public void checkIfEmailIdIsNotAlreadyRegistered() {
     String result = signUpService.saveUser(
-        new UserProfile(1l, "movie", "wsasdf@gmail.com", "asdfg", false, LocalDateTime.now(),
+        new UserProfile(1l, "movie", "wsasdfg@gmail.com", "asdfg", false, LocalDateTime.now(),
             LocalDateTime.now()));
     assertEquals("Activate your link", result);
   }
