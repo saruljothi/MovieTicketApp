@@ -1,5 +1,6 @@
 package com.mobiquity.movieReviewApp.service;
 
+import com.mobiquity.movieReviewApp.exception.UserException;
 import com.mobiquity.movieReviewApp.model.UserProfile;
 import com.mobiquity.movieReviewApp.repository.UserRepository;
 import io.jsonwebtoken.Claims;
@@ -15,7 +16,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class SignUpServiceImpl implements SignUpService {
 
-  private static final int FIXEDRATE = 60 * 60 * 24 * 7 * 1000;
+  private static final int FIXEDRATE = 60 * 60 * 24 * 7 * 1000;//scheduler for every week
   private UserRepository userRepository;
   private Claims claim;
   private UtilityService utilityService;
@@ -27,14 +28,14 @@ public class SignUpServiceImpl implements SignUpService {
 
   @Transactional
   @Override
-  public String saveUser(UserProfile userProfile) {
+  public String saveUser(UserProfile userProfile){
     try {
       userProfile.setPassword(BCrypt.hashpw(userProfile.getPassword(), BCrypt.gensalt()));
       UserProfile user = userRepository.save(userProfile);
       utilityService.sendActivationLink(user.getEmailId(), user.getUserId());
       return "Activate your link";
     } catch (DataIntegrityViolationException e) {
-      return "Your email is already registered.";
+      throw new UserException("Your email is already registered.");
     }
   }
 
@@ -49,9 +50,9 @@ public class SignUpServiceImpl implements SignUpService {
     } catch (ExpiredJwtException e) {
       /*userRepository
           .deleteByUserIdAndStatus(Long.parseLong(claim.getSubject().split(" ")[1]), false);*/
-      return "Your activation link got expired";
+      throw new UserException("Your activation link got expired");
     } catch (MalformedJwtException e) {
-      return "Activation link is not valid";
+      throw new UserException( "Activation link is not valid");
     }
   }
 

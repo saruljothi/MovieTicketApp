@@ -7,7 +7,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @Getter
 @Setter
-public class Success {
+public class ResponseMovieApp {
 
   private String message;
 
