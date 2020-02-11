@@ -36,7 +36,7 @@ public class UserController {
     return signUpService.saveUser(userProfile);
   }
 
-  @PostMapping("/activationLink")
+  @GetMapping("/activationLink")
   public String activateLink(@RequestParam String token) {
     return signUpService.registerAccount(token);
   }

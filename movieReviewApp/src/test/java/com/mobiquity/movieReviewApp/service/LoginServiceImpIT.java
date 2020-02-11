@@ -7,23 +7,26 @@ import com.github.database.rider.core.api.dataset.DataSet;
 import com.github.database.rider.junit5.api.DBRider;
 import com.mobiquity.movieReviewApp.exception.UserException;
 import com.mobiquity.movieReviewApp.model.Login;
+import com.mobiquity.movieReviewApp.repository.UserRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.test.context.ActiveProfiles;
 
-@DBRider
+
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
-@ActiveProfiles("unit-test")
+@ActiveProfiles(profiles = "unit-test")
 class LoginServiceImpIT {
 
   @Autowired
   private LoginService loginService;
 
+  @Autowired
+  private UserRepository userRepository;
+
 
   @Test
-  @DataSet(value = "login.xml")
   void checkLoginSuccessEnteredValidCredential() {
     String result = loginService
         .checkLogin(new Login("xyz@gmail.com", "pass"));
