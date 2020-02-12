@@ -1,5 +1,6 @@
 package com.mobiquity.movieReviewApp;
 
+import io.github.cdimascio.dotenv.Dotenv;
 import java.util.Properties;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -20,12 +21,13 @@ public class MovieReviewApp {
 @Bean
 	public JavaMailSender javaMailSender(){
 
+	Dotenv dotenv = Dotenv.load();
 	JavaMailSenderImpl mailSender =new JavaMailSenderImpl();
 	mailSender.setHost("smtp.gmail.com");
 	mailSender.setPort(587);
 
 	mailSender.setUsername("MovieReviewApplicationMob@gmail.com");
-	mailSender.setPassword(System.getenv("password"));
+	mailSender.setPassword(dotenv.get("password"));
 
 	Properties props = mailSender.getJavaMailProperties();
 	props.put("mail.transport.protocol", "smtp");
@@ -33,6 +35,11 @@ public class MovieReviewApp {
 	props.put("mail.smtp.starttls.enable", "true");
 	props.put("mail.debug", "true");
 		return mailSender ;
+	}
+	@Bean
+	public Dotenv dotenv()
+	{
+		return Dotenv.load();
 	}
 
 }

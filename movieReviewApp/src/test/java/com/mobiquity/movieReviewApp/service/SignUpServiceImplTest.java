@@ -57,34 +57,10 @@ class SignUpServiceImplTest {
 
   @Test
 // @DataSet(value = "data.xml")
-  public void checkIfTokenIsValid() {
-    String token = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJzQGdtYWlsLmNvbSAxIiwiZXhwIjoxNTgwOTAxNTgxLCJpYXQiOjE1ODA4MTUxODF9.lydIGViOyEewJ8Yo8ApsuJetQtMcQDjGVetuWjPIFKfK7JAceRlgJHOQ5PmeJiKFIJIJCC4WEqg12rQ9EC4iyQ";
+  public void checkIfTokenIsNotValid() {
+    String token = "eJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJzQGdtYWlsLmNvbSAxIiwiZXhwIjoxNTgwOTAxNTgxLCJpYXQiOjE1ODA4MTUxODF9.lydIGViOyEewJ8Yo8ApsuJetQtMcQDjGVetuWjPIFKfK7JAceRlgJHOQ5PmeJiKFIJIJCC4WEqg12rQ9EC4iyQ";
     String result = signUpService.registerAccount(token);
-    assertEquals("You are Registered Successfully", result);
+    assertEquals("Activation link is not valid", result);
   }
 
-  @Test
-  public void checkIfOldPasswordIsPresent(){
-    ResetPassword resetPassword = new ResetPassword();
-    resetPassword.setEmailId("s@gmail.com");
-    resetPassword.setOldPassword("asdfg");
-    resetPassword.setNewPassword("qwerty");
-    signUpService.resetPassword(resetPassword);
-  }
-
-  @Test
-  public void checkIfActivationLinkForPasswordIsSent(){
-    String result = signUpService.passwordActivationLink("ss@gmail.com");
-    assertEquals("Password Reset link sent to your email",result);
-  }
-
-  @Test
-  public void checkIfNewPasswordIsUpdated(){
-    ResetPassword resetPassword = new ResetPassword();
-    resetPassword.setEmailId("s@gmail.com");
-    //resetPassword.setOldPassword("asdfg");
-    resetPassword.setNewPassword("qwerty");
-    signUpService.UpdatePassword(resetPassword);
-  }
-
-}
+ }
