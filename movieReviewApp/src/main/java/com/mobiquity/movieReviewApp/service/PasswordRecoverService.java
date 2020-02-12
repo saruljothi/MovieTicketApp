@@ -1,5 +1,6 @@
 package com.mobiquity.movieReviewApp.service;
 
+import com.mobiquity.movieReviewApp.model.ForgotPassword;
 import com.mobiquity.movieReviewApp.model.ResetPassword;
 
 public interface PasswordRecoverService {
@@ -8,7 +9,7 @@ public interface PasswordRecoverService {
 
   String passwordActivationLink(String emailId);
 
-  String UpdatePassword(ResetPassword resetPassword);
+  String UpdatePassword(ForgotPassword forgotPassword);
 
   String getEmailIdForNewPassword(String token);
 }

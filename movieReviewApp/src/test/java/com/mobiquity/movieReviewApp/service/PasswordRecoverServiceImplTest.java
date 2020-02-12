@@ -7,6 +7,7 @@ import com.github.database.rider.core.api.configuration.DBUnit;
 import com.github.database.rider.core.api.dataset.DataSet;
 import com.github.database.rider.junit5.api.DBRider;
 import com.mobiquity.movieReviewApp.exception.UserException;
+import com.mobiquity.movieReviewApp.model.ForgotPassword;
 import com.mobiquity.movieReviewApp.model.ResetPassword;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,14 +51,14 @@ class PasswordRecoverServiceImplTest {
     assertEquals("Password Reset link sent to your email", result);
   }
 
+  // Test for Forgot password.
   @Test
   @DataSet(value ="password.xml")
   public void checkIfNewPasswordIsUpdated() {
-    ResetPassword resetPassword = new ResetPassword();
-    resetPassword.setEmailId("ds@gmail.com");
-    //resetPassword.setOldPassword("asdfg");
-    resetPassword.setNewPassword("zxcvb");
-    String result = passwordRecoverService.UpdatePassword(resetPassword);
+    ForgotPassword forgotPassword = new ForgotPassword();
+    forgotPassword.setToken("eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhc2RmZ2hAZ21haWwuY29tIDEiLCJleHAiOjE1ODE1ODk2MjUsImlhdCI6MTU4MTUwMzIyNX0.yRREsDXalL-aIV2u3rXyHIgpx2NL4ZZ5bk4BwUyRcsCyD18YuZzOPx_sblMs059ZdYAsNIJWwDIfnqxEsqjjfA");
+    forgotPassword.setPassword("zxcvb");
+    String result = passwordRecoverService.UpdatePassword(forgotPassword);
     assertEquals("New Password is Updated", result);
 
   }

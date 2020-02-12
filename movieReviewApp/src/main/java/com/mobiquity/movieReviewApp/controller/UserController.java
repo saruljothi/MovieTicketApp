@@ -1,13 +1,14 @@
 package com.mobiquity.movieReviewApp.controller;
 
+import com.mobiquity.movieReviewApp.model.ForgotPassword;
 import com.mobiquity.movieReviewApp.model.ResetPassword;
 import com.mobiquity.movieReviewApp.model.ResponseMovieApp;
-import com.mobiquity.movieReviewApp.model.UserProfile;
+import com.mobiquity.movieReviewApp.Entity.UserProfile;
+import com.mobiquity.movieReviewApp.model.UserInformation;
 import com.mobiquity.movieReviewApp.service.PasswordRecoverService;
 import com.mobiquity.movieReviewApp.service.SignUpService;
 import com.mobiquity.movieReviewApp.service.UserService;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -31,9 +32,9 @@ public class UserController {
   }
 
   @PostMapping("/signUp")
-  public ResponseEntity<Object> signUp(@RequestBody UserProfile userProfile) {
+  public ResponseEntity<Object> signUp(@RequestBody UserInformation userInformation) {
 
-    return new ResponseEntity<>(new ResponseMovieApp(signUpService.saveUser(userProfile)),HttpStatus.OK);
+    return new ResponseEntity<>(new ResponseMovieApp(signUpService.saveUser(userInformation)),HttpStatus.OK);
   }
 
   @GetMapping("/activationLink")
@@ -52,15 +53,15 @@ public class UserController {
   }
 
   @PostMapping("/setNewPassword")
-  public ResponseEntity<Object> setNewPassword(@RequestBody ResetPassword resetPassword){
-    return new ResponseEntity<>(new ResponseMovieApp(passwordRecoverService.UpdatePassword(resetPassword)),HttpStatus.OK);
+  public ResponseEntity<Object> setNewPassword(@RequestBody ForgotPassword forgotPassword){
+    return new ResponseEntity<>(new ResponseMovieApp(passwordRecoverService.UpdatePassword(forgotPassword)),HttpStatus.OK);
   }
 
-  @GetMapping("/activationLinkForNewPassword")
+/*  @GetMapping("/activationLinkForNewPassword")
   public ResponseEntity<Object> getEmailIdForActivationLink(@RequestParam String token)
   {
     return new ResponseEntity<>(new ResponseMovieApp(passwordRecoverService.getEmailIdForNewPassword(token)),HttpStatus.OK);
-  }
+  }*/
   /**
    * @param userProfile Enter Registered Email and Password
    * @return whether login is Successful or Failed

@@ -1,7 +1,8 @@
 package com.mobiquity.movieReviewApp.service;
 
 import com.mobiquity.movieReviewApp.exception.UserException;
-import com.mobiquity.movieReviewApp.model.UserProfile;
+import com.mobiquity.movieReviewApp.Entity.UserProfile;
+import com.mobiquity.movieReviewApp.model.UserInformation;
 import com.mobiquity.movieReviewApp.repository.UserRepository;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
@@ -28,10 +29,10 @@ public class SignUpServiceImpl implements SignUpService {
 
   @Transactional
   @Override
-  public String saveUser(UserProfile userProfile){
+  public String saveUser(UserInformation userInformation){
     try {
-      userProfile.setPassword(BCrypt.hashpw(userProfile.getPassword(), BCrypt.gensalt()));
-      UserProfile user = userRepository.save(userProfile);
+      userInformation.setPassword(BCrypt.hashpw(userInformation.getPassword(), BCrypt.gensalt()));
+      UserProfile user = userRepository.save(setUserProfile(userInformation));
       utilityService.sendActivationLink(user.getEmailId(), user.getUserId());
       return "Activate your link";
     } catch (DataIntegrityViolationException e) {
@@ -60,6 +61,15 @@ public class SignUpServiceImpl implements SignUpService {
   @Transactional
   public void setScheduler() {
     userRepository.deleteByCreatedOnAndStatus(LocalDateTime.now().minusDays(1));
+  }
+
+  private UserProfile setUserProfile(UserInformation userInformation)
+  {
+     UserProfile userProfile =new UserProfile();
+     userProfile.setEmailId(userInformation.getEmailId());
+     userProfile.setName(userInformation.getName());
+     userProfile.setPassword(userInformation.getPassword());
+     return  userProfile;
   }
 
 }

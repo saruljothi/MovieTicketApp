@@ -7,16 +7,19 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import com.github.database.rider.core.api.dataset.DataSet;
 import com.github.database.rider.junit5.api.DBRider;
 import com.mobiquity.movieReviewApp.exception.UserException;
-import com.mobiquity.movieReviewApp.model.UserProfile;
+import com.mobiquity.movieReviewApp.Entity.UserProfile;
+import com.mobiquity.movieReviewApp.model.UserInformation;
 import java.time.LocalDateTime;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
+import org.springframework.test.context.ActiveProfiles;
 
 
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 @DBRider
+@ActiveProfiles()
 class SignUpServiceImplTest {
 
   @Autowired
@@ -25,8 +28,7 @@ class SignUpServiceImplTest {
   @Test
   public void checkIfEmailIdIsNotAlreadyRegistered() {
     String result = signUpService.saveUser(
-        new UserProfile(1l, "movie", "asdfgh@gmail.com", "asdfg", false, LocalDateTime.now(),
-            LocalDateTime.now()));
+        new UserInformation("asdfgh@gmail.com","movie","asdfg"));
     assertEquals("Activate your link", result);
   }
 
@@ -34,8 +36,7 @@ class SignUpServiceImplTest {
   @DataSet(value = "data.xml")
   public void checkIfEmailIdIsAlreadyRegistered() {
     assertThrows(UserException.class, () -> signUpService.saveUser(
-        new UserProfile(2l, "movie", "www@gmail.com", "asdertc", false, LocalDateTime.now(),
-            LocalDateTime.now())));
+        new UserInformation("www@gmail.com","movie","asdfg")));
   }
 
   @Test

@@ -1,4 +1,4 @@
-package com.mobiquity.movieReviewApp.model;
+package com.mobiquity.movieReviewApp.Entity;
 
 import java.time.LocalDateTime;
 import javax.persistence.Column;

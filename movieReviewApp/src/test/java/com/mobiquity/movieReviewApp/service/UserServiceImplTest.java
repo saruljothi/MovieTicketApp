@@ -7,7 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
 
 import com.mobiquity.movieReviewApp.exception.UserException;
-import com.mobiquity.movieReviewApp.model.UserProfile;
+import com.mobiquity.movieReviewApp.Entity.UserProfile;
 import com.mobiquity.movieReviewApp.repository.UserRepository;
 import java.time.LocalDateTime;
 import org.junit.jupiter.api.Test;

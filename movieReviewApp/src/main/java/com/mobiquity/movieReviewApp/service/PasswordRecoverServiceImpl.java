@@ -1,6 +1,7 @@
 package com.mobiquity.movieReviewApp.service;
 
 import com.mobiquity.movieReviewApp.exception.UserException;
+import com.mobiquity.movieReviewApp.model.ForgotPassword;
 import com.mobiquity.movieReviewApp.model.ResetPassword;
 import com.mobiquity.movieReviewApp.repository.UserRepository;
 import io.jsonwebtoken.Claims;
@@ -30,7 +31,7 @@ public class PasswordRecoverServiceImpl implements PasswordRecoverService {
     String password = userRepository.findPasswordByEmailId(resetPassword.getEmailId());
 
     if (password != null && BCrypt.checkpw(resetPassword.getOldPassword(), password)) {
-      updateHashedPassword(resetPassword);
+      updateHashedPassword(resetPassword.getNewPassword(),resetPassword.getEmailId());
       return "Password Updated";
     } else {
       throw new UserException("OldPassword is Not Matching");
@@ -46,8 +47,8 @@ public class PasswordRecoverServiceImpl implements PasswordRecoverService {
 
   @Override
   @Transactional
-  public String UpdatePassword(ResetPassword resetPassword) {
-    updateHashedPassword(resetPassword);
+  public String UpdatePassword(ForgotPassword forgotPassword) {
+    updateHashedPassword(forgotPassword.getPassword(),getEmailIdForNewPassword(forgotPassword.getToken()));
     return "New Password is Updated";
   }
 
@@ -63,11 +64,11 @@ public class PasswordRecoverServiceImpl implements PasswordRecoverService {
     }
   }
 
-  private void updateHashedPassword(ResetPassword resetPassword) {
-    String hashedPassword = BCrypt.hashpw(resetPassword.getNewPassword(), BCrypt.gensalt());
+  private void updateHashedPassword(String password,String emailId) {
+    String hashedPassword = BCrypt.hashpw(password, BCrypt.gensalt());
     System.out.println(hashedPassword);
     userRepository
-        .updatePassword(resetPassword.getEmailId(), hashedPassword);
+        .updatePassword(emailId, hashedPassword);
   }
 
 

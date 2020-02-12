@@ -1,6 +1,6 @@
 package com.mobiquity.movieReviewApp.service;
 
-import com.mobiquity.movieReviewApp.model.UserProfile;
+import com.mobiquity.movieReviewApp.Entity.UserProfile;
 
 public interface UserService {
 
