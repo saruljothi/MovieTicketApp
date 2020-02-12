@@ -30,7 +30,7 @@ public class UserController {
   private UserValidator userValidator;
 
   public UserController(SignUpService signUpService, PasswordRecoverService passwordRecoverService,
-      UserService userService) {
+      UserService userService, UserValidator userValidator) {
     this.signUpService = signUpService;
     this.userValidator = userValidator;
     this.passwordRecoverService = passwordRecoverService;
@@ -69,15 +69,15 @@ public class UserController {
   }
 
   @PostMapping("/setNewPassword")
-  public String setNewPassword(@RequestBody ResetPassword resetPassword) {
+  public String setNewPassword(@RequestBody ResetPassword resetPassword){
     return passwordRecoverService.UpdatePassword(resetPassword);
   }
 
   @GetMapping("/activationLinkForNewPassword")
-  public String getEmailIdForActivationLink(@RequestParam String token) {
+  public String getEmailIdForActivationLink(@RequestParam String token)
+  {
     return passwordRecoverService.getEmailIdForNewPassword(token);
   }
-
   /**
    * @param userProfile Enter Registered Email and Password
    * @return whether login is Successful or Failed

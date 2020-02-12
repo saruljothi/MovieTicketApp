@@ -10,6 +10,5 @@ public interface UserService {
    */
   String checkLogin(UserProfile userProfile);
 
-
   UserProfile findUserProfileByEmailId(String emailId);
 }
