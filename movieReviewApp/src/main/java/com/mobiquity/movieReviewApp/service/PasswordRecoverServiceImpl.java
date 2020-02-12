@@ -20,7 +20,7 @@ public class PasswordRecoverServiceImpl implements PasswordRecoverService {
 
   private Claims claim;
 
-  public PasswordRecoverServiceImpl(UserRepository userRepository,UtilityService utilityService) {
+  public PasswordRecoverServiceImpl(UserRepository userRepository, UtilityService utilityService) {
     this.userRepository = userRepository;
     this.utilityService = utilityService;
   }
@@ -31,7 +31,7 @@ public class PasswordRecoverServiceImpl implements PasswordRecoverService {
     String password = userRepository.findPasswordByEmailId(resetPassword.getEmailId());
 
     if (password != null && BCrypt.checkpw(resetPassword.getOldPassword(), password)) {
-      updateHashedPassword(resetPassword.getNewPassword(),resetPassword.getEmailId());
+      updateHashedPassword(resetPassword.getNewPassword(), resetPassword.getEmailId());
       return "Password Updated";
     } else {
       throw new UserException("OldPassword is Not Matching");
@@ -48,7 +48,8 @@ public class PasswordRecoverServiceImpl implements PasswordRecoverService {
   @Override
   @Transactional
   public String UpdatePassword(ForgotPassword forgotPassword) {
-    updateHashedPassword(forgotPassword.getPassword(),getEmailIdForNewPassword(forgotPassword.getToken()));
+    updateHashedPassword(forgotPassword.getPassword(),
+        getEmailIdForNewPassword(forgotPassword.getToken()));
     return "New Password is Updated";
   }
 
@@ -60,11 +61,11 @@ public class PasswordRecoverServiceImpl implements PasswordRecoverService {
     } catch (ExpiredJwtException e) {
       throw new UserException("Your activation link got expired");
     } catch (MalformedJwtException e) {
-      throw new UserException( "Activation link is not valid");
+      throw new UserException("Activation link is not valid");
     }
   }
 
-  private void updateHashedPassword(String password,String emailId) {
+  private void updateHashedPassword(String password, String emailId) {
     String hashedPassword = BCrypt.hashpw(password, BCrypt.gensalt());
     System.out.println(hashedPassword);
     userRepository

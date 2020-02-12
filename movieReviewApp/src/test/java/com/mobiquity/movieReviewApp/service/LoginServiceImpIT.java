@@ -25,14 +25,12 @@ class LoginServiceImpIT {
   @Autowired
   private UserRepository userRepository;
 
-
   @Test
   void checkLoginSuccessEnteredValidCredential() {
     String result = loginService
         .checkLogin(new Login("xyz@gmail.com", "pass"));
     assertEquals("Login Successful", result);
   }
-
 
   @Test
   void checkLoginFailsIfUserStatusFalseEnteredValidCredentials() {
@@ -67,6 +65,5 @@ class LoginServiceImpIT {
         .checkLogin(
             new Login("abc", "abc@gmail.com")));
   }
-
 
 }

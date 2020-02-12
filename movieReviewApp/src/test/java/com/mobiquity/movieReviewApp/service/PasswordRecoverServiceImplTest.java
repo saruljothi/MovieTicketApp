@@ -3,7 +3,6 @@ package com.mobiquity.movieReviewApp.service;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-import com.github.database.rider.core.api.configuration.DBUnit;
 import com.github.database.rider.core.api.dataset.DataSet;
 import com.github.database.rider.junit5.api.DBRider;
 import com.mobiquity.movieReviewApp.exception.UserException;
@@ -20,13 +19,13 @@ class PasswordRecoverServiceImplTest {
 
   @Autowired
   PasswordRecoverService passwordRecoverService;
+
   @Autowired
   SignUpService signUpService;
 
   @Test
-  @DataSet(value ="password.xml")//password hashed value of qwerty
+  @DataSet(value = "password.xml")//password hashed value of qwerty
   public void checkIfOldPasswordIsPresent() {
-
     ResetPassword resetPassword = new ResetPassword();
     resetPassword.setEmailId("ds@gmail.com");
     resetPassword.setOldPassword("qwerty");
@@ -36,13 +35,13 @@ class PasswordRecoverServiceImplTest {
   }
 
   @Test
-  @DataSet(value="password.xml")
+  @DataSet(value = "password.xml")
   public void checkIfOldPasswordIsNotCorrect() {
     ResetPassword resetPassword = new ResetPassword();
     resetPassword.setEmailId("ds@gmail.com");
     resetPassword.setOldPassword("dfgh");
     resetPassword.setNewPassword("qwerty");
-    assertThrows(UserException.class, ()->passwordRecoverService.resetPassword(resetPassword));
+    assertThrows(UserException.class, () -> passwordRecoverService.resetPassword(resetPassword));
   }
 
   @Test
@@ -53,22 +52,19 @@ class PasswordRecoverServiceImplTest {
 
   // Test for Forgot password.
   @Test
-  @DataSet(value ="password.xml")
+  @DataSet(value = "password.xml")
   public void checkIfNewPasswordIsUpdated() {
     ForgotPassword forgotPassword = new ForgotPassword();
-    forgotPassword.setToken("eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhc2RmZ2hAZ21haWwuY29tIDEiLCJleHAiOjE1ODE1ODk2MjUsImlhdCI6MTU4MTUwMzIyNX0.yRREsDXalL-aIV2u3rXyHIgpx2NL4ZZ5bk4BwUyRcsCyD18YuZzOPx_sblMs059ZdYAsNIJWwDIfnqxEsqjjfA");
+    forgotPassword.setToken(
+        "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhc2RmZ2hAZ21haWwuY29tIDEiLCJleHAiOjE1ODE1ODk2MjUsImlhdCI6MTU4MTUwMzIyNX0.yRREsDXalL-aIV2u3rXyHIgpx2NL4ZZ5bk4BwUyRcsCyD18YuZzOPx_sblMs059ZdYAsNIJWwDIfnqxEsqjjfA");
     forgotPassword.setPassword("zxcvb");
     String result = passwordRecoverService.UpdatePassword(forgotPassword);
     assertEquals("New Password is Updated", result);
-
   }
 
   @Test
   public void checkIfEmailIdRetrievedCorrectlyForForgotPasswordLink() {
     String token = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJkc0BnbWFpbC5jb20gMCIsImV4cCI6MTU4MTA2OTAyMCwiaWF0IjoxNTgwOTgyNjIwfQ.t-HoaiqaPz__OVqccUsl2PaA2NrdxCm2yVyvGU1jVjljbFKFi5s78_06t1xc2xu2sbDwmIsNPyqm_mVouSYhyQ";
-    assertThrows(UserException.class,()->passwordRecoverService.getEmailIdForNewPassword(token));
-
+    assertThrows(UserException.class, () -> passwordRecoverService.getEmailIdForNewPassword(token));
   }
-
-
 }

@@ -1,7 +1,7 @@
 package com.mobiquity.movieReviewApp.service;
 
-import com.mobiquity.movieReviewApp.exception.UserException;
 import com.mobiquity.movieReviewApp.Entity.UserProfile;
+import com.mobiquity.movieReviewApp.exception.UserException;
 import com.mobiquity.movieReviewApp.model.UserInformation;
 import com.mobiquity.movieReviewApp.repository.UserRepository;
 import io.jsonwebtoken.Claims;
@@ -22,14 +22,14 @@ public class SignUpServiceImpl implements SignUpService {
   private Claims claim;
   private UtilityService utilityService;
 
-  public SignUpServiceImpl(UserRepository userRepository,UtilityService utilityService) {
+  public SignUpServiceImpl(UserRepository userRepository, UtilityService utilityService) {
     this.userRepository = userRepository;
     this.utilityService = utilityService;
   }
 
   @Transactional
   @Override
-  public String saveUser(UserInformation userInformation){
+  public String saveUser(UserInformation userInformation) {
     try {
       userInformation.setPassword(BCrypt.hashpw(userInformation.getPassword(), BCrypt.gensalt()));
       UserProfile user = userRepository.save(setUserProfile(userInformation));
@@ -53,7 +53,7 @@ public class SignUpServiceImpl implements SignUpService {
           .deleteByUserIdAndStatus(Long.parseLong(claim.getSubject().split(" ")[1]), false);*/
       throw new UserException("Your activation link got expired");
     } catch (MalformedJwtException e) {
-      throw new UserException( "Activation link is not valid");
+      throw new UserException("Activation link is not valid");
     }
   }
 
@@ -63,13 +63,12 @@ public class SignUpServiceImpl implements SignUpService {
     userRepository.deleteByCreatedOnAndStatus(LocalDateTime.now().minusDays(1));
   }
 
-  private UserProfile setUserProfile(UserInformation userInformation)
-  {
-     UserProfile userProfile =new UserProfile();
-     userProfile.setEmailId(userInformation.getEmailId());
-     userProfile.setName(userInformation.getName());
-     userProfile.setPassword(userInformation.getPassword());
-     return  userProfile;
+  private UserProfile setUserProfile(UserInformation userInformation) {
+    UserProfile userProfile = new UserProfile();
+    userProfile.setEmailId(userInformation.getEmailId());
+    userProfile.setName(userInformation.getName());
+    userProfile.setPassword(userInformation.getPassword());
+    return userProfile;
   }
 
 }
