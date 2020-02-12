@@ -41,9 +41,9 @@ public class UserProfile {
   private String emailId;
   private String password;
   private boolean status;
- @CreationTimestamp
+  @CreationTimestamp
   private LocalDateTime createdOn;
- @UpdateTimestamp
+  @UpdateTimestamp
   private LocalDateTime updatedOn;
 
 }

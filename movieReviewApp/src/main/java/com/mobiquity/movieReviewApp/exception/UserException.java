@@ -1,6 +1,5 @@
 package com.mobiquity.movieReviewApp.exception;
 
-import java.sql.SQLException;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.ToString;
@@ -11,7 +10,7 @@ import lombok.ToString;
 public class UserException extends RuntimeException {
 
   public UserException(String message) {
-   super(message);
+    super(message);
   }
 
 }
