@@ -33,14 +33,14 @@ public class UserController {
   }
 
   @PostMapping("/signUp")
-  public ResponseEntity<Object> signUp(@RequestBody UserInformation userInformation) {
+  public ResponseEntity<ResponseMovieApp> signUp(@RequestBody UserInformation userInformation) {
 
     return new ResponseEntity<>(new ResponseMovieApp(signUpService.saveUser(userInformation)),
         HttpStatus.OK);
   }
 
   @GetMapping("/activationLink")
-  public ResponseEntity<Object> activateLink(@RequestParam String token) {
+  public ResponseEntity<ResponseMovieApp> activateLink(@RequestParam String token) {
     return new ResponseEntity<>(new ResponseMovieApp(signUpService.registerAccount(token)),
         HttpStatus.OK);
   }

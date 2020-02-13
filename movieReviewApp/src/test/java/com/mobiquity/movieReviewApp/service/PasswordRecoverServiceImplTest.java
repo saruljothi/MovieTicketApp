@@ -62,6 +62,7 @@ class PasswordRecoverServiceImplTest {
     assertEquals("New Password is Updated", result);
   }
 
+  // this test is for password activation link api. Commented for now as we are not exposing activationLinkForNewPassword
   @Test
   public void checkIfEmailIdRetrievedCorrectlyForForgotPasswordLink() {
     String token = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJkc0BnbWFpbC5jb20gMCIsImV4cCI6MTU4MTA2OTAyMCwiaWF0IjoxNTgwOTgyNjIwfQ.t-HoaiqaPz__OVqccUsl2PaA2NrdxCm2yVyvGU1jVjljbFKFi5s78_06t1xc2xu2sbDwmIsNPyqm_mVouSYhyQ";
