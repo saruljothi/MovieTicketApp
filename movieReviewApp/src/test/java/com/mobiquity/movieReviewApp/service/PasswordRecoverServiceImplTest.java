@@ -41,7 +41,9 @@ class PasswordRecoverServiceImplTest {
     resetPassword.setEmailId("ds@gmail.com");
     resetPassword.setOldPassword("dfgh");
     resetPassword.setNewPassword("qwerty");
-    assertThrows(UserException.class, () -> passwordRecoverService.resetPassword(resetPassword));
+    UserException exception = assertThrows(UserException.class,
+        () -> passwordRecoverService.resetPassword(resetPassword));
+    assertEquals("OldPassword is Not Matching",exception.getLocalizedMessage());
   }
 
   @Test
@@ -58,14 +60,15 @@ class PasswordRecoverServiceImplTest {
     forgotPassword.setToken(
         "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhc2RmZ2hAZ21haWwuY29tIDEiLCJleHAiOjE1ODE1ODk2MjUsImlhdCI6MTU4MTUwMzIyNX0.yRREsDXalL-aIV2u3rXyHIgpx2NL4ZZ5bk4BwUyRcsCyD18YuZzOPx_sblMs059ZdYAsNIJWwDIfnqxEsqjjfA");
     forgotPassword.setPassword("zxcvb");
-    String result = passwordRecoverService.UpdatePassword(forgotPassword);
-    assertEquals("New Password is Updated", result);
+    UserException exception = assertThrows(UserException.class,
+        () -> passwordRecoverService.UpdatePassword(forgotPassword));
+    assertEquals("Your activation link got expired", exception.getLocalizedMessage());
   }
 
-  // this test is for password activation link api. Commented for now as we are not exposing activationLinkForNewPassword
   @Test
   public void checkIfEmailIdRetrievedCorrectlyForForgotPasswordLink() {
-    String token = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJkc0BnbWFpbC5jb20gMCIsImV4cCI6MTU4MTA2OTAyMCwiaWF0IjoxNTgwOTgyNjIwfQ.t-HoaiqaPz__OVqccUsl2PaA2NrdxCm2yVyvGU1jVjljbFKFi5s78_06t1xc2xu2sbDwmIsNPyqm_mVouSYhyQ";
-    assertThrows(UserException.class, () -> passwordRecoverService.getEmailIdForNewPassword(token));
+    String token = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJkc0BnbWFpbC5jb20gMCIsImV4cCI6MTU4MTA2OTAyMsdfCwiaWF0IjoxNTgwOTgyNjIwfQ.t-HoaiqaPz__OVqccUsl2PaA2NrdxCm2yVyvGU1jVjljbFKFi5s78_06t1xc2xu2sbDwmIsNPyqm_mVouSYhyQ";
+    UserException exception = assertThrows(UserException.class, () -> passwordRecoverService.getEmailIdForNewPassword(token));
+    assertEquals("Activation link is not valid",exception.getLocalizedMessage());
   }
 }

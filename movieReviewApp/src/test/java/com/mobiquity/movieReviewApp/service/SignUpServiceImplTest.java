@@ -38,21 +38,26 @@ class SignUpServiceImplTest {
     userInformation.setPassword("asdfg");
     userInformation.setName("movie");
     userInformation.setEmailId("www@gmail.com");
-    assertThrows(UserException.class, () -> signUpService.saveUser(
+    UserException e = assertThrows(UserException.class, () -> signUpService.saveUser(
         userInformation));
+    assertEquals("Your email is already registered.",e.getLocalizedMessage());
   }
 
   @Test
   public void checkIfTokenIsExpired() {
     String token = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJzQGdtYWlsLmNvbSAyIiwiZXhwIjoxNTgwOTA2NDg2LCJpYXQiOjE1ODA4MjAwODZ9.1EAgHyfosb4f7N9zIlPDlxiZBIekEgq5ZWHu0eCQft-B5Nd2C9gyAuiVO-dJ98f5JcLkHtG2W8cVDm2R_mf7KQ";
-    assertThrows(UserException.class, () -> signUpService.registerAccount(token));
+    UserException e = assertThrows(UserException.class,
+        () -> signUpService.registerAccount(token));
+    assertEquals("Your activation link got expired", e.getLocalizedMessage());
 
   }
 
   @Test
   public void checkIfTokenIsNotValid() {
     String token = "eJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJzQGdtYWlsLmNvbSAxIiwiZXhwIjoxNTgwOTAxNTgxLCJpYXQiOjE1ODA4MTUxODF9.lydIGViOyEewJ8Yo8ApsuJetQtMcQDjGVetuWjPIFKfK7JAceRlgJHOQ5PmeJiKFIJIJCC4WEqg12rQ9EC4iyQ";
-    assertThrows(UserException.class, () -> signUpService.registerAccount(token));
+    UserException e = assertThrows(UserException.class,
+        () -> signUpService.registerAccount(token));
+    assertEquals("Activation link is not valid", e.getLocalizedMessage());
 
   }
 

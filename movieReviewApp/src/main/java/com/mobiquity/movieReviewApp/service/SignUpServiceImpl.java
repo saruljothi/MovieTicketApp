@@ -7,6 +7,7 @@ import com.mobiquity.movieReviewApp.repository.UserRepository;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.MalformedJwtException;
+import io.jsonwebtoken.SignatureException;
 import java.time.LocalDateTime;
 import javax.transaction.Transactional;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -52,7 +53,7 @@ public class SignUpServiceImpl implements SignUpService {
       /*userRepository
           .deleteByUserIdAndStatus(Long.parseLong(claim.getSubject().split(" ")[1]), false);*/
       throw new UserException("Your activation link got expired");
-    } catch (MalformedJwtException e) {
+    } catch (MalformedJwtException | SignatureException e) {
       throw new UserException("Activation link is not valid");
     }
   }

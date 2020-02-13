@@ -7,6 +7,7 @@ import com.mobiquity.movieReviewApp.repository.UserRepository;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.MalformedJwtException;
+import io.jsonwebtoken.SignatureException;
 import javax.transaction.Transactional;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
@@ -60,7 +61,7 @@ public class PasswordRecoverServiceImpl implements PasswordRecoverService {
       return claim.getSubject().split(" ")[0];
     } catch (ExpiredJwtException e) {
       throw new UserException("Your activation link got expired");
-    } catch (MalformedJwtException e) {
+    } catch (MalformedJwtException | SignatureException e) {
       throw new UserException("Activation link is not valid");
     }
   }
