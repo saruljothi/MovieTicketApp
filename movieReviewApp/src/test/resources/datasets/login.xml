@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataset>
+  <USER_PROFILE user_id="2" created_on="[DAY,NOW]" email_id="xyz@gmail.com" name="xyz"
+    password="$2a$10$JAs.w36Ij6Wp1mrfPXgq8uLB2yVFZHXXNR6cKygNvchzc1JcArTJq" updated_on="[DAY,NOW]"
+    status="1"/>
+  <USER_PROFILE user_id="1" created_on="[DAY,NOW]" email_id="abc@gmail.com" name="abc"
+    password="$2a$10$HtlIiJ6SnJarZk1igROz3ezvhWfmDYcrTy/NMP1qKNe8hCPoR7yRa" updated_on="[DAY,NOW]"
+    status="0"/>
+</dataset>
