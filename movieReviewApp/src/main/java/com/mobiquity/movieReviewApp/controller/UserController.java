@@ -7,7 +7,6 @@ import com.mobiquity.movieReviewApp.model.UserProfile;
 import com.mobiquity.movieReviewApp.service.LoginService;
 import com.mobiquity.movieReviewApp.service.PasswordRecoverService;
 import com.mobiquity.movieReviewApp.service.SignUpService;
-import com.mobiquity.movieReviewApp.service.UserService;
 import com.mobiquity.movieReviewApp.validation.UserValidator;
 import java.util.List;
 import org.springframework.http.HttpStatus;
@@ -31,7 +30,7 @@ public class UserController {
   private UserValidator userValidator;
 
   public UserController(SignUpService signUpService, PasswordRecoverService passwordRecoverService,
-      UserService userService, UserValidator userValidator) {
+      UserValidator userValidator) {
     this.signUpService = signUpService;
     this.userValidator = userValidator;
     this.passwordRecoverService = passwordRecoverService;
@@ -48,7 +47,7 @@ public class UserController {
         issue += error.getCode() + "\n";
       }
       return issue;
-    }else{
+    } else {
       return signUpService.saveUser(userProfile);
     }
 
@@ -78,6 +77,7 @@ public class UserController {
   public String getEmailIdForActivationLink(@RequestParam String token) {
     return passwordRecoverService.getEmailIdForNewPassword(token);
   }
+
   /**
    * @param login Enter Registered Email and Password
    * @return whether login is Successful or Failed

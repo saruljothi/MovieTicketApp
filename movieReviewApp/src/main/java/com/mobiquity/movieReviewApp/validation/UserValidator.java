@@ -1,9 +1,8 @@
 package com.mobiquity.movieReviewApp.validation;
 
 import com.mobiquity.movieReviewApp.model.UserProfile;
-import com.mobiquity.movieReviewApp.service.UserService;
+import com.mobiquity.movieReviewApp.service.SignUpService;
 import com.mobiquity.movieReviewApp.validation.utils.EmailValidator;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
@@ -12,10 +11,10 @@ import org.springframework.validation.Validator;
 @Component
 public class UserValidator implements Validator {
 
-  private UserService userService;
+  private SignUpService signUpService;
 
-  public UserValidator(UserService userService) {
-    this.userService = userService;
+  public UserValidator(SignUpService signUpService) {
+    this.signUpService = signUpService;
   }
 
   @Override
@@ -35,7 +34,7 @@ public class UserValidator implements Validator {
     if (!emailValidator.validate(userProfile.getEmailId())) {
       errors.rejectValue("emailId", "Please enter a valid e-mail address.");
     }
-    if (userService.findUserProfileByEmailId(userProfile.getEmailId()) != null) {
+    if (signUpService.findUserProfileByEmailId(userProfile.getEmailId()) != null) {
       errors.rejectValue("emailId", "This email is already in use.");
     }
 

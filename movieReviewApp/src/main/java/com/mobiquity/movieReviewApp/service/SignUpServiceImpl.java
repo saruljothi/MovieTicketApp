@@ -6,6 +6,7 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.MalformedJwtException;
 import java.time.LocalDateTime;
+import java.util.Optional;
 import javax.transaction.Transactional;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.crypto.bcrypt.BCrypt;
@@ -53,6 +54,11 @@ public class SignUpServiceImpl implements SignUpService {
   @Transactional
   public void setScheduler() {
     userRepository.deleteByCreatedOnAndStatus(LocalDateTime.now().minusDays(1));
+  }
+
+  @Override
+  public Optional<UserProfile> findUserProfileByEmailId(String emailId) {
+    return userRepository.findByEmailId(emailId);
   }
 
 }
