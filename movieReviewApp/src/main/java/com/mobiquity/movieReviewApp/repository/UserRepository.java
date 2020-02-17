@@ -1,10 +1,6 @@
 package com.mobiquity.movieReviewApp.repository;
 
-<<<<<<< HEAD
 import com.mobiquity.movieReviewApp.Entity.UserProfile;
-=======
-import com.mobiquity.movieReviewApp.model.UserProfile;
->>>>>>> develop
 import java.time.LocalDateTime;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
