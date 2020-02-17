@@ -7,8 +7,12 @@ import com.mobiquity.movieReviewApp.model.UserProfile;
 import com.mobiquity.movieReviewApp.service.LoginService;
 import com.mobiquity.movieReviewApp.service.PasswordRecoverService;
 import com.mobiquity.movieReviewApp.service.SignUpService;
+import com.mobiquity.movieReviewApp.validation.UserValidator;
+import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -23,17 +27,30 @@ public class UserController {
   private SignUpService signUpService;
   private PasswordRecoverService passwordRecoverService;
   private LoginService loginService;
+  private UserValidator userValidator;
 
   public UserController(SignUpService signUpService, PasswordRecoverService passwordRecoverService,
-      LoginService loginService) {
+      UserValidator userValidator) {
     this.signUpService = signUpService;
+    this.userValidator = userValidator;
     this.passwordRecoverService = passwordRecoverService;
-    this.loginService = loginService;
   }
 
   @PostMapping("/signUp")
-  public String signUp(@RequestBody UserProfile userProfile) {
-    return signUpService.saveUser(userProfile);
+  public String signUp(@RequestBody UserProfile userProfile, BindingResult bindingResult) {
+    userValidator.validate(userProfile, bindingResult);
+
+    if (bindingResult.hasErrors()) {
+      String issue = "";
+      List<ObjectError> errors = bindingResult.getAllErrors();
+      for (ObjectError error : errors) {
+        issue += error.getCode() + "\n";
+      }
+      return issue;
+    } else {
+      return signUpService.saveUser(userProfile);
+    }
+
   }
 
   @GetMapping("/activationLink")
@@ -60,7 +77,6 @@ public class UserController {
   public String getEmailIdForActivationLink(@RequestParam String token) {
     return passwordRecoverService.getEmailIdForNewPassword(token);
   }
-
 
   /**
    * @param login Enter Registered Email and Password

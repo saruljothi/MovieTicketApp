@@ -6,8 +6,8 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.MalformedJwtException;
 import java.time.LocalDateTime;
+import java.util.Optional;
 import javax.transaction.Transactional;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
@@ -28,14 +28,11 @@ public class SignUpServiceImpl implements SignUpService {
   @Transactional
   @Override
   public String saveUser(UserProfile userProfile) {
-    try {
-      userProfile.setPassword(BCrypt.hashpw(userProfile.getPassword(), BCrypt.gensalt()));
-      UserProfile user = userRepository.save(userProfile);
-      utilityService.sendActivationLink(user.getEmailId(), user.getUserId());
-      return "Activate your link";
-    } catch (DataIntegrityViolationException e) {
-      return "Your email is already registered.";
-    }
+    userProfile.setPassword(BCrypt.hashpw(userProfile.getPassword(), BCrypt.gensalt()));
+    UserProfile user = userRepository.save(userProfile);
+    utilityService.sendActivationLink(user.getEmailId(), user.getUserId());
+
+    return "Activate your link";
   }
 
   @Transactional
@@ -47,8 +44,6 @@ public class SignUpServiceImpl implements SignUpService {
       userRepository.updateStatus(id);
       return "You are Registered Successfully";
     } catch (ExpiredJwtException e) {
-      /*userRepository
-          .deleteByUserIdAndStatus(Long.parseLong(claim.getSubject().split(" ")[1]), false);*/
       return "Your activation link got expired";
     } catch (MalformedJwtException e) {
       return "Activation link is not valid";
@@ -59,6 +54,11 @@ public class SignUpServiceImpl implements SignUpService {
   @Transactional
   public void setScheduler() {
     userRepository.deleteByCreatedOnAndStatus(LocalDateTime.now().minusDays(1));
+  }
+
+  @Override
+  public Optional<UserProfile> findUserProfileByEmailId(String emailId) {
+    return userRepository.findByEmailId(emailId);
   }
 
 }

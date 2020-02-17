@@ -9,6 +9,8 @@ import javax.persistence.Id;
 import javax.persistence.NamedNativeQueries;
 import javax.persistence.NamedNativeQuery;
 import javax.persistence.Table;
+import javax.persistence.Table;
+import javax.persistence.Transient;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
@@ -33,16 +35,30 @@ import org.hibernate.annotations.UpdateTimestamp;
 @Table(name = "user_profile")
 public class UserProfile {
 
+
+  public UserProfile(long userId, String name, String emailId, String password, boolean status,
+      LocalDateTime createdOn, LocalDateTime updatedOn) {
+  }
+
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long userId;
+
   private String name;
+
   @Column(unique = true)
   private String emailId;
+
   private String password;
+
+  @Transient
+  private String passwordConfirmation;
+
   private boolean status;
+
   @CreationTimestamp
   private LocalDateTime createdOn;
+
   @UpdateTimestamp
   private LocalDateTime updatedOn;
 

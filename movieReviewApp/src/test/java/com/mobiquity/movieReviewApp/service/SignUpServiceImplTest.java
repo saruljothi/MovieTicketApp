@@ -31,6 +31,7 @@ class SignUpServiceImplTest {
 
   private String token = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJzQGdtYWlsLmNvbSAyIiwiZXhwIjoxNTgwOTA2NDg2LCJpYXQiOjE1ODA4MjAwODZ9.1EAgHyfosb4f7N9zIlPDlxiZBIekEgq5ZWHu0eCQft-B5Nd2C9gyAuiVO-dJ98f5JcLkHtG2W8cVDm2R_mf7KQ";
 
+  /*
   @Test
   public void checkIfEmailIdIsNotAlreadyRegistered() {
     String result = signUpService.saveUser(
@@ -46,6 +47,7 @@ class SignUpServiceImplTest {
             LocalDateTime.now()));
     assertEquals("Your email is already registered.", result);
   }
+   */
 
   @Test
   public void checkIfTokenIsExpired() {
