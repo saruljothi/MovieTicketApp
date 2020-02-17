@@ -8,8 +8,12 @@ import com.mobiquity.movieReviewApp.model.UserInformation;
 import com.mobiquity.movieReviewApp.service.LoginService;
 import com.mobiquity.movieReviewApp.service.PasswordRecoverService;
 import com.mobiquity.movieReviewApp.service.SignUpService;
+import com.mobiquity.movieReviewApp.validation.UserValidator;
+import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -24,19 +28,34 @@ public class UserController {
   private SignUpService signUpService;
   private PasswordRecoverService passwordRecoverService;
   private LoginService loginService;
+  private UserValidator userValidator;
 
   public UserController(SignUpService signUpService, PasswordRecoverService passwordRecoverService,
-      LoginService loginService) {
+      UserValidator userValidator) {
     this.signUpService = signUpService;
+    this.userValidator = userValidator;
     this.passwordRecoverService = passwordRecoverService;
-    this.loginService = loginService;
   }
 
   @PostMapping("/signUp")
-  public ResponseEntity<ResponseMovieApp> signUp(@RequestBody UserInformation userInformation) {
+  public ResponseEntity<ResponseMovieApp> signUp(@RequestBody UserInformation userInformation,
+      BindingResult bindingResult) {
 
-    return new ResponseEntity<>(new ResponseMovieApp(signUpService.saveUser(userInformation)),
-        HttpStatus.OK);
+    userValidator.validate(userInformation, bindingResult);
+
+    if (bindingResult.hasErrors()) {
+      String issue = "";
+      List<ObjectError> errors = bindingResult.getAllErrors();
+      for (ObjectError error : errors) {
+        issue += error.getCode() + "\n";
+      }
+      return new ResponseEntity<>(new ResponseMovieApp(issue),
+          HttpStatus.FORBIDDEN);
+    } else {
+      return new ResponseEntity<>(new ResponseMovieApp(signUpService.saveUser(userInformation)),
+          HttpStatus.OK);
+    }
+
   }
 
   @GetMapping("/activationLink")

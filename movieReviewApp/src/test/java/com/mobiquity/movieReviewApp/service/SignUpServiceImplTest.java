@@ -23,6 +23,7 @@ class SignUpServiceImplTest {
 
   private UserInformation userInformation = new UserInformation();
 
+  /*
   @Test
   public void checkIfEmailIdIsNotAlreadyRegistered() {
     userInformation.setPassword("asdfg");
@@ -42,6 +43,7 @@ class SignUpServiceImplTest {
         userInformation));
     assertEquals("Your email is already registered.",e.getLocalizedMessage());
   }
+   */
 
   @Test
   public void checkIfTokenIsExpired() {

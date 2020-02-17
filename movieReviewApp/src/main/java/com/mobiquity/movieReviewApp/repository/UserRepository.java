@@ -1,6 +1,10 @@
 package com.mobiquity.movieReviewApp.repository;
 
+<<<<<<< HEAD
 import com.mobiquity.movieReviewApp.Entity.UserProfile;
+=======
+import com.mobiquity.movieReviewApp.model.UserProfile;
+>>>>>>> develop
 import java.time.LocalDateTime;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -9,7 +13,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface UserRepository extends JpaRepository<UserProfile, Long> {
-
 
   Optional<UserProfile> deleteByUserIdAndStatus(long Id,Boolean status);
 
@@ -25,6 +28,8 @@ public interface UserRepository extends JpaRepository<UserProfile, Long> {
 
   @Modifying
   void updatePassword(String emailId,String newPassword);
+
+  UserProfile findUserProfileByEmailId(String emailId);
 
   Optional<UserProfile> findByEmailId(String email);
 

@@ -9,6 +9,7 @@ import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.SignatureException;
 import java.time.LocalDateTime;
+import java.util.Optional;
 import javax.transaction.Transactional;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -64,12 +65,17 @@ public class SignUpServiceImpl implements SignUpService {
     userRepository.deleteByCreatedOnAndStatus(LocalDateTime.now().minusDays(1));
   }
 
+
   private UserProfile setUserProfile(UserInformation userInformation) {
     UserProfile userProfile = new UserProfile();
     userProfile.setEmailId(userInformation.getEmailId());
     userProfile.setName(userInformation.getName());
     userProfile.setPassword(userInformation.getPassword());
     return userProfile;
+  }
+  @Override
+  public Optional<UserProfile> findUserProfileByEmailId(String emailId) {
+    return userRepository.findByEmailId(emailId);
   }
 
 }

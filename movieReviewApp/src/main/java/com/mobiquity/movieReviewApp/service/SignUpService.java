@@ -1,6 +1,10 @@
 package com.mobiquity.movieReviewApp.service;
 
+
+import com.mobiquity.movieReviewApp.Entity.UserProfile;
 import com.mobiquity.movieReviewApp.model.UserInformation;
+import java.util.Optional;
+
 
 public interface SignUpService {
 
@@ -17,5 +21,7 @@ public interface SignUpService {
    * @return message or userException
    */
   String registerAccount(String token);
+
+  Optional<UserProfile> findUserProfileByEmailId(String emailId);
 
 }

@@ -28,13 +28,19 @@ public class UserProfile {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long userId;
+
   private String name;
+
   @Column(unique = true)
   private String emailId;
+
   private String password;
+
   private boolean status;
+
   @CreationTimestamp
   private LocalDateTime createdOn;
+
   @UpdateTimestamp
   private LocalDateTime updatedOn;
 
