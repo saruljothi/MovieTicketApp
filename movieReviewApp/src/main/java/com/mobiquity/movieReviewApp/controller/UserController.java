@@ -1,9 +1,10 @@
 package com.mobiquity.movieReviewApp.controller;
 
+import com.mobiquity.movieReviewApp.model.ForgotPassword;
 import com.mobiquity.movieReviewApp.model.Login;
 import com.mobiquity.movieReviewApp.model.ResetPassword;
 import com.mobiquity.movieReviewApp.model.ResponseMovieApp;
-import com.mobiquity.movieReviewApp.model.UserProfile;
+import com.mobiquity.movieReviewApp.model.UserInformation;
 import com.mobiquity.movieReviewApp.service.LoginService;
 import com.mobiquity.movieReviewApp.service.PasswordRecoverService;
 import com.mobiquity.movieReviewApp.service.SignUpService;
@@ -37,8 +38,10 @@ public class UserController {
   }
 
   @PostMapping("/signUp")
-  public String signUp(@RequestBody UserProfile userProfile, BindingResult bindingResult) {
-    userValidator.validate(userProfile, bindingResult);
+  public ResponseEntity<ResponseMovieApp> signUp(@RequestBody UserInformation userInformation,
+      BindingResult bindingResult) {
+
+    userValidator.validate(userInformation, bindingResult);
 
     if (bindingResult.hasErrors()) {
       String issue = "";
@@ -46,37 +49,45 @@ public class UserController {
       for (ObjectError error : errors) {
         issue += error.getCode() + "\n";
       }
-      return issue;
+      return new ResponseEntity<>(new ResponseMovieApp(issue),
+          HttpStatus.FORBIDDEN);
     } else {
-      return signUpService.saveUser(userProfile);
+      return new ResponseEntity<>(new ResponseMovieApp(signUpService.saveUser(userInformation)),
+          HttpStatus.OK);
     }
 
   }
 
   @GetMapping("/activationLink")
-  public String activateLink(@RequestParam String token) {
-    return signUpService.registerAccount(token);
+  public ResponseEntity<ResponseMovieApp> activateLink(@RequestParam String token) {
+    return new ResponseEntity<>(new ResponseMovieApp(signUpService.registerAccount(token)),
+        HttpStatus.OK);
   }
 
   @PostMapping("/resetPassword")
-  public String resetPassword(@RequestBody ResetPassword resetPassword) {
-    return passwordRecoverService.resetPassword(resetPassword);
+  public ResponseEntity<Object> resetPassword(@RequestBody ResetPassword resetPassword) {
+    return new ResponseEntity<>(
+        new ResponseMovieApp(passwordRecoverService.resetPassword(resetPassword)), HttpStatus.OK);
   }
 
   @GetMapping("/forgotPassword")
-  public String forgotPassword(@RequestParam String emailId) {
-    return passwordRecoverService.passwordActivationLink(emailId);
+  public ResponseEntity<Object> forgotPassword(@RequestParam String emailId) {
+    return new ResponseEntity<>(
+        new ResponseMovieApp(passwordRecoverService.passwordActivationLink(emailId)),
+        HttpStatus.OK);
   }
 
   @PostMapping("/setNewPassword")
-  public String setNewPassword(@RequestBody ResetPassword resetPassword) {
-    return passwordRecoverService.UpdatePassword(resetPassword);
+  public ResponseEntity<Object> setNewPassword(@RequestBody ForgotPassword forgotPassword) {
+    return new ResponseEntity<>(
+        new ResponseMovieApp(passwordRecoverService.UpdatePassword(forgotPassword)), HttpStatus.OK);
   }
 
-  @GetMapping("/activationLinkForNewPassword")
-  public String getEmailIdForActivationLink(@RequestParam String token) {
-    return passwordRecoverService.getEmailIdForNewPassword(token);
-  }
+/*  @GetMapping("/activationLinkForNewPassword")
+  public ResponseEntity<Object> getEmailIdForActivationLink(@RequestParam String token)
+  {
+    return new ResponseEntity<>(new ResponseMovieApp(passwordRecoverService.getEmailIdForNewPassword(token)),HttpStatus.OK);
+  }*/
 
   /**
    * @param login Enter Registered Email and Password

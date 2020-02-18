@@ -1,8 +1,13 @@
 package com.mobiquity.movieReviewApp.service;
 
+import com.mobiquity.movieReviewApp.exception.UserException;
+import com.mobiquity.movieReviewApp.model.ForgotPassword;
 import com.mobiquity.movieReviewApp.model.ResetPassword;
 import com.mobiquity.movieReviewApp.repository.UserRepository;
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.MalformedJwtException;
+import io.jsonwebtoken.SignatureException;
 import javax.transaction.Transactional;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
@@ -16,7 +21,7 @@ public class PasswordRecoverServiceImpl implements PasswordRecoverService {
 
   private Claims claim;
 
-  public PasswordRecoverServiceImpl(UserRepository userRepository,UtilityService utilityService) {
+  public PasswordRecoverServiceImpl(UserRepository userRepository, UtilityService utilityService) {
     this.userRepository = userRepository;
     this.utilityService = utilityService;
   }
@@ -26,11 +31,11 @@ public class PasswordRecoverServiceImpl implements PasswordRecoverService {
   public String resetPassword(ResetPassword resetPassword) {
     String password = userRepository.findPasswordByEmailId(resetPassword.getEmailId());
 
-    if (BCrypt.checkpw(resetPassword.getOldPassword(), password)) {
-      updateHashedPassword(resetPassword);
+    if (password != null && BCrypt.checkpw(resetPassword.getOldPassword(), password)) {
+      updateHashedPassword(resetPassword.getNewPassword(), resetPassword.getEmailId());
       return "Password Updated";
     } else {
-      return "OldPassword is Not Matching";
+      throw new UserException("OldPassword is Not Matching");
     }
   }
 
@@ -43,22 +48,29 @@ public class PasswordRecoverServiceImpl implements PasswordRecoverService {
 
   @Override
   @Transactional
-  public String UpdatePassword(ResetPassword resetPassword) {
-    updateHashedPassword(resetPassword);
+  public String UpdatePassword(ForgotPassword forgotPassword) {
+    updateHashedPassword(forgotPassword.getPassword(),
+        getEmailIdForNewPassword(forgotPassword.getToken()));
     return "New Password is Updated";
   }
 
   @Override
   public String getEmailIdForNewPassword(String token) {
-    claim = utilityService.retrieveDataFromClaim(token);
-    return claim.getSubject().split(" ")[0];
+    try {
+      claim = utilityService.retrieveDataFromClaim(token);
+      return claim.getSubject().split(" ")[0];
+    } catch (ExpiredJwtException e) {
+      throw new UserException("Your activation link got expired");
+    } catch (MalformedJwtException | SignatureException e) {
+      throw new UserException("Activation link is not valid");
+    }
   }
 
-  private void updateHashedPassword(ResetPassword resetPassword) {
-    String hashedPassword = BCrypt.hashpw(resetPassword.getNewPassword(), BCrypt.gensalt());
+  private void updateHashedPassword(String password, String emailId) {
+    String hashedPassword = BCrypt.hashpw(password, BCrypt.gensalt());
     System.out.println(hashedPassword);
     userRepository
-        .updatePassword(resetPassword.getEmailId(), hashedPassword);
+        .updatePassword(emailId, hashedPassword);
   }
 
 

@@ -1,8 +1,8 @@
 package com.mobiquity.movieReviewApp.service;
 
+import com.mobiquity.movieReviewApp.Entity.UserProfile;
 import com.mobiquity.movieReviewApp.exception.UserException;
 import com.mobiquity.movieReviewApp.model.Login;
-import com.mobiquity.movieReviewApp.model.UserProfile;
 import com.mobiquity.movieReviewApp.repository.UserRepository;
 import java.util.Optional;
 import org.springframework.security.crypto.bcrypt.BCrypt;

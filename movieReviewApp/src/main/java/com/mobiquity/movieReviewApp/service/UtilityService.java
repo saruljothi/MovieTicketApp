@@ -33,7 +33,8 @@ public class UtilityService {
     email.setTo(emailId);
     email.setSubject("activation link");
     email.setText(
-        "activation link valid for 24 hrs" + "\n" + " http://localhost:8080/v1/activationLink?token="
+        "activation link valid for 24 hrs" + "\n"
+            + " http://localhost:8086/v1/activationLink?token="
             + generateJwtToken(emailId, userId));
     javaMailSender.send(email);
   }
