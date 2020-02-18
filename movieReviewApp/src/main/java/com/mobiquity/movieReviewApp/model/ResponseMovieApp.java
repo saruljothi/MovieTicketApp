@@ -1,5 +1,6 @@
 package com.mobiquity.movieReviewApp.model;
 
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -8,6 +9,6 @@ import lombok.Setter;
 @AllArgsConstructor
 public class ResponseMovieApp {
 
-  private String message;
+  private List<String> messages;
 
 }

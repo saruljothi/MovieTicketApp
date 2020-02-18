@@ -9,6 +9,8 @@ import com.mobiquity.movieReviewApp.service.LoginService;
 import com.mobiquity.movieReviewApp.service.PasswordRecoverService;
 import com.mobiquity.movieReviewApp.service.SignUpService;
 import com.mobiquity.movieReviewApp.validation.UserValidator;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -44,15 +46,15 @@ public class UserController {
     userValidator.validate(userInformation, bindingResult);
 
     if (bindingResult.hasErrors()) {
-      String issue = "";
+      List<String> issues = new ArrayList<>();
       List<ObjectError> errors = bindingResult.getAllErrors();
       for (ObjectError error : errors) {
-        issue += error.getCode() + "\n";
+        issues.add(error.getCode().toString());
       }
-      return new ResponseEntity<>(new ResponseMovieApp(issue),
+      return new ResponseEntity<>(new ResponseMovieApp(issues),
           HttpStatus.FORBIDDEN);
     } else {
-      return new ResponseEntity<>(new ResponseMovieApp(signUpService.saveUser(userInformation)),
+      return new ResponseEntity<>(new ResponseMovieApp(Arrays.asList(signUpService.saveUser(userInformation))),
           HttpStatus.OK);
     }
 
@@ -60,27 +62,27 @@ public class UserController {
 
   @GetMapping("/activationLink")
   public ResponseEntity<ResponseMovieApp> activateLink(@RequestParam String token) {
-    return new ResponseEntity<>(new ResponseMovieApp(signUpService.registerAccount(token)),
+    return new ResponseEntity<>(new ResponseMovieApp(Arrays.asList(signUpService.registerAccount(token))),
         HttpStatus.OK);
   }
 
   @PostMapping("/resetPassword")
   public ResponseEntity<Object> resetPassword(@RequestBody ResetPassword resetPassword) {
     return new ResponseEntity<>(
-        new ResponseMovieApp(passwordRecoverService.resetPassword(resetPassword)), HttpStatus.OK);
+        new ResponseMovieApp(Arrays.asList(passwordRecoverService.resetPassword(resetPassword))), HttpStatus.OK);
   }
 
   @GetMapping("/forgotPassword")
   public ResponseEntity<Object> forgotPassword(@RequestParam String emailId) {
     return new ResponseEntity<>(
-        new ResponseMovieApp(passwordRecoverService.passwordActivationLink(emailId)),
+        new ResponseMovieApp(Arrays.asList(passwordRecoverService.passwordActivationLink(emailId))),
         HttpStatus.OK);
   }
 
   @PostMapping("/setNewPassword")
   public ResponseEntity<Object> setNewPassword(@RequestBody ForgotPassword forgotPassword) {
     return new ResponseEntity<>(
-        new ResponseMovieApp(passwordRecoverService.UpdatePassword(forgotPassword)), HttpStatus.OK);
+        new ResponseMovieApp(Arrays.asList(passwordRecoverService.UpdatePassword(forgotPassword))), HttpStatus.OK);
   }
 
 /*  @GetMapping("/activationLinkForNewPassword")
@@ -96,7 +98,7 @@ public class UserController {
   @PostMapping("/login")
   public ResponseEntity<Object> login(@RequestBody Login login) {
     return new ResponseEntity<>(
-        new ResponseMovieApp(loginService.checkLogin(login)),
+        new ResponseMovieApp(Arrays.asList(loginService.checkLogin(login))),
         HttpStatus.OK);
   }
 
