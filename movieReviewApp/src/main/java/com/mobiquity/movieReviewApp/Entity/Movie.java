@@ -1,9 +1,12 @@
 package com.mobiquity.movieReviewApp.Entity;
 
+import java.util.HashSet;
+import java.util.Set;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -15,8 +18,8 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "series")
-public class Series {
+@Table(name = "movie")
+public class Movie {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,14 +27,14 @@ public class Series {
 
   private String name;
   private String releaseDate;
-  private String timeOnAir;
   private String description;
   private int runtime;
-  private int numberOfSeasons;
 
   private String metacriticScore;
   private String rottenTomatoes;
   private String imdbRating;
 
-}
+  @ManyToMany(mappedBy = "movieWatchList")
+  private Set<UserProfile> users = new HashSet<>();
 
+}

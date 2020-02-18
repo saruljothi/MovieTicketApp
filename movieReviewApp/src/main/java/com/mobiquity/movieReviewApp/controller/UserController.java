@@ -1,5 +1,6 @@
 package com.mobiquity.movieReviewApp.controller;
 
+import com.mobiquity.movieReviewApp.Entity.Movie;
 import com.mobiquity.movieReviewApp.model.ForgotPassword;
 import com.mobiquity.movieReviewApp.model.Login;
 import com.mobiquity.movieReviewApp.model.ResetPassword;
@@ -8,10 +9,12 @@ import com.mobiquity.movieReviewApp.model.UserInformation;
 import com.mobiquity.movieReviewApp.service.LoginService;
 import com.mobiquity.movieReviewApp.service.PasswordRecoverService;
 import com.mobiquity.movieReviewApp.service.SignUpService;
+import com.mobiquity.movieReviewApp.service.WatchlistService;
 import com.mobiquity.movieReviewApp.validation.UserValidator;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -19,6 +22,7 @@ import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -31,12 +35,14 @@ public class UserController {
   private PasswordRecoverService passwordRecoverService;
   private LoginService loginService;
   private UserValidator userValidator;
+  private WatchlistService watchlistService;
 
   public UserController(SignUpService signUpService, PasswordRecoverService passwordRecoverService,
-      UserValidator userValidator) {
+      UserValidator userValidator, WatchlistService watchlistService) {
     this.signUpService = signUpService;
     this.userValidator = userValidator;
     this.passwordRecoverService = passwordRecoverService;
+    this.watchlistService = watchlistService;
   }
 
   @PostMapping("/signUp")
@@ -49,14 +55,13 @@ public class UserController {
       List<String> issues = new ArrayList<>();
       List<ObjectError> errors = bindingResult.getAllErrors();
       for (ObjectError error : errors) {
-        issues.add(error.getCode().toString());
+        issues.add(error.getCode());
       }
       return new ResponseEntity<>(new ResponseMovieApp(issues),
           HttpStatus.FORBIDDEN);
-    } else {
-      return new ResponseEntity<>(new ResponseMovieApp(Arrays.asList(signUpService.saveUser(userInformation))),
-          HttpStatus.OK);
     }
+    return new ResponseEntity<>(new ResponseMovieApp(Arrays.asList(signUpService.saveUser(userInformation))),
+          HttpStatus.OK);
 
   }
 
@@ -100,6 +105,24 @@ public class UserController {
     return new ResponseEntity<>(
         new ResponseMovieApp(Arrays.asList(loginService.checkLogin(login))),
         HttpStatus.OK);
+  }
+
+  @PostMapping("/addMovieToWatchlist")
+  public ResponseEntity<ResponseMovieApp> addMovieToUserWatchList(/*@RequestBody String userEmailId, */@RequestBody Movie movie){
+    String userEmailId = "b";
+    return new ResponseEntity<>(
+        new ResponseMovieApp(Arrays.asList(watchlistService.addMovieToUsersWatchlist(userEmailId, movie))), HttpStatus.OK);
+  }
+
+  @PostMapping("/removeMovieFromWatchlist")
+  public ResponseEntity<ResponseMovieApp> removeMovieToUserWatchList(@RequestBody String userEmailId, Movie movie){
+    return new ResponseEntity<>(
+        new ResponseMovieApp(Arrays.asList(watchlistService.removeMovieFromAUsersWatchlist(userEmailId, movie))), HttpStatus.OK);
+  }
+
+  @GetMapping("/watchlist")
+  public ResponseEntity<Set<Movie>> getWatchList(@RequestHeader String userEmailId){
+    return new ResponseEntity<>(watchlistService.getUserWatchlist(userEmailId), HttpStatus.OK);
   }
 
 }
