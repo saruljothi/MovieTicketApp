@@ -5,10 +5,8 @@ import java.util.Set;
 
 public interface WatchlistService {
 
-  String addMovieToUsersWatchlist(String userEmailId, Movie movie);
+  String addMovieToUsersWatchlist(String userEmailId, String movieName);
 
-  String removeMovieFromAUsersWatchlist(String userEmailId, Movie movie);
-
-  Set<Movie> getUserWatchlist(String userEmailId);
+  String removeMovieFromAUsersWatchlist(String userEmailId, String movieName);
 
 }

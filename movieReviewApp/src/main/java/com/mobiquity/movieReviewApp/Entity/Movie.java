@@ -1,7 +1,9 @@
 package com.mobiquity.movieReviewApp.Entity;
 
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -12,6 +14,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.NaturalId;
 
 @Entity
 @Getter
@@ -25,6 +28,8 @@ public class Movie {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
+  @NaturalId(mutable = false)
+  @Column(nullable = false, updatable = false, unique = true)
   private String name;
   private String releaseDate;
   private String description;
@@ -36,5 +41,22 @@ public class Movie {
 
   @ManyToMany(mappedBy = "movieWatchList")
   private Set<UserProfile> users = new HashSet<>();
+
+  @Override
+  public boolean equals(Object o) {
+    if(this == o){
+      return true;
+    }
+    if(o == null || getClass() != o.getClass()){
+      return false;
+    }
+    Movie movie = (Movie) o;
+    return Objects.equals(this.name, movie.name);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(this.name);
+  }
 
 }

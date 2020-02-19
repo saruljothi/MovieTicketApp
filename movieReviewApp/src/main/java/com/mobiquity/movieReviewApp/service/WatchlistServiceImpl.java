@@ -12,43 +12,48 @@ import org.springframework.stereotype.Service;
 public class WatchlistServiceImpl implements WatchlistService {
 
   private UserRepository userRepository;
+  private MovieService movieService;
 
-  public WatchlistServiceImpl(UserRepository userRepository){
+  public WatchlistServiceImpl(UserRepository userRepository, MovieService movieService){
     this.userRepository = userRepository;
+    this.movieService = movieService;
   }
 
-  //TODO change addMovieToUsersWatchlist to get the movie from a MovieRepository which has a method to get a Movie by its title
   @Transactional
   @Override
-  public String addMovieToUsersWatchlist(String userEmailId, Movie movie) {
+  public String addMovieToUsersWatchlist(String userEmailId, String movieName) {
     Optional<UserProfile> userProfile = userRepository.findByEmailId(userEmailId);
-    //Optional<UserProfile> userProfile = userRepository.by(userEmailId);
-    if(userProfile.isPresent()){
-    userProfile.get().addMovieToWatchList(movie);
-    return "Movie has been added to watchlist";
-  }
-    return "Movie could not be added to watchlist as user does not exist";
-  }
-
-  //TODO change removeMovieFromAUsersWatchlist to get the movie from a MovieRepository which has a method to get a Movie by its title
-  @Transactional
-  @Override
-  public String removeMovieFromAUsersWatchlist(String userEmailId, Movie movie) {
-    Optional<UserProfile> userProfile = userRepository.findByEmailId(userEmailId);
-    if(userProfile.isPresent()){
-      if(userProfile.get().getMovieWatchList().contains(movie)){
-        userProfile.get().removeMovieFromWatchList(movie);
-        return "Movie has been removed from watchlist";
-      }
-      return "There is no such movie in the watchlist";
+    Movie movie = movieService.getMovie(movieName);
+    if(userProfile.isEmpty()){
+      return movie.getName() + " could not be added to watchlist as user does not exist.";
     }
-    return "Movie could not be added to watchlist as user does not exist";
+    if(movie == null){
+      return movieName + " could not be added to watchlist no such movie exists.";
+    }
+    if(userProfile.get().getMovieWatchList().contains(movie)){
+      return movie.getName() + " has already been added to user watchlist.";
+    }
+    userProfile.get().addMovieToWatchList(movieService.getMovie(movieName));
+    return movie.getName() + " has been added to watchlist.";
+
   }
 
   @Transactional
   @Override
-  public Set<Movie> getUserWatchlist(String userEmailId) {
+  public String removeMovieFromAUsersWatchlist(String userEmailId, String movieName) {
     Optional<UserProfile> userProfile = userRepository.findByEmailId(userEmailId);
-    return userProfile.map(UserProfile::getMovieWatchList).orElse(null);
+    Movie movie = movieService.getMovie(movieName);
+    if(userProfile.isEmpty()){
+      return movie.getName() + " could not be removed from watchlist as no such exists.";
+    }
+    if(movie == null){
+      return movieName + " could not be removed from watchlist as no such movie exists.";
+    }
+    if(!userProfile.get().getMovieWatchList().contains(movie)){
+      return movie.getName() + " is not in the user watchlist.";
+    }
+    userProfile.get().removeMovieFromWatchList(movieService.getMovie(movieName));
+    return "Movie has been removed from watchlist.";
   }
+
 }

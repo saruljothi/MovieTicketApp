@@ -7,4 +7,6 @@ public interface MovieService {
 
   String addMovie(Movie movie);
 
+  Movie getMovie(String name);
+
 }
