@@ -16,7 +16,6 @@ public class MovieServiceImpl implements MovieService {
 
   @Override
   public String addMovie(Movie movie) {
-
     Movie addedMovie = movieRepository.save(movie);
 
     return addedMovie.getName() + " has been added";
@@ -25,6 +24,7 @@ public class MovieServiceImpl implements MovieService {
   @Override
   public Movie getMovie(String name) {
     Optional<Movie> movie = movieRepository.findMovieByName(name);
+
     return movie.orElse(null);
   }
 

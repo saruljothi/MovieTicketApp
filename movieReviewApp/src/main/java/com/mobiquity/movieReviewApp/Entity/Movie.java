@@ -3,7 +3,6 @@ package com.mobiquity.movieReviewApp.Entity;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -14,7 +13,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.NaturalId;
 
 @Entity
 @Getter
@@ -28,8 +26,6 @@ public class Movie {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
-  @NaturalId(mutable = false)
-  @Column(nullable = false, updatable = false, unique = true)
   private String name;
   private String releaseDate;
   private String description;
@@ -39,7 +35,7 @@ public class Movie {
   private String rottenTomatoes;
   private String imdbRating;
 
-  @ManyToMany(mappedBy = "movieWatchList")
+  @ManyToMany(mappedBy = "movieWatchlist")
   private Set<UserProfile> users = new HashSet<>();
 
   @Override

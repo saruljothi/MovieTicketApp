@@ -1,8 +1,10 @@
 package com.mobiquity.movieReviewApp.controller;
 
 import com.mobiquity.movieReviewApp.Entity.Movie;
+import com.mobiquity.movieReviewApp.Entity.Series;
 import com.mobiquity.movieReviewApp.model.ResponseMovieApp;
 import com.mobiquity.movieReviewApp.service.MovieService;
+import com.mobiquity.movieReviewApp.service.SeriesService;
 import java.util.Arrays;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,13 +20,12 @@ import org.springframework.web.bind.annotation.RestController;
 public class ContentController {
 
   private MovieService movieService;
+  private SeriesService seriesService;
 
-  public ContentController(MovieService movieService) {
+  public ContentController(MovieService movieService, SeriesService seriesService) {
     this.movieService = movieService;
+    this.seriesService = seriesService;
   }
-
-  //@Autowired
-  //private SeriesService seriesService;
 
   @PostMapping("/addMovie")
   public ResponseEntity<Object> addMovie(@RequestBody Movie movie) {
@@ -33,18 +34,26 @@ public class ContentController {
 
   @GetMapping("/movie")
   public ResponseEntity<Object> getMovie(@RequestParam(name = "name") String name) {
-    if(movieService.getMovie(name) != null){
-      return new ResponseEntity<>(movieService.getMovie(name), HttpStatus.OK);
+    Movie movie = movieService.getMovie(name);
+    if(movie != null){
+      return new ResponseEntity<>(movie, HttpStatus.OK);
     }
     return new ResponseEntity<>(new ResponseMovieApp(Arrays.asList("Movie not found")), HttpStatus.NOT_FOUND);
   }
 
-  /*
+
   @PostMapping("/addSeries")
   public ResponseEntity<Object> addSeries(@RequestBody Series series) {
-    return new ResponseEntity<>(new Success(seriesService.addSeries(series)), HttpStatus.OK);
+    return new ResponseEntity<>(new ResponseMovieApp(Arrays.asList(seriesService.addSeries(series))), HttpStatus.OK);
   }
 
-   */
+  @GetMapping("/series")
+  public ResponseEntity<Object> getSeries(@RequestParam(name = "name") String name) {
+    Series series = seriesService.getSeries(name);
+    if(series != null){
+      return new ResponseEntity<>(series, HttpStatus.OK);
+    }
+    return new ResponseEntity<>(new ResponseMovieApp(Arrays.asList("Series not found")), HttpStatus.NOT_FOUND);
+  }
 
 }

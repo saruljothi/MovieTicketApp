@@ -16,6 +16,7 @@ import javax.persistence.NamedNativeQueries;
 import javax.persistence.NamedNativeQuery;
 import javax.persistence.Table;
 import lombok.Data;
+import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.NaturalId;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -52,15 +53,27 @@ public class UserProfile {
   private LocalDateTime updatedOn;
 
   @ManyToMany(cascade = CascadeType.ALL)
-  // @JoinTable(joinColumns = {@JoinColumn })
-  Set<Movie> movieWatchList = new HashSet<>();
+  Set<Movie> movieWatchlist = new HashSet<>();
 
-  public void addMovieToWatchList(Movie movie){
-    movieWatchList.add(movie);
+  @ManyToMany(cascade = CascadeType.ALL)
+  Set<Series> seriesWatchlist = new HashSet<>();
+
+  public void addMovieToWatchlist(Movie movie){
+    movieWatchlist.add(movie);
   }
 
-  public void removeMovieFromWatchList(Movie movie){
-    movieWatchList.remove(movie);
+  public void removeMovieFromWatchlist(Movie movie){
+    movieWatchlist.remove(movie);
   }
+
+  public void addSeriesToWatchlist(Series series){
+    seriesWatchlist.add(series);
+  }
+
+  public void removeSeriesFromWatchlist(Series series){
+    seriesWatchlist.remove(series);
+  }
+
+
 
 }
