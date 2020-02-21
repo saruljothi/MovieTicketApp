@@ -1,5 +1,7 @@
 package com.mobiquity.movieReviewApp.validation;
 
+import com.mobiquity.movieReviewApp.Entity.UserProfile;
+import com.mobiquity.movieReviewApp.exception.UserException;
 import com.mobiquity.movieReviewApp.model.UserInformation;
 import com.mobiquity.movieReviewApp.service.SignUpService;
 import com.mobiquity.movieReviewApp.validation.utils.EmailValidator;
@@ -7,6 +9,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
+
+import java.util.Optional;
 
 @Component
 public class UserValidator implements Validator {
@@ -34,13 +38,14 @@ public class UserValidator implements Validator {
     if (!emailValidator.validate(userInformation.getEmailId())) {
       errors.rejectValue("emailId", "Please enter a valid e-mail address.");
     }
-    if (signUpService.findUserProfileByEmailId(userInformation.getEmailId()) != null) {
+
+    if (signUpService.findUserProfileByEmailId(userInformation.getEmailId()).isPresent()) {
       errors.rejectValue("emailId", "This email is already in use.");
     }
 
     ValidationUtils
         .rejectIfEmptyOrWhitespace(errors, "password", "Password field should not be empty.");
-    if (userInformation.getPassword().length() < 8) {
+    if (userInformation.getPassword().length() < 2) {
       errors.rejectValue("password", "Password should be at least 8 characters.");
     }
 
