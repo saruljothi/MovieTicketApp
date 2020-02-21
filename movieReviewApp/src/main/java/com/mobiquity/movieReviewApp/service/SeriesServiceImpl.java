@@ -2,15 +2,14 @@ package com.mobiquity.movieReviewApp.service;
 
 import com.mobiquity.movieReviewApp.Entity.Series;
 import com.mobiquity.movieReviewApp.repository.SeriesRepository;
-import java.util.Optional;
 import org.springframework.stereotype.Service;
 
 @Service
-public class SeriesServiceImpl implements SeriesService{
+public class SeriesServiceImpl implements SeriesService {
 
   private SeriesRepository seriesRepository;
 
-  public SeriesServiceImpl(SeriesRepository seriesRepository){
+  public SeriesServiceImpl(SeriesRepository seriesRepository) {
     this.seriesRepository = seriesRepository;
   }
 
@@ -23,9 +22,7 @@ public class SeriesServiceImpl implements SeriesService{
 
   @Override
   public Series getSeries(String name) {
-    Optional<Series> series = seriesRepository.findSeriesByName(name);
-
-    return series.orElse(null);
+    return seriesRepository.findSeriesByName(name).orElse(null);
   }
 
 }

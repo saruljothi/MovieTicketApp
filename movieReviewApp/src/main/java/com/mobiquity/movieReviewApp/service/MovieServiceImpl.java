@@ -2,7 +2,6 @@ package com.mobiquity.movieReviewApp.service;
 
 import com.mobiquity.movieReviewApp.Entity.Movie;
 import com.mobiquity.movieReviewApp.repository.MovieRepository;
-import java.util.Optional;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -23,9 +22,7 @@ public class MovieServiceImpl implements MovieService {
 
   @Override
   public Movie getMovie(String name) {
-    Optional<Movie> movie = movieRepository.findMovieByName(name);
-
-    return movie.orElse(null);
+    return movieRepository.findMovieByName(name).orElse(null);
   }
 
 }
