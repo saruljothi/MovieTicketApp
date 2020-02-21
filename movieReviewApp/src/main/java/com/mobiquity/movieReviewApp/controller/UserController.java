@@ -49,14 +49,13 @@ public class UserController {
       List<String> issues = new ArrayList<>();
       List<ObjectError> errors = bindingResult.getAllErrors();
       for (ObjectError error : errors) {
-        issues.add(error.getCode().toString());
+        issues.add(error.getCode());
       }
       return new ResponseEntity<>(new ResponseMovieApp(issues),
           HttpStatus.FORBIDDEN);
-    } else {
-      return new ResponseEntity<>(new ResponseMovieApp(Arrays.asList(signUpService.saveUser(userInformation))),
-          HttpStatus.OK);
     }
+    return new ResponseEntity<>(new ResponseMovieApp(Arrays.asList(signUpService.saveUser(userInformation))),
+          HttpStatus.OK);
 
   }
 

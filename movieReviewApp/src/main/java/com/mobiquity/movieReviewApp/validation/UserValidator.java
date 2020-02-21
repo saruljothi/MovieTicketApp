@@ -26,7 +26,6 @@ public class UserValidator implements Validator {
   public void validate(Object o, Errors errors) {
     UserInformation userInformation = (UserInformation) o;
 
-    String email = userInformation.getEmailId();
     EmailValidator emailValidator = new EmailValidator();
 
     ValidationUtils
@@ -34,7 +33,7 @@ public class UserValidator implements Validator {
     if (!emailValidator.validate(userInformation.getEmailId())) {
       errors.rejectValue("emailId", "Please enter a valid e-mail address.");
     }
-    if (signUpService.findUserProfileByEmailId(userInformation.getEmailId()) != null) {
+    if (signUpService.findUserProfileByEmailId(userInformation.getEmailId()).isPresent()) {
       errors.rejectValue("emailId", "This email is already in use.");
     }
 
