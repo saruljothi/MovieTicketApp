@@ -25,8 +25,6 @@ public interface UserRepository extends JpaRepository<UserProfile, Long> {
   @Modifying
   void updatePassword(String emailId,String newPassword);
 
-  UserProfile findUserProfileByEmailId(String emailId);
-
   Optional<UserProfile> findByEmailId(String email);
 
 }

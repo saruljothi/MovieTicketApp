@@ -30,7 +30,6 @@ public class UserValidator implements Validator {
   public void validate(Object o, Errors errors) {
     UserInformation userInformation = (UserInformation) o;
 
-    String email = userInformation.getEmailId();
     EmailValidator emailValidator = new EmailValidator();
 
     ValidationUtils

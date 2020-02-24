@@ -15,14 +15,10 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "series")
-public class Series extends Content{
+@Table(name = "movie")
+public class Movie extends Content{
 
-  private String timeOnAir;
-  private int numberOfSeasons;
-
-  @ManyToMany(mappedBy = "seriesWatchlist")
+  @ManyToMany(mappedBy = "movieWatchlist")
   private Set<UserProfile> users = new HashSet<>();
 
 }
-
