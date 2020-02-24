@@ -16,7 +16,7 @@ import java.util.Collections;
 import java.util.List;
 
 @RestController
-@RequestMapping("/signUp")
+@RequestMapping("/v1/signUp")
 public class UserRegistrationController {
 
     private SignUpService signUpService;

@@ -38,6 +38,7 @@ public class MovieReviewApp {
 	props.put("mail.debug", "true");
 		return mailSender ;
 	}
+
 	@Bean
 	public Dotenv dotenv()
 	{

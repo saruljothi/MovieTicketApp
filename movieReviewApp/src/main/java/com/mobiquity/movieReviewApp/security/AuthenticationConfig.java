@@ -9,6 +9,18 @@ import org.springframework.security.web.authentication.SimpleUrlAuthenticationSu
 
 @EnableWebSecurity(debug = false)
 public class AuthenticationConfig extends WebSecurityConfigurerAdapter {
+    private static final String[] AUTH_WHITELIST = {
+            //public endpoints
+            "/v1/signUp/**",
+            "/v1/forgotPassword/**",
+            //swagger ui
+            "/v2/api-docs",
+            "/configuration/ui",
+            "/swagger-resources/**",
+            "/configuration/security",
+            "/swagger-ui.html",
+            "/webjars/**"
+    };
     private UserDetailsServiceImpl userDetailsService;
 
     public AuthenticationConfig(UserDetailsServiceImpl userDetailsService) {
@@ -21,18 +33,16 @@ public class AuthenticationConfig extends WebSecurityConfigurerAdapter {
         auth.userDetailsService(userDetailsService).passwordEncoder(new BCryptPasswordEncoder());
     }
 
-
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-
         http.csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/signUp/**", "/forgotPassword/**",
-                        "/swagger-ui.html**", "/swagger-resources/**", "/webjars/**").permitAll()
+                .antMatchers(AUTH_WHITELIST).permitAll()
                 .antMatchers("/**").authenticated()
                 .and()
                 .formLogin()
                 .successHandler(new SimpleUrlAuthenticationSuccessHandler("http://localhost:8086/welcome/"))
                 .permitAll();
     }
+
 }

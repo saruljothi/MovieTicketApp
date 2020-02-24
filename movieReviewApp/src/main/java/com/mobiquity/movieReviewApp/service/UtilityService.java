@@ -37,7 +37,7 @@ public class UtilityService {
         email.setSubject("activation link");
         email.setText(
                 "activation link valid for 24 hrs" + "\n"
-                        + " http://localhost:8086/v1/activationLink?token="
+                        + " http://localhost:8086/v1/signUp/activationLink?token="
                         + generateJwtToken(emailId, userId));
         javaMailSender.send(email);
     }
@@ -48,7 +48,7 @@ public class UtilityService {
         email.setSubject("Password reset");
         email.setText(
                 "reset link valid for 24 hrs" + "\n"
-                        + " http://localhost:8086/open/setNewPassword?token="
+                        + " http://localhost:8086/v1/forgotPassword/resetLink?token="
                         + generateJwtToken(user.getEmailId()));
         javaMailSender.send(email);
     }

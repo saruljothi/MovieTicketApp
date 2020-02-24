@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Collections;
 
 @RestController
-@RequestMapping("")
+@RequestMapping("/v1")
 public class PasswordController {
 
     private PasswordManagementService passwordManagementService;
@@ -36,7 +36,7 @@ public class PasswordController {
                 ), HttpStatus.OK);
     }
 
-    @PutMapping("/api/v1/changePassword")
+    @PutMapping("/changePassword")
     //Todo: Validate the user so only the user can change their own password
     public ResponseEntity<Object> updatePassword(@RequestBody PasswordUpdate passwordChangeAndAccount) {
         return new ResponseEntity<>(
