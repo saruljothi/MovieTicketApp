@@ -51,8 +51,6 @@ public class SignUpServiceImpl implements SignUpService {
       userRepository.updateStatus(id);
       return "You are Registered Successfully";
     } catch (ExpiredJwtException e) {
-      /*userRepository
-          .deleteByUserIdAndStatus(Long.parseLong(claim.getSubject().split(" ")[1]), false);*/
       throw new UserException("Your activation link got expired");
     } catch (MalformedJwtException | SignatureException e) {
       throw new UserException("Activation link is not valid");

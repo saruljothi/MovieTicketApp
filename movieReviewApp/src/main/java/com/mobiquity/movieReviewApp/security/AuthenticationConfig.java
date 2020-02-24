@@ -27,11 +27,8 @@ public class AuthenticationConfig extends WebSecurityConfigurerAdapter {
 
         http.csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/v1/signUp", "/v1/activationLink",
-                        "/v1/forgotPassword", "/v1/setNewPassword",
-                        "/v2/", "/v2/loggedintest/").permitAll()
-                .antMatchers("/v1/resetPassword", "/v2/hasRole",
-                        "/v2/loggedintest/%d").hasRole("USER")
+                .antMatchers("/signUp/**", "/forgotPassword/**",
+                        "/swagger-ui.html**", "/swagger-resources/**", "/webjars/**").permitAll()
                 .antMatchers("/**").authenticated()
                 .and()
                 .formLogin()
