@@ -8,8 +8,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Collection;
 import java.util.List;
 
-public class UserSecurity implements UserDetails {
-
+class UserSecurity implements UserDetails {
 
     private String password;
     private String username;
@@ -19,9 +18,9 @@ public class UserSecurity implements UserDetails {
     private boolean enabled;
     private Collection<? extends GrantedAuthority> authorities;
 
-    public UserSecurity(UserProfile user) {
+    UserSecurity(UserProfile user) {
         this.password = user.getPassword();
-        this.username = user.getName();
+        this.username = user.getEmailId();
         this.enabled = user.isStatus();
         this.accountNonExpired = true;
         this.accountNonLocked = true;

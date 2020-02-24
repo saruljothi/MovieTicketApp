@@ -1,5 +1,6 @@
 package com.mobiquity.movieReviewApp.controller;
 
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,10 +13,9 @@ import java.security.Principal;
 public class FrontPageController {
 
     @GetMapping
-    public String welcomePage(Principal principal) {
-        return principal.toString();
-//        return SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
-//        return "Welcome funny user person {enter user here}";
+    public String welcomePage(Principal principal, Authentication auth) {
+
+        return String.format("%s%n\t%s", principal.toString(), auth.getName());
     }
 
 
