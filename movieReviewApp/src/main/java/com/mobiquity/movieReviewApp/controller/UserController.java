@@ -1,10 +1,10 @@
 package com.mobiquity.movieReviewApp.controller;
 
-import com.mobiquity.movieReviewApp.model.ForgotPassword;
-import com.mobiquity.movieReviewApp.model.Login;
-import com.mobiquity.movieReviewApp.model.ResetPassword;
-import com.mobiquity.movieReviewApp.model.ResponseMovieApp;
-import com.mobiquity.movieReviewApp.model.UserInformation;
+import com.mobiquity.movieReviewApp.model.userManagement.ForgotPassword;
+import com.mobiquity.movieReviewApp.model.userManagement.Login;
+import com.mobiquity.movieReviewApp.model.userManagement.ResetPassword;
+import com.mobiquity.movieReviewApp.model.userManagement.ResponseMovieApp;
+import com.mobiquity.movieReviewApp.model.userManagement.UserInformation;
 import com.mobiquity.movieReviewApp.service.LoginService;
 import com.mobiquity.movieReviewApp.service.PasswordRecoverService;
 import com.mobiquity.movieReviewApp.service.SignUpService;

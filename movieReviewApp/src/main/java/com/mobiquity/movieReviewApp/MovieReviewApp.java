@@ -1,11 +1,15 @@
 package com.mobiquity.movieReviewApp;
 
 import com.mobiquity.movieReviewApp.client.OmdbClient;
+import com.mobiquity.movieReviewApp.client.OmdbFeignClient;
+import com.mobiquity.movieReviewApp.controller.FeignController;
 import io.github.cdimascio.dotenv.Dotenv;
 import java.util.Properties;
+import jdk.jfr.Enabled;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -16,6 +20,7 @@ import org.springframework.web.client.RestTemplate;
 @SpringBootApplication
 @EnableScheduling
 @EnableJpaRepositories(basePackages = {"com.mobiquity.movieReviewApp"})
+@EnableFeignClients
 public class MovieReviewApp {
 
 
@@ -52,12 +57,5 @@ public class MovieReviewApp {
     return new RestTemplate();
   }
 
-//  @Bean
-//  public OmdbClient omdbClient(@Value("${urls.base.omdb}") String uriBase,
-//      @Value("${authentication.key.name.omdb}") String keyName,
-//      @Value("${authentication.key.value.omdb}") String keyValue) {
-//
-//    return new OmdbClient(uriBase,keyName,keyValue);
-//  }
 
 }

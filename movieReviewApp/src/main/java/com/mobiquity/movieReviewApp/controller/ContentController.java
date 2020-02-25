@@ -2,7 +2,7 @@ package com.mobiquity.movieReviewApp.controller;
 
 import com.mobiquity.movieReviewApp.Entity.Movie;
 import com.mobiquity.movieReviewApp.Entity.Series;
-import com.mobiquity.movieReviewApp.model.ResponseMovieApp;
+import com.mobiquity.movieReviewApp.model.userManagement.ResponseMovieApp;
 import com.mobiquity.movieReviewApp.service.MovieService;
 import com.mobiquity.movieReviewApp.service.SeriesService;
 import java.util.Arrays;

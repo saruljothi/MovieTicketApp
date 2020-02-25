@@ -1,4 +1,4 @@
-package com.mobiquity.movieReviewApp.model;
+package com.mobiquity.movieReviewApp.model.userManagement;
 
 import java.util.List;
 import lombok.AllArgsConstructor;

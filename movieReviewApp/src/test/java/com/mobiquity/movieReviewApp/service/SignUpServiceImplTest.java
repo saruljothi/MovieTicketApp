@@ -4,10 +4,9 @@ package com.mobiquity.movieReviewApp.service;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-import com.github.database.rider.core.api.dataset.DataSet;
 import com.github.database.rider.junit5.api.DBRider;
 import com.mobiquity.movieReviewApp.exception.UserException;
-import com.mobiquity.movieReviewApp.model.UserInformation;
+import com.mobiquity.movieReviewApp.model.userManagement.UserInformation;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

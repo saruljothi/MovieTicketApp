@@ -2,7 +2,7 @@ package com.mobiquity.movieReviewApp.service;
 
 import com.mobiquity.movieReviewApp.Entity.UserProfile;
 import com.mobiquity.movieReviewApp.exception.UserException;
-import com.mobiquity.movieReviewApp.model.UserInformation;
+import com.mobiquity.movieReviewApp.model.userManagement.UserInformation;
 import com.mobiquity.movieReviewApp.repository.UserRepository;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;

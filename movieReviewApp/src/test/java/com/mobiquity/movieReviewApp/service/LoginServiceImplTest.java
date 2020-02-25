@@ -8,7 +8,7 @@ import static org.mockito.Mockito.when;
 
 import com.mobiquity.movieReviewApp.Entity.UserProfile;
 import com.mobiquity.movieReviewApp.exception.UserException;
-import com.mobiquity.movieReviewApp.model.Login;
+import com.mobiquity.movieReviewApp.model.userManagement.Login;
 import com.mobiquity.movieReviewApp.repository.UserRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

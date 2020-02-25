@@ -1,7 +1,7 @@
 package com.mobiquity.movieReviewApp.service;
 
-import com.mobiquity.movieReviewApp.model.ForgotPassword;
-import com.mobiquity.movieReviewApp.model.ResetPassword;
+import com.mobiquity.movieReviewApp.model.userManagement.ForgotPassword;
+import com.mobiquity.movieReviewApp.model.userManagement.ResetPassword;
 
 public interface PasswordRecoverService {
 

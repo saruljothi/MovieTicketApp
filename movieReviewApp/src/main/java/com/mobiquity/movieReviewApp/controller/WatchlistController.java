@@ -1,6 +1,6 @@
 package com.mobiquity.movieReviewApp.controller;
 
-import com.mobiquity.movieReviewApp.model.ResponseMovieApp;
+import com.mobiquity.movieReviewApp.model.userManagement.ResponseMovieApp;
 import com.mobiquity.movieReviewApp.service.WatchlistService;
 import java.util.Arrays;
 import org.springframework.http.HttpStatus;

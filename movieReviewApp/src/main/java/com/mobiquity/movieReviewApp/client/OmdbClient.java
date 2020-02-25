@@ -19,7 +19,7 @@ public class OmdbClient {
   RestTemplate restTemplate;
   @Value("${urls.base.omdb}")
   private String uriBase;
-  @Value("${authentication.key.name.omdb}")
+  @Value("${urls.key.name.omdb}")
   private String keyName;
   @Autowired
   private Dotenv dotenv;

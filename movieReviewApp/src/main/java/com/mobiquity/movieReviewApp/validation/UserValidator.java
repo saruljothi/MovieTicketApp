@@ -1,6 +1,6 @@
 package com.mobiquity.movieReviewApp.validation;
 
-import com.mobiquity.movieReviewApp.model.UserInformation;
+import com.mobiquity.movieReviewApp.model.userManagement.UserInformation;
 import com.mobiquity.movieReviewApp.service.SignUpService;
 import com.mobiquity.movieReviewApp.validation.utils.EmailValidator;
 import org.springframework.stereotype.Component;

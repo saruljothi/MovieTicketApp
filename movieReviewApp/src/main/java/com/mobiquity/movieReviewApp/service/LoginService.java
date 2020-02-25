@@ -1,6 +1,6 @@
 package com.mobiquity.movieReviewApp.service;
 
-import com.mobiquity.movieReviewApp.model.Login;
+import com.mobiquity.movieReviewApp.model.userManagement.Login;
 
 public interface LoginService {
 
