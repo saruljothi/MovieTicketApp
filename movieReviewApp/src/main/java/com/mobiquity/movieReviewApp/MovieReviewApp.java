@@ -1,12 +1,7 @@
 package com.mobiquity.movieReviewApp;
 
-import com.mobiquity.movieReviewApp.client.OmdbClient;
-import com.mobiquity.movieReviewApp.client.OmdbFeignClient;
-import com.mobiquity.movieReviewApp.controller.FeignController;
 import io.github.cdimascio.dotenv.Dotenv;
 import java.util.Properties;
-import jdk.jfr.Enabled;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.openfeign.EnableFeignClients;
