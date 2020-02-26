@@ -5,10 +5,10 @@ import com.mobiquity.movieReviewApp.exception.UserException;
 import com.mobiquity.movieReviewApp.model.PasswordReset;
 import com.mobiquity.movieReviewApp.model.PasswordUpdate;
 import com.mobiquity.movieReviewApp.repository.UserRepository;
-import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.SignatureException;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 
@@ -28,6 +28,7 @@ public class PasswordManagementServiceImpl implements PasswordManagementService 
 
     @Transactional
     @Override
+    @Secured("ROLE_USER")
     public String updatePassword(PasswordUpdate passwordUpdate) {
         String password = userRepository.findPasswordByEmailId(passwordUpdate.getEmailId());
 
