@@ -1,68 +1,49 @@
 package com.mobiquity.movieReviewApp.security;
 
 import com.mobiquity.movieReviewApp.domain.accountmanagement.entity.UserProfile;
-import com.mobiquity.movieReviewApp.domain.accountmanagement.model.UserInformation;
-import com.mobiquity.movieReviewApp.repository.UserRepository;
-import com.mobiquity.movieReviewApp.domain.accountmanagement.service.SignUpServiceImpl;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.security.crypto.bcrypt.BCrypt;
-import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.annotation.DirtiesContext.ClassMode;
-import org.springframework.test.context.ContextConfiguration;
+import org.springframework.context.ApplicationContext;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.Authentication;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.context.web.WebAppConfiguration;
 
-import javax.transaction.Transactional;
+import java.security.Principal;
 
-@ContextConfiguration(classes = {AuthenticationConfig.class,
-        SecurityConfig.class})
-@WebAppConfiguration
-//@ContextConfiguration(classes = AuthenticationConfig.class)
+//@ContextConfiguration(classes = {AuthenticationConfig.class,
+//        SecurityConfig.class})
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
-//@DirtiesContext(classMode = ClassMode.BEFORE_EACH_TEST_METHOD)
-//@Transactional
-//@TestPropertySource(locations = "classpath:test.properties")
+@WebAppConfiguration
 public class UserDetailsServiceImplIT {
 
-//    private UserRepository db;
-//    private SignUpServiceImpl signUpService;
-    private UserProfile testUser;
+    private AuthenticationConfig securityConfig;
+    private static final Logger logger = LoggerFactory.getLogger(UserDetailsServiceImplIT.class);;
 
-//    @Autowired
-//    public UserDetailsServiceImplIT(AuthenticationConfig config, UserRepository db, SignUpServiceImpl signUpService) {
-//        this.db = db;
-//        this.signUpService = signUpService;
-//        testUser = setUpUser();
-//
-//    }
+    @Autowired
+    public UserDetailsServiceImplIT(AuthenticationConfig securityConfig) {
+        this.securityConfig = securityConfig;
+    }
 
-//    private UserProfile setUpUser() {
-//        UserInformation user = new UserInformation();
-//        user.setName("user1");
-//        user.setEmailId("user1@email.com");
-//        user.setPassword(BCrypt.hashpw("password", BCrypt.gensalt()));
-//        return signUpService.setUserProfile(user);
-//    }
-
-
-//    @BeforeEach
-//    void setUp() {
-//        db.save(testUser);
-//    }
-
-//    @Test
-//    void userExistsInDb() {
-//        db.findByEmailId("user1@email.com");
-//    }
 
     @Test
     void userAuthenticated() {
+
+        Principal testPrinc = new PrinceTest("Richard");
+        Authentication testAuth = new AuthTest(testPrinc);
+
+        try {
+            securityConfig.authenticationManagerBean().authenticate(testAuth);
+        } catch (Exception e) {
+            logger.info(e.getMessage());
+        }
         System.out.println("Stop");
     }
 
