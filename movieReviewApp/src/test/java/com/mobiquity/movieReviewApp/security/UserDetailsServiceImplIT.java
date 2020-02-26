@@ -15,46 +15,55 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.test.context.web.WebAppConfiguration;
 
 import javax.transaction.Transactional;
 
-@ContextConfiguration(classes = SecurityConfig.class)
+@ContextConfiguration(classes = {AuthenticationConfig.class,
+        SecurityConfig.class})
+@WebAppConfiguration
+//@ContextConfiguration(classes = AuthenticationConfig.class)
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
-@DirtiesContext(classMode = ClassMode.BEFORE_EACH_TEST_METHOD)
-@Transactional
+//@DirtiesContext(classMode = ClassMode.BEFORE_EACH_TEST_METHOD)
+//@Transactional
 //@TestPropertySource(locations = "classpath:test.properties")
 public class UserDetailsServiceImplIT {
 
-    private UserRepository db;
-    private SignUpServiceImpl signUpService;
+//    private UserRepository db;
+//    private SignUpServiceImpl signUpService;
     private UserProfile testUser;
 
-    @Autowired
-    public UserDetailsServiceImplIT(UserRepository db, SignUpServiceImpl signUpService) {
-        this.db = db;
-        this.signUpService = signUpService;
-        testUser = setUpUser();
+//    @Autowired
+//    public UserDetailsServiceImplIT(AuthenticationConfig config, UserRepository db, SignUpServiceImpl signUpService) {
+//        this.db = db;
+//        this.signUpService = signUpService;
+//        testUser = setUpUser();
+//
+//    }
 
-    }
-
-    private UserProfile setUpUser() {
-        UserInformation user = new UserInformation();
-        user.setName("user1");
-        user.setEmailId("user1@email.com");
-        user.setPassword(BCrypt.hashpw("password", BCrypt.gensalt()));
-        return signUpService.setUserProfile(user);
-    }
+//    private UserProfile setUpUser() {
+//        UserInformation user = new UserInformation();
+//        user.setName("user1");
+//        user.setEmailId("user1@email.com");
+//        user.setPassword(BCrypt.hashpw("password", BCrypt.gensalt()));
+//        return signUpService.setUserProfile(user);
+//    }
 
 
-    @BeforeEach
-    void setUp() {
-        db.save(testUser);
-    }
+//    @BeforeEach
+//    void setUp() {
+//        db.save(testUser);
+//    }
+
+//    @Test
+//    void userExistsInDb() {
+//        db.findByEmailId("user1@email.com");
+//    }
 
     @Test
-    void userExistsInDb() {
-        db.findByEmailId("user1@email.com");
+    void userAuthenticated() {
+        System.out.println("Stop");
     }
 
     @Test
