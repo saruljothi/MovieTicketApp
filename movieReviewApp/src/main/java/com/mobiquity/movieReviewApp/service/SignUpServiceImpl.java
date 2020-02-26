@@ -65,7 +65,7 @@ public class SignUpServiceImpl implements SignUpService {
     }
 
 
-    private UserProfile setUserProfile(UserInformation userInformation) {
+    public UserProfile setUserProfile(UserInformation userInformation) {
         UserProfile userProfile = new UserProfile();
         userProfile.setEmailId(userInformation.getEmailId());
         userProfile.setName(userInformation.getName());
