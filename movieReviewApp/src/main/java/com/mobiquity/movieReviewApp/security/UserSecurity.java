@@ -1,6 +1,6 @@
 package com.mobiquity.movieReviewApp.security;
 
-import com.mobiquity.movieReviewApp.Entity.UserProfile;
+import com.mobiquity.movieReviewApp.domain.accountmanagement.entity.UserProfile;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;

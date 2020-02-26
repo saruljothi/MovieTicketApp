@@ -1,6 +1,6 @@
 package com.mobiquity.movieReviewApp.security;
 
-import com.mobiquity.movieReviewApp.Entity.UserProfile;
+import com.mobiquity.movieReviewApp.domain.accountmanagement.entity.UserProfile;
 import com.mobiquity.movieReviewApp.repository.UserRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -10,7 +10,6 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
-import javax.swing.text.html.Option;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;

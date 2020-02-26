@@ -1,22 +1,20 @@
 package com.mobiquity.movieReviewApp.security;
 
-import com.mobiquity.movieReviewApp.Entity.UserProfile;
-import com.mobiquity.movieReviewApp.model.UserInformation;
+import com.mobiquity.movieReviewApp.domain.accountmanagement.entity.UserProfile;
+import com.mobiquity.movieReviewApp.domain.accountmanagement.model.UserInformation;
 import com.mobiquity.movieReviewApp.repository.UserRepository;
-import com.mobiquity.movieReviewApp.service.SignUpServiceImpl;
+import com.mobiquity.movieReviewApp.domain.accountmanagement.service.SignUpServiceImpl;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import org.springframework.test.context.web.WebAppConfiguration;
 
 import javax.transaction.Transactional;
 

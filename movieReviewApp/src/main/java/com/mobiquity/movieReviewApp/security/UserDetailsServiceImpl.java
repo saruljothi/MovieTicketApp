@@ -1,6 +1,6 @@
 package com.mobiquity.movieReviewApp.security;
 
-import com.mobiquity.movieReviewApp.Entity.UserProfile;
+import com.mobiquity.movieReviewApp.domain.accountmanagement.entity.UserProfile;
 import com.mobiquity.movieReviewApp.repository.UserRepository;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
