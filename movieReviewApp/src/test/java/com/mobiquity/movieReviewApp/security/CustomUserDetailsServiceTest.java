@@ -9,6 +9,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCrypt;
 
 import java.util.Optional;
 
@@ -17,13 +18,13 @@ import static org.mockito.ArgumentMatchers.any;
 
 //2) create tests for an in memory db (requires set up of h2 and then running tests against that)
 @ExtendWith(MockitoExtension.class)
-class UserDetailsServiceImplTest {
+class CustomUserDetailsServiceTest {
 
     @Mock
     private UserRepository repository;
 
     @InjectMocks
-    private UserDetailsServiceImpl service;
+    private CustomUserDetailsService service;
 
     @Test
     void whenUser_DoesNotExist_ExpectUsernameNotFoundException() {
@@ -35,7 +36,7 @@ class UserDetailsServiceImplTest {
     }
 
     @Test
-    void whenUser_Exists_ExpectUserSecurityReturned() {
+    void whenUser_Exists_ExpectCustomUserDetailsReturned() {
 
         String matchingPassword = "matching";
         Mockito.when(repository.findByEmailId("temp")).thenReturn(dummyEntity(matchingPassword));
@@ -53,6 +54,23 @@ class UserDetailsServiceImplTest {
         entity.setName("exists");
         entity.setPassword(password);
         return Optional.of(entity);
+    }
+
+    @Test
+    void whenUserDetailsReturned_andPasswordMatches_thenUserAuthenticated() {
+        UserProfile testUserPrep;
+        testUserPrep = new UserProfile();
+        testUserPrep.setEmailId("test@mail.com");
+        testUserPrep.setName("test user");
+        testUserPrep.setStatus(true);
+        testUserPrep.setPassword(BCrypt.hashpw("password", BCrypt.gensalt()));
+        CustomUserDetails testUser = new CustomUserDetails(testUserPrep);
+
+        Mockito.when(repository.findByEmailId(any())).thenReturn(Optional.of(testUserPrep));
+
+        CustomUserDetails test = (CustomUserDetails) service.loadUserByUsername("roc");
+
+        assertEquals(testUser, test);
     }
 
 }

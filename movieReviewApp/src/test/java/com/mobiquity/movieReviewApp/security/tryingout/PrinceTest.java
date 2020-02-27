@@ -1,4 +1,4 @@
-package com.mobiquity.movieReviewApp.security;
+package com.mobiquity.movieReviewApp.security.tryingout;
 
 import javax.security.auth.Subject;
 import java.security.Principal;

@@ -10,11 +10,11 @@ import org.springframework.stereotype.Service;
 import java.util.Optional;
 
 @Service
-public class UserDetailsServiceImpl implements UserDetailsService {
+public class CustomUserDetailsService implements UserDetailsService {
 
     private UserRepository repository;
 
-    public UserDetailsServiceImpl(UserRepository repository) {
+    public CustomUserDetailsService(UserRepository repository) {
         this.repository = repository;
     }
 
@@ -22,7 +22,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
         Optional<UserProfile> userProfile = repository.findByEmailId(s);
 
-        return new UserSecurity(
+        return new CustomUserDetails(
                 userProfile.orElseThrow(() -> new UsernameNotFoundException("User not found"))
         );
     }

@@ -1,6 +1,6 @@
-package com.mobiquity.movieReviewApp.security;
+package com.mobiquity.movieReviewApp.security.tryingout;
 
-import com.mobiquity.movieReviewApp.domain.accountmanagement.entity.UserProfile;
+import com.mobiquity.movieReviewApp.security.AuthenticationConfig;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -8,9 +8,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.ApplicationContext;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.Authentication;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.context.web.WebAppConfiguration;
@@ -19,16 +16,16 @@ import java.security.Principal;
 
 //@ContextConfiguration(classes = {AuthenticationConfig.class,
 //        SecurityConfig.class})
-@ExtendWith(SpringExtension.class)
-@SpringBootTest
-@WebAppConfiguration
-public class UserDetailsServiceImplIT {
+//@ExtendWith(SpringExtension.class)
+//@SpringBootTest
+//@WebAppConfiguration
+public class CustomUserDetailsServiceIT {
 
     private AuthenticationConfig securityConfig;
-    private static final Logger logger = LoggerFactory.getLogger(UserDetailsServiceImplIT.class);;
+    private static final Logger logger = LoggerFactory.getLogger(CustomUserDetailsServiceIT.class);;
 
     @Autowired
-    public UserDetailsServiceImplIT(AuthenticationConfig securityConfig) {
+    public CustomUserDetailsServiceIT(AuthenticationConfig securityConfig) {
         this.securityConfig = securityConfig;
     }
 
