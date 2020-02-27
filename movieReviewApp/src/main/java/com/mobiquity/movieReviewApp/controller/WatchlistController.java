@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
-@RequestMapping("/watchlist")
+@RequestMapping("/v1/watchlist")
 public class WatchlistController {
 
   private WatchlistService watchlistService;
@@ -58,5 +58,13 @@ public class WatchlistController {
         Arrays.asList(watchlistService.removeSeriesFromUserWatchlist(emailId, series))),
         HttpStatus.OK);
   }
+//
+//  @PostMapping("/addToWatchList")
+//  public ResponseEntity<ResponseMovieApp> addToWatchList(
+//      @RequestParam(name = "movieName") String movieName
+//  )
+//  {
+//
+//  }
 
 }

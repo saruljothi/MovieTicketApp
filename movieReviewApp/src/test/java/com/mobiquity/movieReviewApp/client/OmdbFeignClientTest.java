@@ -16,6 +16,6 @@ public class OmdbFeignClientTest {
   {
    Search search= omdbFeignClient.getMovies("The Social Network","53c922c5");
    // Search search= omdbFeignClient.getMovies();
-    System.out.println(search.getTotalResults());
+    System.out.println(search.getSearch());
   }
 }

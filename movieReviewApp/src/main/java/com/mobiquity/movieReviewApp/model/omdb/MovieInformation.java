@@ -1,14 +1,19 @@
 package com.mobiquity.movieReviewApp.model.omdb;
 
-import lombok.Getter;
-import lombok.Setter;
-import org.springframework.stereotype.Service;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Value;
 
-@Getter
-@Setter
+@Value
 public class MovieInformation {
-private String title;
-private String year;
-private String type;
-private String poster;
+
+  @JsonProperty("Title")
+  private String title;
+  @JsonProperty("Year")
+  private String year;
+  @JsonProperty("Type")
+  private String type;
+  @JsonProperty("Poster")
+  private String poster;
+  @JsonProperty("imdbID")
+  private String imdbId;
 }
