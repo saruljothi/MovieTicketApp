@@ -21,9 +21,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 public abstract class ControllerSecurityTest
         implements SecurityResults {
 
-    @Autowired
     protected MockMvc mockMvc;
-
     private int[] unAuthorizedStatusCodes = {401, 302};
 
     @Override
@@ -46,4 +44,8 @@ public abstract class ControllerSecurityTest
         return !statusMatchesUnauthCodes.get();
     }
 
+    @Autowired
+    final void setMockMvc(MockMvc mockMvc) {
+        this.mockMvc = mockMvc;
+    }
 }
