@@ -4,6 +4,8 @@ import com.mobiquity.movieReviewApp.security.AuthenticationConfig;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,9 +46,11 @@ public class CustomUserDetailsServiceIT {
         System.out.println("Stop");
     }
 
-    @Test
-    void unauthorisedUser_publicDomain_success() {
-        System.out.println("Stop");
+//    @Test
+    @ParameterizedTest
+    @ValueSource(strings = {"url1", "url2"})
+    void unauthorisedUser_publicDomain_success(String someValue) {
+        System.out.println(someValue);
 
     }
 

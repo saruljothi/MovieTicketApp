@@ -17,4 +17,9 @@ public class GreetingsController {
         return String.format("%s%n\t%s", principal.toString(), auth.getName());
     }
 
+    @GetMapping("/v1/signUp/test")
+    public String welcomeBack() {
+        return "in";
+    }
+
 }

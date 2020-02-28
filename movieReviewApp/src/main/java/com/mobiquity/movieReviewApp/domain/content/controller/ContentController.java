@@ -6,6 +6,8 @@ import com.mobiquity.movieReviewApp.domain.accountmanagement.model.ResponseMovie
 import com.mobiquity.movieReviewApp.domain.content.service.MovieService;
 import com.mobiquity.movieReviewApp.domain.content.service.SeriesService;
 import java.util.Arrays;
+import java.util.Collections;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -38,13 +40,13 @@ public class ContentController {
     if(movie != null){
       return new ResponseEntity<>(movie, HttpStatus.OK);
     }
-    return new ResponseEntity<>(new ResponseMovieApp(Arrays.asList("Movie not found")), HttpStatus.NOT_FOUND);
+    return new ResponseEntity<>(new ResponseMovieApp(Collections.singletonList("Movie not found")), HttpStatus.NOT_FOUND);
   }
 
 
   @PostMapping("/addSeries")
   public ResponseEntity<Object> addSeries(@RequestBody Series series) {
-    return new ResponseEntity<>(new ResponseMovieApp(Arrays.asList(seriesService.addSeries(series))), HttpStatus.OK);
+    return new ResponseEntity<>(new ResponseMovieApp(Collections.singletonList(seriesService.addSeries(series))), HttpStatus.OK);
   }
 
   @GetMapping("/series")
@@ -53,7 +55,7 @@ public class ContentController {
     if(series != null){
       return new ResponseEntity<>(series, HttpStatus.OK);
     }
-    return new ResponseEntity<>(new ResponseMovieApp(Arrays.asList("Series not found")), HttpStatus.NOT_FOUND);
+    return new ResponseEntity<>(new ResponseMovieApp(Collections.singletonList("Series not found")), HttpStatus.NOT_FOUND);
   }
 
 }

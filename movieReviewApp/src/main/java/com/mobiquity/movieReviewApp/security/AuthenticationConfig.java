@@ -22,7 +22,9 @@ public class AuthenticationConfig extends WebSecurityConfigurerAdapter {
             "/swagger-resources/**",
             "/configuration/security",
             "/swagger-ui.html",
-            "/webjars/**"
+            "/webjars/**",
+            //h2
+            "/h2/**"
     };
     private UserDetailsService userDetailsService;
 
@@ -30,9 +32,9 @@ public class AuthenticationConfig extends WebSecurityConfigurerAdapter {
         this.userDetailsService = userDetailsService;
     }
 
+
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-
 
         auth.userDetailsService(userDetailsService).passwordEncoder(new BCryptPasswordEncoder());
     }
@@ -49,9 +51,9 @@ public class AuthenticationConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .logout()
                 .permitAll()
-                .and().csrf().disable();
+                .and().csrf().disable()
+        .headers().frameOptions().disable() ;
     }
-
 
 
 }

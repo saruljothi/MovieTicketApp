@@ -1,83 +1,83 @@
 package com.mobiquity.movieReviewApp.security;
 
 
-import com.mobiquity.movieReviewApp.domain.accountmanagement.controller.GreetingsController;
-import com.mobiquity.movieReviewApp.domain.accountmanagement.controller.PasswordController;
-import com.mobiquity.movieReviewApp.domain.accountmanagement.controller.UserRegistrationController;
-import com.mobiquity.movieReviewApp.domain.accountmanagement.entity.UserProfile;
-import com.mobiquity.movieReviewApp.domain.accountmanagement.service.PasswordManagementService;
-import com.mobiquity.movieReviewApp.domain.accountmanagement.service.SignUpService;
-import com.mobiquity.movieReviewApp.domain.accountmanagement.validation.UserValidator;
-import com.mobiquity.movieReviewApp.domain.content.controller.ContentController;
-import com.mobiquity.movieReviewApp.domain.content.controller.WatchlistController;
-import com.mobiquity.movieReviewApp.repository.UserRepository;
-import io.swagger.annotations.Authorization;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.mockito.junit.jupiter.MockitoExtension;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.boot.test.mock.mockito.MockBeans;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.crypto.bcrypt.BCrypt;
+import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
-import javax.persistence.EntityManagerFactory;
-import java.util.Optional;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+    import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @ExtendWith(SpringExtension.class)
-//@SpringBootTest
-@EnableWebSecurity
-@WebMvcTest(controllers = {
-        GreetingsController.class,
-        PasswordController.class,
-        UserRegistrationController.class,
-})
-@MockBeans({
-        @MockBean(PasswordManagementService.class),
-        @MockBean(SignUpService.class),
-        @MockBean(UserValidator.class),
-        @MockBean(CustomUserDetailsService.class)
-})
+@AutoConfigureMockMvc
+@SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 public class AuthenticationIT {
 
     private MockMvc mockMvc;
-    private PasswordManagementService passwordService;
-    private SignUpService signUpService;
-    private UserValidator userValidator;
 
     @Autowired
-    public AuthenticationIT(MockMvc mockMvc,
-                            PasswordManagementService passwordService,
-                            SignUpService signUpService,
-                            UserValidator userValidator) {
+    public AuthenticationIT(MockMvc mockMvc) {
         this.mockMvc = mockMvc;
-        this.passwordService = passwordService;
-        this.signUpService = signUpService;
-        this.userValidator = userValidator;
+    }
+
+    @Test
+    void unauthorisedUser_privateDomain_unauthorized() throws Exception {
+        mockMvc.perform(get("/welcome/"))
+                .andExpect(status().isFound());
     }
 
     @Test
     void unauthorisedUser_publicDomain_success() throws Exception {
-        System.out.println("Stop");
-//        mockMvc.perform(get("/welcome"))
-//                .andExpect(status().isForbidden());
+        mockMvc.perform(post("/v1/signUp/"))
+                .andExpect(status().isOk());
     }
+
+    @ParameterizedTest
+    @ValueSource(strings = {"/v1/forgotPassword/reset", "/v1/signUp/activationLink"})
+    void unauthorisedUser_GET_publicDomain_badRequest_parametersMissing(String someValue) throws Exception {
+        System.out.println(someValue);
+        mockMvc.perform(get(someValue))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    void test() throws Exception{
+        mockMvc.perform(put("/v1/changePassword/"))
+                .andExpect(status().isForbidden());
+    }
+
+    //PROTECTED ENDPOINTS
+
+    // /welcome  --GET
+    // /v1/changePassword --PUT
+
+    // /content/addMovie --POST
+    // /content/movie --GET
+    // /content/addSeries --POST
+    // /content/series --GET
+
+    // /watchlist/addMovie --POST
+    // /watchlist/removeMovie --POST
+    // /watchlist/addSeries --POST
+    // /watchlist/removeSeries --POST
+
+
+
+    //OPEN ENDPOINTS
+
+    // /v1/forgotPassword/reset  --GET
+    // /v1/forgotPassword/newPassword  --PUT
+
+    // /v1/signUp/activationLink  --GET
+    // /v1/signUp/login  --POST
+
+
 
 }
