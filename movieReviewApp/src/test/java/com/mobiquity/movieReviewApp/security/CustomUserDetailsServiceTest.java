@@ -16,7 +16,6 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 
-//2) create tests for an in memory db (requires set up of h2 and then running tests against that)
 @ExtendWith(MockitoExtension.class)
 class CustomUserDetailsServiceTest {
 
