@@ -1,6 +1,7 @@
 package com.mobiquity.movieReviewApp;
 
 import io.github.cdimascio.dotenv.Dotenv;
+import org.modelmapper.ModelMapper;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
@@ -42,6 +43,11 @@ public class MovieReviewApp {
     @Bean
     public Dotenv dotenv() {
         return Dotenv.load();
+    }
+
+    @Bean
+    public ModelMapper modelMapper() {
+        return new ModelMapper();
     }
 
 }

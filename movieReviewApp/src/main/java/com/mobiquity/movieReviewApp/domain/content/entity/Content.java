@@ -1,5 +1,6 @@
 package com.mobiquity.movieReviewApp.domain.content.entity;
 
+import java.time.OffsetDateTime;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
