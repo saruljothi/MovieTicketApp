@@ -2,6 +2,7 @@ package com.mobiquity.movieReviewApp;
 
 import io.github.cdimascio.dotenv.Dotenv;
 import org.springframework.boot.SpringApplication;
+import org.springframework.boot.SpringBootConfiguration;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
@@ -16,6 +17,7 @@ import java.util.Properties;
 @SpringBootApplication
 @EnableScheduling
 @EnableJpaRepositories(basePackages = {"com.mobiquity.movieReviewApp"})
+@SpringBootConfiguration
 public class MovieReviewApp {
 
     public static void main(String[] args) {

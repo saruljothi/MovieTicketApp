@@ -14,11 +14,12 @@
 //import org.springframework.beans.factory.annotation.Autowired;
 //import org.springframework.boot.test.context.SpringBootTest;
 //import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
+//import org.springframework.context.annotation.Configuration;
+//import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 //import org.springframework.security.test.context.support.WithMockUser;
 //
 //@SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 //@DBRider
-//@WithMockUser
 //class PasswordManagementServiceImplTest {
 //
 //  @Autowired
