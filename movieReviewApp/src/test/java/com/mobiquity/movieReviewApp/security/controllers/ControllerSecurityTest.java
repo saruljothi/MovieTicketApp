@@ -31,17 +31,11 @@ public abstract class ControllerSecurityTest
 
     @Override
     final public boolean isAuthenticated(String url, int... codes) throws Exception {
-        AtomicBoolean statusMatchesUnauthCodes = new AtomicBoolean(false);
         int status = mockMvc.perform(get(url)).andReturn().getResponse().getStatus();
 
-        Arrays.stream(codes).forEach(
-                (i) ->
-                {
-                    if (i == status || statusMatchesUnauthCodes.get()) {
-                        statusMatchesUnauthCodes.set(true);
-                    }
-                });
-        return !statusMatchesUnauthCodes.get();
+        return Arrays.stream(codes).noneMatch(
+                (code)-> code == status
+        );
     }
 
     @Autowired

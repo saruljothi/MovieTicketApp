@@ -17,7 +17,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 
 @ExtendWith(MockitoExtension.class)
-class CustomUserDetailsServiceTest {
+public class CustomUserDetailsServiceTest {
 
     @Mock
     private UserRepository repository;

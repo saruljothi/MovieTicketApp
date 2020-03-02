@@ -50,11 +50,11 @@
 //    assertEquals("OldPassword is Not Matching",exception.getLocalizedMessage());
 //  }
 //
-//  @Test
-//  public void checkIfActivationLinkForPasswordIsSent() {
-//    String result = passwordManagementService.forgotPasswordLink("ss@gmail.com");
-//    assertEquals("Password Reset link sent to your email", result);
-//  }
+////  @Test
+////  public void checkIfActivationLinkForPasswordIsSent() {
+////    String result = passwordManagementService.forgotPasswordLink("ss@gmail.com");
+////    assertEquals("Password Reset link sent to your email", result);
+////  }
 //
 //  // Test for Forgot password.
 ////  @Test
