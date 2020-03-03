@@ -98,7 +98,7 @@ public class WatchlistServiceImpl implements WatchlistService {
       return noSuchContentMessage;
     }
     if(content.getClass().equals(Movie.class)){
-      if(!userProfile.get().getMovieWatchlist().contains(content)){
+      if(userProfile.get().getMovieWatchlist().contains(content)){ //removed !
         return content.getName() + alreadyDoneMessage;
       }
     }else if(content.getClass().equals(Series.class)){

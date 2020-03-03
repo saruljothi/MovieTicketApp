@@ -1,47 +1,58 @@
 package com.mobiquity.movieReviewApp;
 
 import io.github.cdimascio.dotenv.Dotenv;
+import java.util.Properties;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.Properties;
 
 @SpringBootApplication
 @EnableScheduling
 @EnableJpaRepositories(basePackages = {"com.mobiquity.movieReviewApp"})
+@EnableFeignClients
 public class MovieReviewApp {
 
-    public static void main(String[] args) {
-        SpringApplication.run(MovieReviewApp.class, args);
-    }
 
-    @Bean
-    public JavaMailSender javaMailSender() {
+	public static void main(String[] args) {
+		SpringApplication.run(MovieReviewApp.class, args);
+	}
 
-        Dotenv dotenv = Dotenv.load();
-        JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
-        mailSender.setHost("smtp.gmail.com");
-        mailSender.setPort(587);
+@Bean
+	public JavaMailSender javaMailSender(){
 
-        mailSender.setUsername("MovieReviewApplicationMob@gmail.com");
-        mailSender.setPassword(dotenv.get("password"));
+	Dotenv dotenv = Dotenv.load();
+	JavaMailSenderImpl mailSender =new JavaMailSenderImpl();
+	mailSender.setHost("smtp.gmail.com");
+	mailSender.setPort(587);
 
-        Properties props = mailSender.getJavaMailProperties();
-        props.put("mail.transport.protocol", "smtp");
-        props.put("mail.smtp.auth", "true");
-        props.put("mail.smtp.starttls.enable", "true");
-        props.put("mail.debug", "true");
-        return mailSender;
-    }
+	mailSender.setUsername("MovieReviewApplicationMob@gmail.com");
+	mailSender.setPassword(dotenv.get("password"));
 
-    @Bean
-    public Dotenv dotenv() {
-        return Dotenv.load();
-    }
+	Properties props = mailSender.getJavaMailProperties();
+	props.put("mail.transport.protocol", "smtp");
+	props.put("mail.smtp.auth", "true");
+	props.put("mail.smtp.starttls.enable", "true");
+	props.put("mail.debug", "true");
+		return mailSender ;
+	}
+	@Bean
+	public Dotenv dotenv()
+	{
+		return Dotenv.load();
+	}
+
+  @Bean
+  public RestTemplate restTemplate() {
+    return new RestTemplate();
+  }
+
 
 }
