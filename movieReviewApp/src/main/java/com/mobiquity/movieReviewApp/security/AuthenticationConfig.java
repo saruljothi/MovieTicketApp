@@ -1,5 +1,6 @@
 package com.mobiquity.movieReviewApp.security;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -12,6 +13,7 @@ import org.springframework.security.web.authentication.SimpleUrlAuthenticationSu
 @EnableWebSecurity(debug = false)
 @EnableGlobalMethodSecurity(securedEnabled = true)
 public class AuthenticationConfig extends WebSecurityConfigurerAdapter {
+
     private static final String[] AUTH_WHITELIST = {
             //public endpoints
             "/v1/signUp/**",
@@ -26,17 +28,21 @@ public class AuthenticationConfig extends WebSecurityConfigurerAdapter {
             //h2
             "/h2/**"
     };
+
+    private final String port;
     private UserDetailsService userDetailsService;
 
-    public AuthenticationConfig(CustomUserDetailsService userDetailsService) {
-        this.userDetailsService = userDetailsService;
-    }
+    public AuthenticationConfig(CustomUserDetailsService userDetailsService,
+                                @Value("${server.port}") String port) {
 
+        this.userDetailsService = userDetailsService;
+        this.port = port;
+    }
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
 
-            auth.userDetailsService(userDetailsService).passwordEncoder(new BCryptPasswordEncoder());
+        auth.userDetailsService(userDetailsService).passwordEncoder(new BCryptPasswordEncoder());
     }
 
     @Override
@@ -46,14 +52,14 @@ public class AuthenticationConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/**").authenticated()
                 .and()
                 .formLogin()
-                .successHandler(new SimpleUrlAuthenticationSuccessHandler("http://localhost:8086/welcome/"))
+                .successHandler(new SimpleUrlAuthenticationSuccessHandler(
+                        "http://localhost:" + this.port + "/welcome/"))
                 .permitAll()
                 .and()
                 .logout()
                 .permitAll()
                 .and().csrf().disable()
-        .headers().frameOptions().disable() ;
+                .headers().frameOptions().disable();
     }
-
 
 }

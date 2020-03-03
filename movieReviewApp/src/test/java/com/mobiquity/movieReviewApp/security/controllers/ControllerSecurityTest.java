@@ -9,7 +9,6 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.Arrays;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 
@@ -34,7 +33,7 @@ public abstract class ControllerSecurityTest
         int status = mockMvc.perform(get(url)).andReturn().getResponse().getStatus();
 
         return Arrays.stream(codes).noneMatch(
-                (code)-> code == status
+                (code) -> code == status
         );
     }
 
