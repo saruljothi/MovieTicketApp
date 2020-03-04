@@ -1,6 +1,7 @@
-package com.mobiquity.movieReviewApp.domain.accountmanagement.exception;
+package com.mobiquity.movieReviewApp.exception;
 
-import com.mobiquity.movieReviewApp.domain.content.model.ResponseMovieApp;
+import com.mobiquity.movieReviewApp.domain.accountmanagement.exception.UserException;
+import com.mobiquity.movieReviewApp.domain.accountmanagement.model.ResponseMovieApp;
 import java.util.Arrays;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

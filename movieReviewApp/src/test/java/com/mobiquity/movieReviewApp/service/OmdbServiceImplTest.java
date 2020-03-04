@@ -7,12 +7,4 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 class OmdbServiceImplTest {
 
-  @Autowired
-  OmdbService omdbService;
-
-  @Test
-  public void checkIfResponseIsGoodFromOmdb()
-  {
-    omdbService.getMovies();
-  }
 }
