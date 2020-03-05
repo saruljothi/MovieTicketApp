@@ -1,0 +1,28 @@
+<----INFO---->
+400 means that it has been found, but parameters are missing.. this is a fine test for checking auth
+
+if user MUST BE AUTHORIZED then expect isFound() redirect 302
+if user IS AUTHORIZED then expect either 200 or 400 (depending on parameters)
+NO NEED TO DIFFERENTIATE BETWEEN GET, POST OR PUT. Authorized validation takes place before these endpoint are ever hit
+not 401 or 302
+<------------>
+
+//OPEN ENDPOINTS
+"/v1/forgotPassword/reset"
+"/v1/signUp/activationLink"
+"/v1/forgotPassword/newPassword"
+"/v1/signUp/login"
+
+//PROTECTED ENDPOINTS
+
+"/welcome"
+"/v1/changePassword"
+
+"/content/addMovie"
+"/content/movie"
+"/content/addSeries"
+"/content/series"
+"/watchlist/addMovie"
+"/watchlist/removeMovie"
+"/watchlist/addSeries"
+"/watchlist/removeSeries"
