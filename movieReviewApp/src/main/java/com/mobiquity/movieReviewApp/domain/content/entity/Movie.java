@@ -8,6 +8,7 @@ import javax.persistence.Table;
 
 import com.mobiquity.movieReviewApp.domain.accountmanagement.entity.UserProfile;
 import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -18,6 +19,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "movie")
+@EqualsAndHashCode
 public class Movie extends Content{
 
   @ManyToMany(mappedBy = "movieWatchlist")

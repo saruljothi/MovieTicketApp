@@ -10,11 +10,11 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface UserRepository extends JpaRepository<UserProfile, Long> {
 
-  Optional<UserProfile> deleteByUserIdAndStatus(long Id,Boolean status);
+  //Optional<UserProfile> deleteByUserIdAndStatus(long Id,Boolean status);
 
   @Modifying
  // @Query(value= "update user_profile set status=true where user_id= :userId" , nativeQuery = true)
-  void updateStatus(long userId);
+  void updateStatus(Long userId);
 
   @Modifying
 //  @Query(value="delete from user_profile where status=false and created_on < :localDateTime" , nativeQuery = true)
@@ -27,4 +27,6 @@ public interface UserRepository extends JpaRepository<UserProfile, Long> {
 
   Optional<UserProfile> findByEmailId(String email);
 
+@Modifying
+  void updatePasswordStatusByEmailId(String emailId,boolean status);
 }

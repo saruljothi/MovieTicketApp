@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collections;
+import org.springframework.web.servlet.view.RedirectView;
 
 @RestController
 @RequestMapping("/v1")
@@ -35,6 +36,14 @@ public class PasswordController {
                                 passwordManagementService.updateForgottenPasswordWithNewPassword(passwordAndToken))
                 ), HttpStatus.OK);
     }
+
+   /* @GetMapping("forgotPassword/resetLink")
+    public RedirectView redirectToUrl(@RequestParam String token){
+        RedirectView rv = new RedirectView();
+        rv.setPropagateQueryParams(true);
+        rv.setUrl("http://localhost:8086/v1/forgotPassword/resetLink");
+         return rv;
+    }*/
 
     @PutMapping("/changePassword")
     //Todo: Validate the user so only the user can change their own password

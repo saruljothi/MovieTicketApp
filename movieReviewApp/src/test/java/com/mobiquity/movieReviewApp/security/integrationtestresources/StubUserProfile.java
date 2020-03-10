@@ -9,7 +9,7 @@ public class StubUserProfile extends UserProfile {
 
     StubUserProfile(boolean status, String email, String password, String name) {
         super();
-        super.setStatus(status);
+        super.setRegistrationStatus(status);
         super.setEmailId(email);
         super.setName(name);
         this.unsecuredPassword = password;
@@ -28,7 +28,7 @@ public class StubUserProfile extends UserProfile {
         UserProfile user = new UserProfile();
         user.setPassword(super.getPassword());
         user.setEmailId(super.getEmailId());
-        user.setStatus(super.isStatus());
+        user.setRegistrationStatus(super.isRegistrationStatus());
         user.setName(super.getName());
         return user;
     }
