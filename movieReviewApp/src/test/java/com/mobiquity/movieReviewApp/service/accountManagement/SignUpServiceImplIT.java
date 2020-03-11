@@ -1,4 +1,4 @@
-package com.mobiquity.movieReviewApp.service;
+package com.mobiquity.movieReviewApp.service.accountManagement;
 
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -17,7 +17,7 @@ import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 @DBRider
-class SignUpServiceImplTest {
+class SignUpServiceImplIT {
 
   @Autowired
   SignUpService signUpService;
@@ -41,8 +41,9 @@ class SignUpServiceImplTest {
     userInformation.setEmailId("www@gmail.com");
     UserException e = assertThrows(UserException.class, () -> signUpService.saveUser(
         userInformation));
-    assertEquals("Your email is already registered.",e.getLocalizedMessage());
+    assertEquals("Your email is already registered.", e.getLocalizedMessage());
   }
+
   @Test
   public void checkIfTokenIsExpired() {
     String token = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJzQGdtYWlsLmNvbSAyIiwiZXhwIjoxNTgwOTA2NDg2LCJpYXQiOjE1ODA4MjAwODZ9.1EAgHyfosb4f7N9zIlPDlxiZBIekEgq5ZWHu0eCQft-B5Nd2C9gyAuiVO-dJ98f5JcLkHtG2W8cVDm2R_mf7KQ";

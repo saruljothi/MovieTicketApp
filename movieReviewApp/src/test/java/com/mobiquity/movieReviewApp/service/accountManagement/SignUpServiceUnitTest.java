@@ -1,4 +1,4 @@
-package com.mobiquity.movieReviewApp.service;
+package com.mobiquity.movieReviewApp.service.accountManagement;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -11,13 +11,8 @@ import com.mobiquity.movieReviewApp.domain.accountmanagement.model.UserInformati
 import com.mobiquity.movieReviewApp.domain.accountmanagement.service.SignUpServiceImpl;
 import com.mobiquity.movieReviewApp.domain.accountmanagement.service.UtilityService;
 import com.mobiquity.movieReviewApp.repository.UserRepository;
-import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
-import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.MalformedJwtException;
-import io.jsonwebtoken.SignatureAlgorithm;
-import java.util.Date;
-import java.util.HashMap;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -28,7 +23,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 
 @ExtendWith(MockitoExtension.class)
 
-public class SignUpServiceUnitTest extends SignUpPasswordManagementHelperClass{
+public class SignUpServiceUnitTest extends SignUpPasswordManagementHelperClass {
 
   @InjectMocks
   private SignUpServiceImpl signUpServiceimpl;
@@ -80,7 +75,6 @@ public class SignUpServiceUnitTest extends SignUpPasswordManagementHelperClass{
         () -> signUpServiceimpl.registerAccount("iojdxend"));
     assertEquals("Activation link is not valid", userException.getLocalizedMessage());
   }
-
 
 
   private UserInformation setUserInformation() {

@@ -5,11 +5,10 @@ import lombok.Getter;
 
 @AllArgsConstructor
 @Getter
-public class UserException extends RuntimeException {
+public class PasswordException extends RuntimeException {
 
-  public UserException(String message) {
+  public PasswordException(String message) {
     super(message);
 
   }
-
 }

@@ -8,6 +8,7 @@ import lombok.Setter;
 @Setter
 @Data
 public class PasswordReset {
+
   private String password;
   private String token;
 }
