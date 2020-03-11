@@ -12,7 +12,6 @@ import com.mobiquity.movieReviewApp.domain.accountmanagement.model.PasswordUpdat
 import com.mobiquity.movieReviewApp.domain.accountmanagement.service.PasswordManagementServiceImpl;
 import com.mobiquity.movieReviewApp.domain.accountmanagement.service.UtilityService;
 import com.mobiquity.movieReviewApp.repository.UserRepository;
-import org.apache.catalina.User;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -20,7 +19,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
-public class PasswordMangementServiceUnitTest extends SignUpPasswordManagementHelperClass{
+public class PasswordMangementServiceUnitTest extends SignUpPasswordManagementHelperClass {
 
   @InjectMocks
   PasswordManagementServiceImpl passwordManagementService;
@@ -55,28 +54,31 @@ public class PasswordMangementServiceUnitTest extends SignUpPasswordManagementHe
         passwordManagementService.forgotPasswordLink("ds@gmail.com"));
 
   }
+
   @Test
-  public void checkIfThereIsNoSuchEmailIdExists(){
-    UserException ue = assertThrows(UserException.class,()-> passwordManagementService.forgotPasswordLink("ds@gmail.com"));
+  public void checkIfThereIsNoSuchEmailIdExists() {
+    UserException ue = assertThrows(UserException.class,
+        () -> passwordManagementService.forgotPasswordLink("ds@gmail.com"));
     assertEquals("No user with that email exists",
         ue.getLocalizedMessage());
   }
 
   @Test
-  public void checkIfPassWordIsUpdatedForForgotPassword(){
-    expiration=1000*30*60;
+  public void checkIfPassWordIsUpdatedForForgotPassword() {
+    expiration = 1000 * 30 * 60;
     when(userRepository.findByEmailId("ds@gmail.com")).thenReturn(
         java.util.Optional.of(getUserProfile()));
     String token = getToken(expiration);
     when(utilityService.retrieveDataFromClaim(any())).thenReturn(getClaim(token));
 
-   assertEquals("Password Updated", passwordManagementService.updateForgottenPasswordWithNewPassword(getPasswordReset()));
+    assertEquals("Password Updated",
+        passwordManagementService.updateForgottenPasswordWithNewPassword(getPasswordReset()));
   }
 
   private PasswordReset getPasswordReset() {
     PasswordReset passwordReset = new PasswordReset();
     passwordReset.setPassword("qwerty");
-    passwordReset.setToken(getToken(24*60*60));
+    passwordReset.setToken(getToken(24 * 60 * 60));
     return passwordReset;
   }
 
