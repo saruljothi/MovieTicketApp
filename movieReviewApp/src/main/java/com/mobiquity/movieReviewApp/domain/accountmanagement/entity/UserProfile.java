@@ -3,16 +3,7 @@ package com.mobiquity.movieReviewApp.domain.accountmanagement.entity;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToMany;
-import javax.persistence.NamedNativeQueries;
-import javax.persistence.NamedNativeQuery;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import com.mobiquity.movieReviewApp.domain.content.entity.Movie;
 import com.mobiquity.movieReviewApp.domain.content.entity.Series;
@@ -52,10 +43,10 @@ public class UserProfile {
   @UpdateTimestamp
   private LocalDateTime updatedOn;
 
-  @ManyToMany(cascade = CascadeType.ALL)
+  @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
   Set<Movie> movieWatchlist = new HashSet<>();
 
-  @ManyToMany(cascade = CascadeType.ALL)
+  @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
   Set<Series> seriesWatchlist = new HashSet<>();
 
   public void addMovieToWatchlist(Movie movie){

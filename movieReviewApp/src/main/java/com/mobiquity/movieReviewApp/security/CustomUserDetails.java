@@ -7,8 +7,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 
-class UserSecurity implements UserDetails {
+class CustomUserDetails implements UserDetails {
 
     private String password;
     private String username;
@@ -18,7 +19,7 @@ class UserSecurity implements UserDetails {
     private boolean enabled;
     private Collection<? extends GrantedAuthority> authorities;
 
-    UserSecurity(UserProfile user) {
+    CustomUserDetails(UserProfile user) {
         this.password = user.getPassword();
         this.username = user.getEmailId();
         this.enabled = user.isStatus();
@@ -61,5 +62,20 @@ class UserSecurity implements UserDetails {
     @Override
     public boolean isEnabled() {
         return this.enabled;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        CustomUserDetails that = (CustomUserDetails) o;
+        return enabled == that.enabled &&
+                Objects.equals(password, that.password) &&
+                Objects.equals(username, that.username);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(password, username, enabled);
     }
 }

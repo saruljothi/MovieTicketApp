@@ -3,6 +3,8 @@ package com.mobiquity.movieReviewApp.domain.content.controller;
 import com.mobiquity.movieReviewApp.domain.accountmanagement.model.ResponseMovieApp;
 import com.mobiquity.movieReviewApp.domain.content.service.WatchlistService;
 import java.util.Arrays;
+import java.util.Collections;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -26,7 +28,7 @@ public class WatchlistController {
       @RequestParam(name = "movieName") String movie) {
     return new ResponseEntity<>(
         new ResponseMovieApp(
-            Arrays.asList(watchlistService.addMovieToUserWatchlist(emailId, movie))),
+                Collections.singletonList(watchlistService.addMovieToUserWatchlist(emailId, movie))),
         HttpStatus.OK);
   }
 
@@ -36,7 +38,7 @@ public class WatchlistController {
       @RequestParam(name = "movieName") String movie) {
     return new ResponseEntity<>(
         new ResponseMovieApp(
-            Arrays.asList(watchlistService.removeMovieFromAUserWatchlist(emailId, movie))),
+                Collections.singletonList(watchlistService.removeMovieFromAUserWatchlist(emailId, movie))),
         HttpStatus.OK);
   }
 
@@ -46,7 +48,7 @@ public class WatchlistController {
       @RequestParam(name = "seriesName") String series) {
     return new ResponseEntity<>(
         new ResponseMovieApp(
-            Arrays.asList(watchlistService.addSeriesToUserWatchlist(emailId, series))),
+                Collections.singletonList(watchlistService.addSeriesToUserWatchlist(emailId, series))),
         HttpStatus.OK);
   }
 
@@ -55,7 +57,7 @@ public class WatchlistController {
       @RequestParam(name = "userEmail") String emailId,
       @RequestParam(name = "seriesName") String series) {
     return new ResponseEntity<>(new ResponseMovieApp(
-        Arrays.asList(watchlistService.removeSeriesFromUserWatchlist(emailId, series))),
+            Collections.singletonList(watchlistService.removeSeriesFromUserWatchlist(emailId, series))),
         HttpStatus.OK);
   }
 
