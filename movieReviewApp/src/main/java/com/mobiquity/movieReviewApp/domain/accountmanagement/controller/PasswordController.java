@@ -42,7 +42,6 @@ public class PasswordController {
   }
 
   @PutMapping("/changePassword")
-  //Todo: Validate the user so only the user can change their own password
   public ResponseEntity<Object> updatePassword(
       @RequestBody PasswordUpdate passwordChangeAndAccount) {
     return new ResponseEntity<>(
