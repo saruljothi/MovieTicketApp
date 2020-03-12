@@ -14,6 +14,8 @@ import com.mobiquity.movieReviewApp.domain.accountmanagement.service.UtilityServ
 import com.mobiquity.movieReviewApp.repository.UserRepository;
 import com.mobiquity.movieReviewApp.security.AuthTest;
 import com.mobiquity.movieReviewApp.security.PrincipalTest;
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.MalformedJwtException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -102,7 +104,21 @@ public class PasswordMangementServiceUnitTest extends SignUpPasswordManagementHe
         assertThrows(PasswordException.class, () -> passwordManagementService
             .updateForgottenPasswordWithNewPassword(getPasswordReset())).getLocalizedMessage());
   }
+@Test
+public void checkIfTokenPassedIsWrong(){
+    when(utilityService.retrieveDataFromClaim(any())).thenThrow(MalformedJwtException.class);
+  assertEquals("Activation link is not valid",
+      assertThrows(PasswordException.class, () -> passwordManagementService
+          .updateForgottenPasswordWithNewPassword(getPasswordReset())).getLocalizedMessage());
+}
 
+@Test
+public void checkIfActivationLinkgotExpired(){
+  when(utilityService.retrieveDataFromClaim(any())).thenThrow(ExpiredJwtException.class);
+  assertEquals("Your activation link got expired",
+      assertThrows(PasswordException.class, () -> passwordManagementService
+          .updateForgottenPasswordWithNewPassword(getPasswordReset())).getLocalizedMessage());
+}
   private PasswordReset getPasswordReset() {
     PasswordReset passwordReset = new PasswordReset();
     passwordReset.setPassword("qwerty");

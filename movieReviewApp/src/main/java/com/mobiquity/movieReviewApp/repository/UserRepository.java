@@ -10,20 +10,12 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface UserRepository extends JpaRepository<UserProfile, Long> {
 
-  //Optional<UserProfile> deleteByUserIdAndStatus(long Id,Boolean status);
-
   @Modifying
-    // @Query(value= "update user_profile set status=true where user_id= :userId" , nativeQuery = true)
   void updateStatus(Long userId);
 
   @Modifying
-//  @Query(value="delete from user_profile where status=false and created_on < :localDateTime" , nativeQuery = true)
   void deleteByCreatedOnAndStatus(LocalDateTime localDateTime);
-
-
 
   Optional<UserProfile> findByEmailId(String email);
 
-  @Modifying
-  void updatePasswordStatusByEmailId(String emailId, boolean status);
 }

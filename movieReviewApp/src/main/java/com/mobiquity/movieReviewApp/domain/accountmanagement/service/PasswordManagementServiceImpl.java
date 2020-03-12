@@ -4,6 +4,7 @@ import static org.springframework.security.core.context.SecurityContextHolder.ge
 
 import com.mobiquity.movieReviewApp.domain.accountmanagement.entity.UserProfile;
 import com.mobiquity.movieReviewApp.domain.accountmanagement.exception.PasswordException;
+import com.mobiquity.movieReviewApp.domain.accountmanagement.exception.UserException;
 import com.mobiquity.movieReviewApp.domain.accountmanagement.model.PasswordReset;
 import com.mobiquity.movieReviewApp.domain.accountmanagement.model.PasswordUpdate;
 import com.mobiquity.movieReviewApp.repository.UserRepository;
@@ -29,9 +30,10 @@ public class PasswordManagementServiceImpl implements PasswordManagementService 
   @Override
   @Secured("ROLE_USER")
   public String updatePassword(PasswordUpdate passwordUpdate) {
-    if (getContext().getAuthentication().getName() == passwordUpdate
-        .getEmailId()) {
-      UserProfile user = userRepository.findByEmailId(passwordUpdate.getEmailId()).get();
+    if (getContext().getAuthentication().getName().equals(passwordUpdate
+        .getEmailId())) {
+      UserProfile user = userRepository.findByEmailId(passwordUpdate.getEmailId()).orElseThrow(
+          UserException::new);
       if (null != user.getPassword() && BCrypt
           .checkpw(passwordUpdate.getOldPassword(), user.getPassword())) {
         user.setPassword(passwordUpdate.getNewPassword());

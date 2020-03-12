@@ -76,6 +76,12 @@ public class SignUpServiceUnitTest extends SignUpPasswordManagementHelperClass {
     assertEquals("Activation link is not valid", userException.getLocalizedMessage());
   }
 
+  @Test
+  public void checkIfUserProfileRetrievedProperly(){
+    when(userRepository.findByEmailId("ds@gmail.com")).thenReturn(
+        java.util.Optional.ofNullable(setUserProfile()));
+    assertEquals("ds@gmail.com",signUpServiceimpl.findUserProfileByEmailId("ds@gmail.com").get().getEmailId());
+  }
 
   private UserInformation setUserInformation() {
     userInformation = new UserInformation();

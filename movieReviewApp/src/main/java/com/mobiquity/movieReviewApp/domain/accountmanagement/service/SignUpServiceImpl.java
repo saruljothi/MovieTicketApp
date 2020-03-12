@@ -40,7 +40,6 @@ public class SignUpServiceImpl implements SignUpService {
       utilityService.sendActivationLink(user.getEmailId(), user.getUserId());
       return "Activate your link";
     } catch (DataIntegrityViolationException e) {
-//            log.error();
       throw new UserException("Your email is already registered.");
     }
   }
