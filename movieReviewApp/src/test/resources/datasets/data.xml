@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <dataset>
-  <USER_PROFILE user_id="1" created_on="[DAY,NOW]" email_id="www@gmail.com" name="John" password="ddd" status="0"/>
+  <USER_PROFILE user_id="1" created_on="[DAY,NOW]" email_id="www@gmail.com" name="John" password="ddd" registration_status="0" FORGOT_PASSWORD_STATUS="0"/>
 </dataset>

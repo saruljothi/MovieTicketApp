@@ -11,7 +11,7 @@ import org.springframework.validation.Validator;
 public class UserValidator implements Validator {
 
   private SignUpService signUpService;
-
+private String emailId ="emailId";
   public UserValidator(SignUpService signUpService) {
     this.signUpService = signUpService;
   }
@@ -30,11 +30,11 @@ public class UserValidator implements Validator {
     ValidationUtils
         .rejectIfEmptyOrWhitespace(errors, "emailId", "Email field should not be empty.");
     if (!emailValidator.validate(userInformation.getEmailId())) {
-      errors.rejectValue("emailId", "Please enter a valid e-mail address.");
+      errors.rejectValue(emailId, "Please enter a valid e-mail address.");
     }
 
     if (signUpService.findUserProfileByEmailId(userInformation.getEmailId()).isPresent()) {
-      errors.rejectValue("emailId", "This email is already in use.");
+      errors.rejectValue(emailId, "This email is already in use.");
     }
 
     ValidationUtils

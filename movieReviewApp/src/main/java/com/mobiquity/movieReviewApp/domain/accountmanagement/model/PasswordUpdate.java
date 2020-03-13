@@ -6,7 +6,8 @@ import lombok.Setter;
 @Setter
 @Getter
 public class PasswordUpdate {
-private String emailId;
-private String oldPassword;
-private String newPassword;
+
+  private String emailId;
+  private String oldPassword;
+  private String newPassword;
 }
