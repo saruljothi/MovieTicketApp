@@ -22,7 +22,7 @@ class CustomUserDetails implements UserDetails {
     CustomUserDetails(UserProfile user) {
         this.password = user.getPassword();
         this.username = user.getEmailId();
-        this.enabled = user.isStatus();
+        this.enabled = user.isRegistrationStatus();
         this.accountNonExpired = true;
         this.accountNonLocked = true;
         this.credentialsNonExpired = true;

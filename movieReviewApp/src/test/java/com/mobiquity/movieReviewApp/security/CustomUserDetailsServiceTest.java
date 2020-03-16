@@ -61,7 +61,7 @@ public class CustomUserDetailsServiceTest {
         testUserPrep = new UserProfile();
         testUserPrep.setEmailId("test@mail.com");
         testUserPrep.setName("test user");
-        testUserPrep.setStatus(true);
+        testUserPrep.setRegistrationStatus(true);
         testUserPrep.setPassword(BCrypt.hashpw("password", BCrypt.gensalt()));
         CustomUserDetails testUser = new CustomUserDetails(testUserPrep);
 

@@ -4,57 +4,60 @@ import com.mobiquity.movieReviewApp.domain.accountmanagement.model.ResponseMovie
 import com.mobiquity.movieReviewApp.domain.accountmanagement.model.UserInformation;
 import com.mobiquity.movieReviewApp.domain.accountmanagement.service.SignUpService;
 import com.mobiquity.movieReviewApp.domain.accountmanagement.validation.UserValidator;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/v1/signUp")
 public class UserRegistrationController {
 
-    private SignUpService signUpService;
-    private UserValidator userValidator;
+  private SignUpService signUpService;
+  private UserValidator userValidator;
 
-    public UserRegistrationController(SignUpService signUpService,
-                                      UserValidator userValidator) {
-        this.signUpService = signUpService;
-        this.userValidator = userValidator;
+  public UserRegistrationController(SignUpService signUpService,
+      UserValidator userValidator) {
+    this.signUpService = signUpService;
+    this.userValidator = userValidator;
+  }
+
+  @PostMapping("/")
+  public ResponseEntity<ResponseMovieApp> signUp(@RequestBody UserInformation userInformation,
+      BindingResult bindingResult) {
+    userValidator.validate(userInformation, bindingResult);
+
+    if (bindingResult.hasErrors()) {
+      List<String> issues = new ArrayList<>();
+      List<ObjectError> errors = bindingResult.getAllErrors();
+      for (ObjectError error : errors) {
+        issues.add(error.getCode());
+      }
+
+      return new ResponseEntity<>(new ResponseMovieApp(issues),
+          HttpStatus.FORBIDDEN);
     }
 
-    @PostMapping("/")
-    public ResponseEntity<ResponseMovieApp> signUp(@RequestBody UserInformation userInformation,
-                                                   BindingResult bindingResult) {
-        userValidator.validate(userInformation, bindingResult);
+    return new ResponseEntity<>(
+        new ResponseMovieApp(Collections.singletonList(signUpService.saveUser(userInformation))),
+        HttpStatus.OK);
+  }
 
-        if (bindingResult.hasErrors()) {
-            List<String> issues = new ArrayList<>();
-            List<ObjectError> errors = bindingResult.getAllErrors();
-            for (ObjectError error : errors) {
-                issues.add(error.getCode());
-            }
-
-            return new ResponseEntity<>(new ResponseMovieApp(issues),
-                    HttpStatus.FORBIDDEN);
-        }
-
-        return new ResponseEntity<>(new ResponseMovieApp(Collections.singletonList(signUpService.saveUser(userInformation))),
-                HttpStatus.OK);
-    }
-
-    @GetMapping("/activationLink")
-    public ResponseEntity<ResponseMovieApp> activateAccountRegistration(@RequestParam String token) {
-        return new ResponseEntity<>(new ResponseMovieApp(
-                Collections.singletonList(signUpService.registerAccount(token))
-        ), HttpStatus.OK);
-    }
-
-
+  @GetMapping("/activationLink")
+  public ResponseEntity<ResponseMovieApp> activateAccountRegistration(@RequestParam String token) {
+    return new ResponseEntity<>(new ResponseMovieApp(
+        Collections.singletonList(signUpService.registerAccount(token))
+    ), HttpStatus.OK);
+  }
 
 
 }

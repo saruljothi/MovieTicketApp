@@ -30,23 +30,27 @@ public class UtilityService {
         this.messageSource = messageSource;
     }
 
-    Claims retrieveDataFromClaim(String token) {
-        return Jwts.parser().setSigningKey(dotenv.get("secret")).parseClaimsJws(token).getBody();
-    }
+  public Claims retrieveDataFromClaim(String token) {
+    return Jwts.parser().setSigningKey(dotenv.get("SECRET")).parseClaimsJws(token).getBody();
+  }
 
-    void sendActivationLink(String emailId, long userId) {
+   public void sendActivationLink(String emailId, long userId) {
+      try {
         SimpleMailMessage email = new SimpleMailMessage();
         email.setTo(emailId);
         email.setSubject("activation link");
         email.setText(
-                messageSource.getMessage("user.signup.link.valid.time",null,
-                    LocaleContextHolder.getLocale()) + "\n"
-                        + " http://localhost:8086/v1/signUp/activationLink?token="
-                        + generateJwtToken(emailId, userId));
+            "activation link valid for 24 hrs" + "\n"
+                + " http://localhost:8086/v1/signUp/activationLink?token="
+                + generateJwtToken(emailId, userId));
         javaMailSender.send(email);
+      } catch (MailException me) {
+        throw new UserException("Unable to Send ActivationLink to your EmailId");
+      }
     }
 
     public void sendPasswordForgotLink(UserProfile user) {
+      try{
         SimpleMailMessage email = new SimpleMailMessage();
         email.setTo(user.getEmailId());
         email.setSubject("Password reset");
@@ -55,39 +59,21 @@ public class UtilityService {
                         + " http://localhost:8086/v1/forgotPassword/resetLink?token="
                         + generateJwtToken(user.getEmailId(), user.getPassword()));
         javaMailSender.send(email);
+    }catch (MailException me) {
+    throw new PasswordException("Unable to Send ForgotPasswordActivationLink to your EmailId");
+     }
     }
 
-    String generateJwtToken(String emailId, long userId) {
-        return Jwts.builder().setClaims(new HashMap<>())
-                .setSubject(emailId + " " + userId)
-                .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_ONE_DAY)).signWith(
-                        SignatureAlgorithm.HS512, dotenv.get("secret")).compact();
-    }
 
-    String generateJwtToken(String emailId, String password) {
-        return Jwts.builder().setClaims(new HashMap<>())
-                .setSubject(emailId + " " + password)
-                .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_THIRTY_MINUTES)).signWith(
-                        SignatureAlgorithm.HS512, dotenv.get("secret")).compact();
-    }
 
-    public Map<String, String> unWrapToken(String token) {
-        Map<String, String> tokenInfo = new HashMap<>();
-        String[] tokenContents;
-        try {
-            tokenContents = retrieveDataFromClaim(token).getSubject().split(" ");
-        } catch (ExpiredJwtException e) {
-           // throw new UserException("Your activation link got expired");
-            throw new UserException(messageSource.getMessage("user.signup.link.expire",null,LocaleContextHolder.getLocale()));
-        } catch (MalformedJwtException | SignatureException e) {
-           // throw new UserException("Activation link is not valid");
-            throw new UserException(messageSource.getMessage("user.signup.link.notvalid",null,LocaleContextHolder.getLocale()));
-        }
+  private String generateJwtToken(String emailId, long userId, int expiration) {
 
-        tokenInfo.put("email", tokenContents[0]);
-        tokenInfo.put("password", tokenContents[1]);
-        return tokenInfo;
-    }
+    return Jwts.builder().setClaims(new HashMap<>())
+        .setSubject(emailId + " " + userId)
+        .setIssuedAt(new Date(System.currentTimeMillis()))
+        .setExpiration(new Date(System.currentTimeMillis() + expiration)).signWith(
+            SignatureAlgorithm.HS512, dotenv.get("SECRET")).compact();
+  }
+
+
 }

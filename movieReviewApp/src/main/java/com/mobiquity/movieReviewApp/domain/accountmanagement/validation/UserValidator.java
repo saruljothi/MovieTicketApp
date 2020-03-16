@@ -14,7 +14,7 @@ public class UserValidator implements Validator {
 
   private SignUpService signUpService;
   private MessageSource messageSource;
-
+  private String emailId ="emailId";
   public UserValidator(SignUpService signUpService,
       MessageSource messageSource) {
     this.signUpService = signUpService;
@@ -33,14 +33,14 @@ public class UserValidator implements Validator {
     EmailValidator emailValidator = new EmailValidator();
 
     ValidationUtils
-        .rejectIfEmptyOrWhitespace(errors, "emailId", messageSource.getMessage("emailId.empty",null,
+        .rejectIfEmptyOrWhitespace(errors, emailId, messageSource.getMessage("emailId.empty",null,
             LocaleContextHolder.getLocale()));
     if (!emailValidator.validate(userInformation.getEmailId())) {
-      errors.rejectValue("emailId", messageSource.getMessage("emailId.not.valid",null,LocaleContextHolder.getLocale()));
+      errors.rejectValue(emailId, messageSource.getMessage("emailId.not.valid",null,LocaleContextHolder.getLocale()));
     }
 
     if (signUpService.findUserProfileByEmailId(userInformation.getEmailId()).isPresent()) {
-      errors.rejectValue("emailId", messageSource.getMessage("emailId.in.use",null,LocaleContextHolder.getLocale()));
+      errors.rejectValue(emailId, messageSource.getMessage("emailId.in.use",null,LocaleContextHolder.getLocale()));
     }
 
     ValidationUtils
