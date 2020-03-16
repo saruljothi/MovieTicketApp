@@ -7,26 +7,32 @@ import com.mobiquity.movieReviewApp.domain.accountmanagement.entity.UserProfile;
 import com.mobiquity.movieReviewApp.repository.UserRepository;
 import java.util.Optional;
 import javax.transaction.Transactional;
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Service;
 
 @Service
 public class WatchlistServiceImpl implements WatchlistService {
 
-  private static final String ADD_NO_SUCH_USER_MESSAGE = " could not be added to watchlist as no such user exists.";
-  private static final String REMOVE_NO_SUCH_USER_MESSAGE = " could not be removed from watchlist as no such user exists.";
-  private static final String ADD_NO_SUCH_CONTENT_MESSAGE = " could not be added to watchlist as it does not exist.";
-  private static final String REMOVE_NO_SUCH_CONTENT_MESSAGE = " could not be removed from watchlist as it does not exist.";
-  private static final String HAS_ALREADY_BEEN_ADDED_MESSAGE = " has already been added to user watchlist.";
-  private static final String IS_NOT_IN_WATCHLIST_MESSAGE = " is not in the user watchlist.";
+//  private static final String ADD_NO_SUCH_USER_MESSAGE = " could not be added to watchlist as no such user exists.";
+//  private static final String REMOVE_NO_SUCH_USER_MESSAGE = " could not be removed from watchlist as no such user exists.";
+//  private static final String ADD_NO_SUCH_CONTENT_MESSAGE = " could not be added to watchlist as it does not exist.";
+//  private static final String REMOVE_NO_SUCH_CONTENT_MESSAGE = " could not be removed from watchlist as it does not exist.";
+//  private static final String HAS_ALREADY_BEEN_ADDED_MESSAGE = " has already been added to user watchlist.";
+//  private static final String IS_NOT_IN_WATCHLIST_MESSAGE = " is not in the user watchlist.";
 
   private UserRepository userRepository;
   private MovieService movieService;
   private SeriesService seriesService;
+  private MessageSource messageSource;
 
-  public WatchlistServiceImpl(UserRepository userRepository, MovieService movieService, SeriesService seriesService){
+
+  public WatchlistServiceImpl(UserRepository userRepository, MovieService movieService,
+      SeriesService seriesService, MessageSource messageSource){
     this.userRepository = userRepository;
     this.movieService = movieService;
     this.seriesService = seriesService;
+    this.messageSource = messageSource;
   }
 
   @Transactional
@@ -35,13 +41,16 @@ public class WatchlistServiceImpl implements WatchlistService {
     Optional<UserProfile> userProfile = userRepository.findByEmailId(emailId);
     Content movie = movieService.getMovie(movieName);
 
-    String check = checkIfUnableToAdd(userProfile, movie, ADD_NO_SUCH_USER_MESSAGE, ADD_NO_SUCH_CONTENT_MESSAGE, HAS_ALREADY_BEEN_ADDED_MESSAGE);
+    String check = checkIfUnableToAdd(userProfile, movie,
+        " "+messageSource.getMessage("add.no.such.user.message",null, LocaleContextHolder.getLocale()),
+        " "+messageSource.getMessage("add.no.such.content.message",null,LocaleContextHolder.getLocale()),
+        " "+ messageSource.getMessage("has.already.been.added.message",null,LocaleContextHolder.getLocale()));
     if(check != null){
       return check;
     }
 
     userProfile.get().addMovieToWatchlist(movieService.getMovie(movieName));
-    return movie.getName() + " has been added to watchlist.";
+    return movie.getName()+" "+ messageSource.getMessage("add.user.to.watchlist",null,LocaleContextHolder.getLocale());
 
   }
 
@@ -51,13 +60,16 @@ public class WatchlistServiceImpl implements WatchlistService {
     Optional<UserProfile> userProfile = userRepository.findByEmailId(emailId);
     Content movie = movieService.getMovie(movieName);
 
-    String check = checkIfUnableToAdd(userProfile, movie, REMOVE_NO_SUCH_USER_MESSAGE, REMOVE_NO_SUCH_CONTENT_MESSAGE, IS_NOT_IN_WATCHLIST_MESSAGE);
+    String check = checkIfUnableToAdd(userProfile, movie,
+        " "+messageSource.getMessage("remove.no.such.user.message",null,LocaleContextHolder.getLocale()),
+        " "+messageSource.getMessage("remove.no.such.content.message",null,LocaleContextHolder.getLocale()),
+        " "+messageSource.getMessage("is.not.in.watchlist.message",null,LocaleContextHolder.getLocale()));
     if(check != null){
       return check;
     }
 
     userProfile.get().removeMovieFromWatchlist(movieService.getMovie(movieName));
-    return movie.getName() + " has been removed from watchlist.";
+    return movie.getName()+" "+ messageSource.getMessage("remove.user.from.watchlist",null,LocaleContextHolder.getLocale());
   }
 
   @Transactional
@@ -66,13 +78,16 @@ public class WatchlistServiceImpl implements WatchlistService {
     Optional<UserProfile> userProfile = userRepository.findByEmailId(emailId);
     Content series = seriesService.getSeries(seriesName);
 
-    String check = checkIfUnableToAdd(userProfile, series, ADD_NO_SUCH_USER_MESSAGE, ADD_NO_SUCH_CONTENT_MESSAGE, HAS_ALREADY_BEEN_ADDED_MESSAGE);
+    String check = checkIfUnableToAdd(userProfile, series,
+        " "+messageSource.getMessage("add.no.such.user.message",null,LocaleContextHolder.getLocale()),
+        " "+messageSource.getMessage("add.no.such.content.message",null,LocaleContextHolder.getLocale()),
+        " "+messageSource.getMessage("has.already.been.added.message",null,LocaleContextHolder.getLocale()));
     if(check != null){
       return check;
     }
 
     userProfile.get().addSeriesToWatchlist(seriesService.getSeries(seriesName));
-    return series.getName() + " has been added to watchlist.";
+    return series.getName()+" "+ messageSource.getMessage("add.user.to.watchlist",null,LocaleContextHolder.getLocale());
   }
 
   @Transactional
@@ -81,13 +96,16 @@ public class WatchlistServiceImpl implements WatchlistService {
     Optional<UserProfile> userProfile = userRepository.findByEmailId(emailId);
     Content series = seriesService.getSeries(seriesName);
 
-    String check = checkIfUnableToAdd(userProfile, series, REMOVE_NO_SUCH_USER_MESSAGE, REMOVE_NO_SUCH_CONTENT_MESSAGE, IS_NOT_IN_WATCHLIST_MESSAGE);
+    String check = checkIfUnableToAdd(userProfile, series,
+        " "+messageSource.getMessage("remove.no.such.user.message",null,LocaleContextHolder.getLocale()),
+        " "+messageSource.getMessage("remove.no.such.content.message",null,LocaleContextHolder.getLocale()),
+        " "+messageSource.getMessage("is.not.in.watchlist.message",null,LocaleContextHolder.getLocale()));
     if(check != null){
       return check;
     }
 
     userProfile.get().removeSeriesFromWatchlist(seriesService.getSeries(seriesName));
-    return series.getName() + " has been removed from watchlist.";
+    return series.getName()+" "+ messageSource.getMessage("remove.user.from.watchlist",null,LocaleContextHolder.getLocale());
   }
 
   private String checkIfUnableToAdd(Optional<UserProfile> userProfile, Content content, String noSuchUserMessage, String noSuchContentMessage, String alreadyDoneMessage) {

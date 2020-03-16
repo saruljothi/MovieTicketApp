@@ -36,8 +36,9 @@ public class PasswordController {
                 ), HttpStatus.OK);
     }
 
-    @PutMapping("/changePassword")
+
     //Todo: Validate the user so only the user can change their own password
+    @PutMapping("/changePassword")
     public ResponseEntity<Object> updatePassword(@RequestBody PasswordUpdate passwordChangeAndAccount) {
         return new ResponseEntity<>(
                 new ResponseMovieApp(

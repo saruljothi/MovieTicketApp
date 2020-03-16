@@ -8,6 +8,8 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.SignatureException;
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.crypto.bcrypt.BCrypt;
@@ -24,10 +26,13 @@ public class SignUpServiceImpl implements SignUpService {
     private UserRepository userRepository;
     private Claims claim;
     private UtilityService utilityService;
+    private MessageSource messageSource;
 
-    public SignUpServiceImpl(UserRepository userRepository, UtilityService utilityService) {
+    public SignUpServiceImpl(UserRepository userRepository, UtilityService utilityService,
+        MessageSource messageSource) {
         this.userRepository = userRepository;
         this.utilityService = utilityService;
+        this.messageSource = messageSource;
     }
 
     @Transactional
@@ -37,9 +42,9 @@ public class SignUpServiceImpl implements SignUpService {
             userInformation.setPassword(BCrypt.hashpw(userInformation.getPassword(), BCrypt.gensalt()));
             UserProfile user = userRepository.save(setUserProfile(userInformation));
             utilityService.sendActivationLink(user.getEmailId(), user.getUserId());
-            return "Activate your link";
+            return messageSource.getMessage("user.signup.link.activate",null, LocaleContextHolder.getLocale());
         } catch (DataIntegrityViolationException e) {
-            throw new UserException("Your email is already registered.");
+            throw new UserException(messageSource.getMessage("user.signup.validate",null,LocaleContextHolder.getLocale()));
         }
     }
 
@@ -50,11 +55,11 @@ public class SignUpServiceImpl implements SignUpService {
             claim = utilityService.retrieveDataFromClaim(token);
             long id = Long.parseLong(claim.getSubject().split(" ")[1]);
             userRepository.updateStatus(id);
-            return "You are Registered Successfully";
+            return messageSource.getMessage("user.signup.success",null,LocaleContextHolder.getLocale());
         } catch (ExpiredJwtException e) {
-            throw new UserException("Your activation link got expired");
+            throw new UserException(messageSource.getMessage("user.signup.link.expire",null,LocaleContextHolder.getLocale()));
         } catch (MalformedJwtException | SignatureException e) {
-            throw new UserException("Activation link is not valid");
+            throw new UserException(messageSource.getMessage("user.signup.link.notvalid",null,LocaleContextHolder.getLocale()));
         }
     }
 
