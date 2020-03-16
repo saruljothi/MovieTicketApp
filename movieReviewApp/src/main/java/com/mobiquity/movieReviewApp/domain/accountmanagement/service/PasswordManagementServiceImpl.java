@@ -53,7 +53,7 @@ public class PasswordManagementServiceImpl implements PasswordManagementService 
       }
       throw new PasswordException(messageSource.getMessage("user.password.oldpassword.not.match",null, LocaleContextHolder.getLocale()));
     }
-    throw new PasswordException("Your emailId is invalid");
+    throw new PasswordException(messageSource.getMessage("emailId.not.valid",null, LocaleContextHolder.getLocale()));
 
   }
 

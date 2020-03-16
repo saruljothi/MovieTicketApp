@@ -19,6 +19,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.dao.DataIntegrityViolationException;
 
 @ExtendWith(MockitoExtension.class)
@@ -31,6 +33,8 @@ public class SignUpServiceUnitTest extends SignUpPasswordManagementHelperClass {
   private UserRepository userRepository;
   @Mock
   private UtilityService utilityService;
+  @Mock
+  private MessageSource messageSource;
 
   private UserInformation userInformation;
   private UserProfile userProfile;
@@ -38,6 +42,8 @@ public class SignUpServiceUnitTest extends SignUpPasswordManagementHelperClass {
   @Test
   public void checkIfActivationLinkIsSentSuccessful() {
     when(userRepository.save(Mockito.any(UserProfile.class))).thenReturn(setUserProfile());
+    when(messageSource.getMessage("user.signup.link.activate", null, LocaleContextHolder
+        .getLocale())).thenReturn("Activate your link");
     assertEquals("Activate your link", signUpServiceimpl.saveUser(setUserInformation()));
 
   }
@@ -46,6 +52,8 @@ public class SignUpServiceUnitTest extends SignUpPasswordManagementHelperClass {
   public void checkIfUserIsAlreadyPresent() {
     when(userRepository.save(Mockito.any(UserProfile.class)))
         .thenThrow(DataIntegrityViolationException.class);
+    when(messageSource.getMessage("user.signup.validate", null, LocaleContextHolder.getLocale()))
+        .thenReturn("Your email is already registered.");
     UserException userException = assertThrows(UserException.class,
         () -> signUpServiceimpl.saveUser(setUserInformation()));
     assertEquals("Your email is already registered.", userException.getLocalizedMessage());
@@ -55,6 +63,8 @@ public class SignUpServiceUnitTest extends SignUpPasswordManagementHelperClass {
   public void checkIfUserIsRegisteredSuccessfully() {
     expiration = 60 * 24 * 60;
     when(utilityService.retrieveDataFromClaim(any())).thenReturn(getClaim(getToken(expiration)));
+    when(messageSource.getMessage("user.signup.success", null, LocaleContextHolder.getLocale()))
+        .thenReturn("You are Registered Successfully");
     assertEquals("You are Registered Successfully",
         signUpServiceimpl.registerAccount(getToken(expiration)));
   }
@@ -63,6 +73,8 @@ public class SignUpServiceUnitTest extends SignUpPasswordManagementHelperClass {
   public void checkIfTokenIsExpired() {
     expiration = 0;
     when(utilityService.retrieveDataFromClaim(any())).thenThrow((ExpiredJwtException.class));
+    when(messageSource.getMessage("user.link.expire", null, LocaleContextHolder.getLocale()))
+        .thenReturn("Your activation link got expired");
     UserException userException = assertThrows(UserException.class,
         () -> signUpServiceimpl.registerAccount(getToken(expiration)));
     assertEquals("Your activation link got expired", userException.getLocalizedMessage());
@@ -71,16 +83,19 @@ public class SignUpServiceUnitTest extends SignUpPasswordManagementHelperClass {
   @Test
   public void checkIfTokenIsNotValid() {
     when(utilityService.retrieveDataFromClaim(any())).thenThrow((MalformedJwtException.class));
+    when(messageSource.getMessage("user.link.not.valid", null, LocaleContextHolder.getLocale()))
+        .thenReturn("Activation link is not valid");
     UserException userException = assertThrows(UserException.class,
         () -> signUpServiceimpl.registerAccount("iojdxend"));
     assertEquals("Activation link is not valid", userException.getLocalizedMessage());
   }
 
   @Test
-  public void checkIfUserProfileRetrievedProperly(){
+  public void checkIfUserProfileRetrievedProperly() {
     when(userRepository.findByEmailId("ds@gmail.com")).thenReturn(
         java.util.Optional.ofNullable(setUserProfile()));
-    assertEquals("ds@gmail.com",signUpServiceimpl.findUserProfileByEmailId("ds@gmail.com").get().getEmailId());
+    assertEquals("ds@gmail.com",
+        signUpServiceimpl.findUserProfileByEmailId("ds@gmail.com").get().getEmailId());
   }
 
   private UserInformation setUserInformation() {

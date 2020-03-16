@@ -16,6 +16,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.test.util.ReflectionTestUtils;
@@ -29,6 +31,9 @@ public class UtilityServiceUnitTest extends SignUpPasswordManagementHelperClass 
   private JavaMailSender javaMailSender = javaMailSender();
   @Mock
   private Dotenv dotenv;
+
+  @Mock
+  MessageSource messageSource;
 
   @BeforeEach
   public void setUp() {
@@ -46,13 +51,28 @@ public class UtilityServiceUnitTest extends SignUpPasswordManagementHelperClass 
 
   @Test
   public void checkIfSendActivationLinkIsSentSuccessful() {
+    when(messageSource
+        .getMessage("user.signup.link.valid.time", null, LocaleContextHolder.getLocale()))
+        .thenReturn("Activation link valid for 24 hrs");
 
-    assertEquals("Unable to Send ActivationLink to your EmailId", assertThrows(UserException.class,
-        () -> utilityService.sendActivationLink("ds@gmail.com", 1L)).getLocalizedMessage());
+    when(messageSource
+        .getMessage("user.signup.link.not.send", null, LocaleContextHolder.getLocale()))
+        .thenReturn("Unable to Send ActivationLink to your EmailId");
+
+    assertEquals("Unable to Send ActivationLink to your EmailId",
+        assertThrows(UserException.class,
+            () -> utilityService.sendActivationLink("ds@gmail.com", 1L))
+            .getLocalizedMessage());
   }
 
   @Test
   public void checkIfSendForgotPasswordLinkIsSentSuccessful() {
+    when(messageSource
+        .getMessage("user.password.link.valid.time", null, LocaleContextHolder.getLocale()))
+        .thenReturn("Password reset link valid for 30 minutes");
+    when(messageSource
+        .getMessage("user.password.link.not.send", null, LocaleContextHolder.getLocale()))
+        .thenReturn("Unable to Send ForgotPasswordActivationLink to your EmailId");
     assertEquals("Unable to Send ForgotPasswordActivationLink to your EmailId", assertThrows(
         PasswordException.class,
         () -> utilityService.sendPasswordForgotLink(getUserProfile())).getLocalizedMessage());

@@ -21,17 +21,21 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 @ExtendWith(MockitoExtension.class)
 public class PasswordMangementServiceUnitTest extends SignUpPasswordManagementHelperClass {
 
   @InjectMocks
-  PasswordManagementServiceImpl passwordManagementService;
+  private PasswordManagementServiceImpl passwordManagementService;
   @Mock
-  UserRepository userRepository;
+  private UserRepository userRepository;
   @Mock
-  UtilityService utilityService;
+  private UtilityService utilityService;
+  @Mock
+  private MessageSource messageSource;
 
   @Test
   public void checkIfPasswordIsUpdatedSuccessfully() {
@@ -41,6 +45,9 @@ public class PasswordMangementServiceUnitTest extends SignUpPasswordManagementHe
     userProfile.setPassword("$2y$12$vAqr3amTKDFABIol9FIa6ebuHX8tAJKbOog2R3P5fbaf/E3pjkF4u");
     when(userRepository.findByEmailId("ds@gmail.com")).thenReturn(
         java.util.Optional.of(userProfile));
+    when(messageSource
+        .getMessage("user.password.update.success", null, LocaleContextHolder.getLocale()))
+        .thenReturn("Password Updated");
     assertEquals("Password Updated",
         passwordManagementService.updatePassword(getNewPasswordUpdate()));
   }
@@ -49,6 +56,9 @@ public class PasswordMangementServiceUnitTest extends SignUpPasswordManagementHe
   public void checkIfOldPasswordIsNotMatching() {
     when(userRepository.findByEmailId("ds@gmail.com")).thenReturn(
         java.util.Optional.of(getUserProfile()));
+    when(messageSource
+        .getMessage("user.password.oldpassword.not.match", null, LocaleContextHolder.getLocale()))
+        .thenReturn("OldPassword is Not Matching");
     PasswordException ue = assertThrows(PasswordException.class,
         () -> passwordManagementService.updatePassword(getNewPasswordUpdate()));
     assertEquals("OldPassword is Not Matching", ue.getLocalizedMessage());
@@ -59,6 +69,7 @@ public class PasswordMangementServiceUnitTest extends SignUpPasswordManagementHe
   public void checkIfForgotPasswordLinkIsSentCorrectly() {
     when(userRepository.findByEmailId("ds@gmail.com")).thenReturn(
         java.util.Optional.of(getUserProfile()));
+    when(messageSource.getMessage("user.password.link.activate",null,LocaleContextHolder.getLocale())).thenReturn("Password Reset link sent to your email");
     assertEquals("Password Reset link sent to your email",
         passwordManagementService.forgotPasswordLink("ds@gmail.com"));
 
@@ -66,6 +77,8 @@ public class PasswordMangementServiceUnitTest extends SignUpPasswordManagementHe
 
   @Test
   public void checkIfThereIsNoSuchEmailIdExists() {
+    when(messageSource.getMessage("user.password.not.valid.email",null,
+        LocaleContextHolder.getLocale())).thenReturn("No user with that email exists");
     PasswordException ue = assertThrows(PasswordException.class,
         () -> passwordManagementService.forgotPasswordLink("ds@gmail.com"));
     assertEquals("No user with that email exists",
@@ -76,6 +89,7 @@ public class PasswordMangementServiceUnitTest extends SignUpPasswordManagementHe
   public void checkIfPassWordIsUpdatedForForgotPassword() {
     UserProfile userProfile = getUserProfile();
     userProfile.setForgotPasswordStatus(false);
+    when(messageSource.getMessage("user.password.update.success",null,LocaleContextHolder.getLocale())).thenReturn("Password Updated");
     when(userRepository.findByEmailId("ds@gmail.com")).thenReturn(
         java.util.Optional.of(userProfile));
     when(utilityService.retrieveDataFromClaim(any()))
@@ -89,6 +103,8 @@ public class PasswordMangementServiceUnitTest extends SignUpPasswordManagementHe
   public void checkIfTokenIsInvalid() {
     when(utilityService.retrieveDataFromClaim(any()))
         .thenReturn(getClaim(getToken(30 * 60 * 1000)));
+    when(messageSource.getMessage("user.password.token.invalid",null,
+        LocaleContextHolder.getLocale())).thenReturn("token invalid!");
     assertEquals("token invalid!",
         assertThrows(PasswordException.class, () -> passwordManagementService
             .updateForgottenPasswordWithNewPassword(getPasswordReset())).getLocalizedMessage());
@@ -100,25 +116,30 @@ public class PasswordMangementServiceUnitTest extends SignUpPasswordManagementHe
         .thenReturn(getClaim(getToken(30 * 60 * 1000)));
     when(userRepository.findByEmailId("ds@gmail.com"))
         .thenReturn(java.util.Optional.of(getUserProfile()));
+    when(messageSource.getMessage("user.password.updated.already",null,LocaleContextHolder.getLocale())).thenReturn("password Already updated!");
     assertEquals("password Already updated!",
         assertThrows(PasswordException.class, () -> passwordManagementService
             .updateForgottenPasswordWithNewPassword(getPasswordReset())).getLocalizedMessage());
   }
-@Test
-public void checkIfTokenPassedIsWrong(){
-    when(utilityService.retrieveDataFromClaim(any())).thenThrow(MalformedJwtException.class);
-  assertEquals("Activation link is not valid",
-      assertThrows(PasswordException.class, () -> passwordManagementService
-          .updateForgottenPasswordWithNewPassword(getPasswordReset())).getLocalizedMessage());
-}
 
-@Test
-public void checkIfActivationLinkgotExpired(){
-  when(utilityService.retrieveDataFromClaim(any())).thenThrow(ExpiredJwtException.class);
-  assertEquals("Your activation link got expired",
-      assertThrows(PasswordException.class, () -> passwordManagementService
-          .updateForgottenPasswordWithNewPassword(getPasswordReset())).getLocalizedMessage());
-}
+  @Test
+  public void checkIfTokenPassedIsWrong() {
+    when(utilityService.retrieveDataFromClaim(any())).thenThrow(MalformedJwtException.class);
+    when(messageSource.getMessage("user.link.not.valid",null,LocaleContextHolder.getLocale())).thenReturn("Activation link is not valid");
+    assertEquals("Activation link is not valid",
+        assertThrows(PasswordException.class, () -> passwordManagementService
+            .updateForgottenPasswordWithNewPassword(getPasswordReset())).getLocalizedMessage());
+  }
+
+  @Test
+  public void checkIfActivationLinkgotExpired() {
+    when(utilityService.retrieveDataFromClaim(any())).thenThrow(ExpiredJwtException.class);
+    when(messageSource.getMessage("user.link.expire",null,LocaleContextHolder.getLocale())).thenReturn("Your activation link got expired");
+    assertEquals("Your activation link got expired",
+        assertThrows(PasswordException.class, () -> passwordManagementService
+            .updateForgottenPasswordWithNewPassword(getPasswordReset())).getLocalizedMessage());
+  }
+
   private PasswordReset getPasswordReset() {
     PasswordReset passwordReset = new PasswordReset();
     passwordReset.setPassword("qwerty");

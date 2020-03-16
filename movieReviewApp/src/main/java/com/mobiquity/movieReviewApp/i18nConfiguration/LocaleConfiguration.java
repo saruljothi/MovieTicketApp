@@ -8,7 +8,6 @@ import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 
 @Configuration
 public class LocaleConfiguration {
-
   /**
    * * @return default Locale set by the user
    */

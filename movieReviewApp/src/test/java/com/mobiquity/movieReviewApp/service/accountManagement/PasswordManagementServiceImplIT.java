@@ -43,7 +43,7 @@ class PasswordManagementServiceImplIT {
     passwordUpdate.setOldPassword("qwerty");
     passwordUpdate.setNewPassword("payal");
     String result = passwordManagementService.updatePassword(passwordUpdate);
-    assertEquals("Password Updated", result);
+    assertEquals("Password Updated Successfully!", result);
   }
 
   @Test
@@ -55,14 +55,14 @@ class PasswordManagementServiceImplIT {
     passwordUpdate.setNewPassword("qwerty");
     PasswordException exception = assertThrows(PasswordException.class,
         () -> passwordManagementService.updatePassword(passwordUpdate));
-    assertEquals("OldPassword is Not Matching", exception.getLocalizedMessage());
+    assertEquals("OldPassword is Not Matching!", exception.getLocalizedMessage());
   }
 
   @Test
   @DataSet(value = "password.xml")
   public void checkIfActivationLinkForPasswordIsSent() {
     String result = passwordManagementService.forgotPasswordLink("ds@gmail.com");
-    assertEquals("Password Reset link sent to your email", result);
+    assertEquals("Password Reset link sent to your email.", result);
   }
 
   // Test for Forgot password.
@@ -75,6 +75,6 @@ class PasswordManagementServiceImplIT {
     passwordReset.setPassword("zxcvb");
     PasswordException exception = assertThrows(PasswordException.class,
         () -> passwordManagementService.updateForgottenPasswordWithNewPassword(passwordReset));
-    assertEquals("Your activation link got expired", exception.getLocalizedMessage());
+    assertEquals("Your activation link got expired.", exception.getLocalizedMessage());
   }
 }
