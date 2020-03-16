@@ -51,7 +51,7 @@ public class PasswordManagementServiceImpl implements PasswordManagementService 
         user.setPassword(passwordUpdate.getNewPassword());
         return updateUserPassword(user);
       }
-      throw new PasswordException(messageSource.getMessage("user.password.oldpassword.notmatch",null, LocaleContextHolder.getLocale()));
+      throw new PasswordException(messageSource.getMessage("user.password.oldpassword.not.match",null, LocaleContextHolder.getLocale()));
     }
     throw new PasswordException("Your emailId is invalid");
 
@@ -61,8 +61,8 @@ public class PasswordManagementServiceImpl implements PasswordManagementService 
   @Transactional
   public String forgotPasswordLink(String emailId) {
     UserProfile user = userRepository.findByEmailId(emailId)
-        .orElseThrow(() -> new PasswordException(messageSource.getMessage("user.password.notvalid.email",null,LocaleContextHolder.getLocale()))));
-));
+        .orElseThrow(() -> new PasswordException(messageSource.getMessage("user.password.not.valid.email",null,
+            LocaleContextHolder.getLocale())));
 
     utilityService.sendPasswordForgotLink(user);
     user.setForgotPasswordStatus(false);
@@ -81,20 +81,21 @@ public class PasswordManagementServiceImpl implements PasswordManagementService 
               .split(" ")[0];
 
       UserProfile user = userRepository.findByEmailId(emailIdFromToken)
-          .orElseThrow(() -> new PasswordException(messageSource.getMessage("user.password.token.invalid",null,LocaleContextHolder.getLocale())));
-));
+          .orElseThrow(() -> new PasswordException(messageSource.getMessage("user.password.token.invalid",null,
+              LocaleContextHolder.getLocale())));
+
 
       if (!user.isForgotPasswordStatus()) {
         user.setForgotPasswordStatus(true);
         user.setPassword(passwordAndToken.getPassword());
         return updateUserPassword(user);
       } else {
-        throw new PasswordException("password Already updated!");
+        throw new PasswordException(messageSource.getMessage("user.password.updated.already",null,LocaleContextHolder.getLocale()));
       }
     } catch (ExpiredJwtException e) {
-      throw new PasswordException("Your activation link got expired");
+      throw new PasswordException(messageSource.getMessage("user.link.expire",null,LocaleContextHolder.getLocale()));
     } catch (MalformedJwtException | SignatureException e) {
-      throw new PasswordException("Activation link is not valid");
+      throw new PasswordException(messageSource.getMessage("user.link.not.valid",null,LocaleContextHolder.getLocale()));
     }
   }
 

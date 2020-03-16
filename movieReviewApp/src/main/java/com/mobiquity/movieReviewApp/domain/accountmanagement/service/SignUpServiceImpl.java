@@ -57,9 +57,9 @@ public class SignUpServiceImpl implements SignUpService {
             userRepository.updateStatus(id);
             return messageSource.getMessage("user.signup.success",null,LocaleContextHolder.getLocale());
         } catch (ExpiredJwtException e) {
-            throw new UserException(messageSource.getMessage("user.signup.link.expire",null,LocaleContextHolder.getLocale()));
+            throw new UserException(messageSource.getMessage("user.link.expire",null,LocaleContextHolder.getLocale()));
         } catch (MalformedJwtException | SignatureException e) {
-            throw new UserException(messageSource.getMessage("user.signup.link.notvalid",null,LocaleContextHolder.getLocale()));
+            throw new UserException(messageSource.getMessage("user.link.not.valid",null,LocaleContextHolder.getLocale()));
         }
     }
 
