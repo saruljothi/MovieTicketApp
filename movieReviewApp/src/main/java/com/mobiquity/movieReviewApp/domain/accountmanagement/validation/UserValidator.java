@@ -2,6 +2,8 @@ package com.mobiquity.movieReviewApp.domain.accountmanagement.validation;
 
 import com.mobiquity.movieReviewApp.domain.accountmanagement.model.UserInformation;
 import com.mobiquity.movieReviewApp.domain.accountmanagement.service.SignUpService;
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
@@ -11,9 +13,12 @@ import org.springframework.validation.Validator;
 public class UserValidator implements Validator {
 
   private SignUpService signUpService;
-private String emailId ="emailId";
-  public UserValidator(SignUpService signUpService) {
+  private MessageSource messageSource;
+  private String emailId ="emailId";
+  public UserValidator(SignUpService signUpService,
+      MessageSource messageSource) {
     this.signUpService = signUpService;
+    this.messageSource = messageSource;
   }
 
   @Override
@@ -28,25 +33,28 @@ private String emailId ="emailId";
     EmailValidator emailValidator = new EmailValidator();
 
     ValidationUtils
-        .rejectIfEmptyOrWhitespace(errors, "emailId", "Email field should not be empty.");
+        .rejectIfEmptyOrWhitespace(errors, emailId, messageSource.getMessage("emailId.empty",null,
+            LocaleContextHolder.getLocale()));
     if (!emailValidator.validate(userInformation.getEmailId())) {
-      errors.rejectValue(emailId, "Please enter a valid e-mail address.");
+      errors.rejectValue(emailId, messageSource.getMessage("emailId.not.valid",null,LocaleContextHolder.getLocale()));
     }
 
     if (signUpService.findUserProfileByEmailId(userInformation.getEmailId()).isPresent()) {
-      errors.rejectValue(emailId, "This email is already in use.");
+      errors.rejectValue(emailId, messageSource.getMessage("emailId.in.use",null,LocaleContextHolder.getLocale()));
     }
 
     ValidationUtils
-        .rejectIfEmptyOrWhitespace(errors, "password", "Password field should not be empty.");
+        .rejectIfEmptyOrWhitespace(errors, "password", messageSource.getMessage("password.empty",null,
+            LocaleContextHolder.getLocale()));
     if (userInformation.getPassword().length() < 2) {
-      errors.rejectValue("password", "Password should be at least 8 characters.");
+      errors.rejectValue("password", messageSource.getMessage("password.length",null,LocaleContextHolder.getLocale()));
     }
 
     ValidationUtils.rejectIfEmptyOrWhitespace(errors, "passwordConfirmation",
-        "Password confirmation field should not be empty.");
+        messageSource.getMessage("passwordconfirmation.empty",null,LocaleContextHolder.getLocale()));
     if (!userInformation.getPasswordConfirmation().equals(userInformation.getPassword())) {
-      errors.rejectValue("passwordConfirmation", "Passwords do not match.");
+      errors.rejectValue("passwordConfirmation", messageSource.getMessage("passwords.no.match",null,
+          LocaleContextHolder.getLocale()));
     }
 
   }
